@@ -33,8 +33,9 @@
 
 
 #include <octave/oct.h>
-#include <iostream.h>
+#include <iostream>
 #include "sysdep.h"
+#include <octave/pager.h>
 
 int grab_win32_getmousepos ( int * xpt, int * ypt );
 
@@ -88,16 +89,16 @@ DEFUN_DLD (grab, args, nargout,
     
   switch (nc) {
     case 2:
-      cout << "First click on x-axis " << axis(0) << endl;
-      cout << "Then click on x-axis " << axis(1) << endl;
-      cout.flush();
+      octave_stdout << "First click on x-axis " << axis(0) << std::endl;
+      octave_stdout << "Then click on x-axis " << axis(1) << std::endl;
+      flush_octave_stdout();
       break;
     case 4:
-      cout << "First click on point "
-                    << "(" << axis(0) << "," << axis(2) << ")" << endl;
-      cout << "Then click on point "
-                    << "(" << axis(1) << "," << axis(3) << ")" << endl;
-      cout.flush();
+      octave_stdout << "First click on point "
+                    << "(" << axis(0) << "," << axis(2) << ")" << std::endl;
+      octave_stdout << "Then click on point "
+                    << "(" << axis(1) << "," << axis(3) << ")" << std::endl;
+      flush_octave_stdout();
       break;
   }
 
