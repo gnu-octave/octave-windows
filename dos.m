@@ -20,7 +20,7 @@ function [status, text] = dos (cmd, echo)
   if (nargin < 1 || nargin > 2)
     usage ( "[status, text] = dos (cmd, '-echo')");
   else
-    [text, status] = system(cmd);
+    [text, status] = system(['cmd /c ',cmd]);
     if (nargin > 1 || nargout == 0) disp (text); endif
   endif
 
