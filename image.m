@@ -91,7 +91,7 @@ function image (x, y, A, zoom)
               rows(A)*zoom, columns(A)*zoom, bmp_name );
   fclose ( fid );
 
-  system(['explorer file:///' , htm_name ]);
+  system(['explorer "file:///' , htm_name, '"' ]);
   # to cleanup, # use the new mark_for_deletion function
   # but eval it so that its OK if it doesn't exist
   eval('mark_for_deletion( bmp_name, htm_name )','');
