@@ -15,4 +15,6 @@
 
 ## This program is granted to the public domain.
 
+## PKG_ADD: mark_as_command unix
+
 function unix

@@ -15,6 +15,8 @@
 
 ## This program is granted to the public domain.
 
+## PKG_ADD: mark_as_command dos
+
 function [status, text] = dos (cmd, echo) 
 
   if (nargin < 1 || nargin > 2)
