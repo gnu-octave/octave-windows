@@ -25,5 +25,5 @@ win32_MessageBox( const char * text,
                   int boxtype)
 {
     return
-    MessageBox( NULL, text, title, boxtype );
+    MessageBox( NULL, text, title, boxtype | MB_SETFOREGROUND );
 }
