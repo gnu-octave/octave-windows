@@ -44,4 +44,5 @@ grab_win32_getmousepos ( int * xpt, int * ypt )
     GetCursorPos( &pt );
     *xpt= pt.x;
     *ypt= pt.y;
+    return 0;
 }
