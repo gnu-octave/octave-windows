@@ -107,7 +107,7 @@ DEFUN_DLD (grab, args, nargout,
       int ch;
       int xpt; int ypt;
 
-      ch= kbhit( 0 );
+      ch= octave_kbhit( 0 );
       grab_win32_getmousepos ( & xpt, & ypt );
 
       if (ch == ' ') {
@@ -129,7 +129,7 @@ DEFUN_DLD (grab, args, nargout,
     int ch;
     int xpt, ypt;
 
-    ch= kbhit( 0 );
+    ch= octave_kbhit( 0 );
     grab_win32_getmousepos ( & xpt, & ypt );
 
     if (ch == ' ') {
