@@ -17,5 +17,5 @@ win32api.oct: win32api.o win32api_win32part.o
 	$(MKOCTFILE) -o $@ $^
 
 $(LINKS): win32api.oct
-	ln -s $< $@
+	$(LN_S) $< $@
 
