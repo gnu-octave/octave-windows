@@ -67,7 +67,7 @@ function image (x, y, A, zoom)
       zoom = 1 / ceil (1/zoom);
     endif
   endif
-  bmp_name = [tmpnam () , ".bmp"];
+  bmp_name = [tmpnam() , ".bmp"];
 
   map = colormap();
   [m2,n2]=size(map);
