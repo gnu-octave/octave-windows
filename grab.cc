@@ -33,13 +33,9 @@
 
 
 #include <octave/oct.h>
+#include "sysdep.h"
 
-int grab_win32_initialize();
-int grab_win32_restore();
-// returns 1 if points grabbed
-// returns 0 if no points grabbed
-// returns -ve if error
-int grab_win32_getcharandmouse ( char * ch, int * xpt, int * ypt );
+int grab_win32_getmousepos ( int * xpt, int * ypt );
 
 #define maxpoints 20
 
@@ -104,27 +100,21 @@ DEFUN_DLD (grab, args, nargout,
       break;
   }
 
-  if ( grab_win32_initialize() < 0 ) {
-     error("Can't Initialize for Grab win32");
-     return octave_value_list();
-  }
 
   if (nc != 0) {
     int axispoints=0;
     while ( axispoints < 2 ) {
-        char ch;
-        int xpt; int ypt;
+      int ch;
+      int xpt; int ypt;
 
-        if( 1 ==
-            grab_win32_getcharandmouse ( &ch, & xpt, & ypt ) 
-           ) {
+      ch= kbhit( 0 );
+      grab_win32_getmousepos ( & xpt, & ypt );
 
-          if (ch == ' ') {
-            xaxis (axispoints) = (double)xpt;
-            yaxis (axispoints) = (double)ypt;
-            axispoints++;
-          }
-        }
+      if (ch == ' ') {
+        xaxis (axispoints) = (double)xpt;
+        yaxis (axispoints) = (double)ypt;
+        axispoints++;
+      }
 
     }
   }
@@ -136,24 +126,18 @@ DEFUN_DLD (grab, args, nargout,
 
   int nb_elements = 0;
   while (1) {
-    char ch;
+    int ch;
     int xpt, ypt;
 
-    int rv=
-    grab_win32_getcharandmouse ( &ch, & xpt, & ypt );
+    ch= kbhit( 0 );
+    grab_win32_getmousepos ( & xpt, & ypt );
 
-    if( rv==1) {
-      if (ch == ' ') {
-        xc (nb_elements) = xpt;
-        yc (nb_elements) = ypt;
-        nb_elements++;
-      }
-      else break;
-    } else
-    if (rv < 0 ) {
-        error ("wierd result from grab_win32_getcharandmouse");
-        return octave_value_list();
+    if (ch == ' ') {
+      xc (nb_elements) = xpt;
+      yc (nb_elements) = ypt;
+      nb_elements++;
     }
+    else break;
     
     if (nb_elements == xc.length()) {
       xc.resize (xc.length()+maxpoints);
@@ -161,11 +145,6 @@ DEFUN_DLD (grab, args, nargout,
     }
   }
 
-  if ( grab_win32_restore() < 0 )
-  {
-     error("Can't SetConsoleMode");
-     return octave_value_list();
-  }
   
   double xb=0, xm=1, yb=0, ym=1;
   if ((nc == 2) || (nc == 4)) {
