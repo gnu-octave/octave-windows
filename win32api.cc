@@ -21,6 +21,13 @@ int
 win32_MessageBox( const char * text,
                   const char * title,
                   int boxtype);
+int
+win32_ReadRegistry( const char *key,
+                    const char *subkey,
+                    const char *value,
+                    char * buffer,
+                    int  * buffer_sz
+                  );
 
 #include <octave/oct.h>
 
@@ -95,5 +102,65 @@ DEFUN_DLD (win32_MessageBox, args, ,
     win32_MessageBox( textparam.c_str(), titleparam.c_str(), boxtype);
 
     retval(0)= (double) rv;
+    return retval;
+}
+
+DEFUN_DLD (win32_ReadRegistry, args, ,
+           "[rv,code]= win32_ReadRegistry (key,subkey,value)\n"
+           "\n"
+           "Usage:\n"
+           "   key='SOFTWARE\\\\Cygnus Solutions\\\\Cygwin\\\\mounts v2';\n"
+           "   win32_ReadRegistry('HKLM',key,'cygdrive prefix')\n"
+           "\n"
+           "key must be one of the following strings\n"
+           "  HKCR  % -> HKEY_CLASSES_ROOT\n"
+           "  HKCU  % -> HKEY_CURRENT_USER\n"
+           "  HKLM  % -> HKEY_LOCAL_MACHINE\n"
+           "  HKU   % -> HKEY_USERS\n"
+           "\n"
+           "'rv' is an octave string of the returned bytes.\n"
+           "This is a natural format for REG_SZ data; however, \n"
+           "if the registry data was in another format, REG_DWORD\n"
+           "then the calling program will need to process them\n"
+           "\n"
+           "'code' is the success code. Values correspond to the\n"
+           "codes in the winerror.h header file. The code of 0 is\n"
+           "success, while other codes indicate failure\n"
+           "In the case of failure, 'rv' will be empty\n"
+          )
+{
+    octave_value_list retval;
+    int nargin = args.length();
+    if( nargin != 3 ||
+        !args(0).is_string() ||
+        !args(1).is_string() ||
+        !args(2).is_string()
+      ) {
+        print_usage("win32_ReadRegistry");
+        return retval;
+    }
+
+    const char * key   = args(0).string_value().c_str();
+    const char * subkey= args(1).string_value().c_str();
+    const char * value = args(2).string_value().c_str();
+
+    // call registry first time to get size and existance
+    int buffer_sz=0;
+    int retcode=
+    win32_ReadRegistry(key,subkey,value,NULL, &buffer_sz);
+    if (retcode != 0) {
+        retval(0)= new Matrix(0,0);
+        retval(1)= (double) retcode;
+        error("asdf");
+    } else {
+        char * buffer= new char[ buffer_sz ];
+        int retcode=
+        win32_ReadRegistry(key,subkey,value,buffer, &buffer_sz);
+        retval(0)= string_vector( buffer );
+        retval(1)= (double) retcode;
+        retval(2)= (double) buffer_sz;
+        delete buffer;
+    }
+
     return retval;
 }
