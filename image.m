@@ -17,6 +17,8 @@
 ## Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 ## 02111-1307, USA.
 
+function image (x, y, A, zoom)
+
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} image (@var{x}, @var{zoom})
 ## @deftypefnx {Function File} {} image (@var{x}, @var{y}, @var{A}, @var{zoom})
@@ -36,8 +38,7 @@
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>
 ## Created: July 1994
 ## Adapted-By: jwe
-
-function image (x, y, A, zoom)
+## Modifications for MSwindows by aadler, 2002
 
   if (nargin == 0)
     ## Load Bobbie Jo Richardson (Born 3/16/94)
@@ -71,7 +72,8 @@ function image (x, y, A, zoom)
 
   map = colormap();
   [m2,n2]=size(map);
-  bmpwrite(A, map, bmp_name );
+  # A is index into colourmap - remove 1 for C indexing
+  bmpwrite(A-1, map, bmp_name );
 
   # we use the explorer to display the image here
   # the advantage is that it can scale the image size
