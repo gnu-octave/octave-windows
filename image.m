@@ -77,7 +77,7 @@ function image (x, y, A, zoom)
   # we use the explorer to display the image here
   # the advantage is that it can scale the image size
   # using the html code
-  htm_name = [tmpnam () , ".htm"];
+  htm_name = [tmpnam() , ".htm"];
 
   fid= fopen( htm_name, "w");
   if fid == -1
