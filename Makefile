@@ -1,7 +1,7 @@
 sinclude ../../Makeconf
 
-ifneq (,$(findstring -cygwin,$(canonical_host_type)))
-  ifneq (,$(findstring -mingw,$(canonical_host_type)))
+ifeq (,$(findstring -cygwin,$(canonical_host_type)))
+  ifeq (,$(findstring -mingw,$(canonical_host_type)))
 none: ; touch NOINSTALL
   endif
 endif
