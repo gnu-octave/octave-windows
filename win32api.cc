@@ -63,15 +63,15 @@ DEFUN_DLD (win32_MessageBox, args, ,
         return retval;
     }
 
-    string titleparam = args(0).string_value();
-    string textparam  = args(1).string_value();
+    std::string titleparam = args(0).string_value();
+    std::string textparam  = args(1).string_value();
     int  boxtype =0;
     if (nargin==3) 
     {
         if (!args(2).is_string() )
             boxtype = (int) args(2).double_value();
         else {
-            string mboxtype= args(2).string_value();
+            std::string mboxtype= args(2).string_value();
             if (mboxtype == "MB_OK")               boxtype=0;
             else
             if (mboxtype == "MB_OKCANCEL")         boxtype=1;

@@ -33,6 +33,7 @@
 
 
 #include <octave/oct.h>
+#include <iostream.h>
 #include "sysdep.h"
 
 int grab_win32_getmousepos ( int * xpt, int * ypt );
