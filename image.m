@@ -17,8 +17,6 @@
 ## Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 ## 02111-1307, USA.
 
-function image (x, y, A, zoom)
-
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} image (@var{x}, @var{zoom})
 ## @deftypefnx {Function File} {} image (@var{x}, @var{y}, @var{A}, @var{zoom})
@@ -40,6 +38,7 @@ function image (x, y, A, zoom)
 ## Adapted-By: jwe
 ## Modifications for MSwindows by aadler, 2002
 
+function image (x, y, A, zoom)
   if (nargin == 0)
     ## Load Bobbie Jo Richardson (Born 3/16/94)
     A = loadimage ("default.img");
