@@ -67,7 +67,11 @@ function image (x, y, A, zoom)
       zoom = 1 / ceil (1/zoom);
     endif
   endif
-  bmp_name = [tmpnam() , ".bmp"];
+  tname= tmpnam();
+  fslash= find (tname == '\\');
+  tname(fslash) = '/';
+
+  bmp_name = [tname , ".bmp"];
 
   map = colormap();
   [m2,n2]=size(map);
@@ -77,7 +81,7 @@ function image (x, y, A, zoom)
   # we use the explorer to display the image here
   # the advantage is that it can scale the image size
   # using the html code
-  htm_name = [tmpnam() , ".htm"];
+  htm_name = [tname , ".htm"];
 
   fid= fopen( htm_name, "w");
   if fid == -1
