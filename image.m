@@ -87,11 +87,11 @@ function image (x, y, A, zoom)
   if fid == -1
      error( ["Can't open ", htm_name," for writing"] );
   end
-  fprintf(fid,"<HTML><BODY><IMG HEIGHT='%d' WIDTH='%d' SRC='%s'></BODY></HTML>",
+  fprintf(fid,"<HTML><BODY><IMG HEIGHT='%d' WIDTH='%d' SRC='file:///%s'></BODY></HTML>",
               rows(A)*zoom, columns(A)*zoom, bmp_name );
   fclose ( fid );
 
-  system(['explorer "file:///' , htm_name, '"' ]);
+  system([BROWSER, ' "file:///' , htm_name, '"' ]);
   # to cleanup, # use the new mark_for_deletion function
   # but eval it so that its OK if it doesn't exist
   eval('mark_for_deletion( bmp_name, htm_name )','');
