@@ -25,6 +25,9 @@
 ## length of the colormap.  If @var{zoom} is omitted, the image will be
 ## scaled to fit within 600x350 (to a max of 4).
 ##
+## It first tries to use @code{display} from @code{ImageMagick} then
+## @code{xv} and then @code{xloadimage}.
+##
 ## The axis values corresponding to the matrix elements are specified in
 ## @var{x} and @var{y}. At present they are ignored.
 ## @end deftypefn
@@ -33,47 +36,61 @@
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>
 ## Created: July 1994
 ## Adapted-By: jwe
-## Changes
-##   2000-09-19 Paul Kienzle incorporated Douglas Steele's suggestions 
-##   for a windows version. (Sept. 2000 help-octave archives).
+
 function image (x, y, A, zoom)
 
   if (nargin == 0)
     ## Load Bobbie Jo Richardson (Born 3/16/94)
-    x = loadimage ("default.img");
-    zoom = 2;
+    A = loadimage ("default.img");
+    zoom = [];
   elseif (nargin == 1)
     A = x;
     zoom = [];
-    x=y=[];
+    x = y = [];
   elseif (nargin == 2)
     A = x;
     zoom = y;
-    x=y=[];
+    x = y = [];
   elseif (nargin == 3)
     zoom = [];
   elseif (nargin > 4)
-    usage ("image (matrix, [zoom]) or image (x, y, matrix, [zoom])");
+    usage ("image (matrix, zoom) or image (x, y, matrix, zoom)");
   endif
 
   if isempty(zoom)
     ## Find an integer scale factor which sets the image to
     ## approximately the size of the screen.
-    zoom = min([350/rows(A), 600/columns(A), 4]);
-    if zoom>=1
-      zoom=floor(zoom);
+    zoom = min ([350/rows(A), 600/columns(A), 4]);
+    if (zoom >= 1)
+      zoom = floor (zoom);
     else
-      zoom=1/ceil(1/zoom);
+      zoom = 1 / ceil (1/zoom);
     endif
   endif
+  bmp_name = [tmpnam () , ".bmp"];
 
-  B=A-min(min(A))+0.5;
-  B=B/max(max(B)+0.5);
-  
   map = colormap();
   [m2,n2]=size(map);
-  bmpwrite(B*m2,map,'tmp');
-  system(['mspaint tmp.bmp');
-  system('rm tmp.bmp');
+  bmpwrite(A, map, bmp_name );
 
+  # we use the explorer to display the image here
+  # the advantage is that it can scale the image size
+  # using the html code
+  htm_name = [tmpnam () , ".htm"];
+
+  fid= fopen( htm_name, "w");
+  if fid == -1
+     error( ["Can't open ", htm_name," for writing"] );
+  end
+  fprintf(fid,"<HTML><BODY><IMG HEIGHT='%d' WIDTH='%d' SRC='%s'></BODY></HTML>",
+              rows(A)*zoom, columns(A)*zoom, bmp_name );
+  fclose ( fid );
+
+  # cleanup is a pain here, because explorer doen't return
+  # any useful error codes , and "forks" itself into
+  # the background, so you don't know when its finished
+
+  system( ['( explorer file:///' , htm_name , ...
+           ' ; sleep 5 ; rm ', bmp_name, ' ', htm_name, ' ) &' ] );
+  
 endfunction
