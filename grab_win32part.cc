@@ -4,7 +4,7 @@
  * code because you can't #include oct.h and windows.h
  * together
  * 
- * Andy Adler <adler@ncf.ca> 2002
+ * Copyright (C) 2002 Andy Adler <adler@ncf.ca>
  *
  * $Id$
  */

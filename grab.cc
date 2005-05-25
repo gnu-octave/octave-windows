@@ -6,7 +6,7 @@
  * appropriate licences. The rest is mine, and
  * you can do what you want with that part.
  * 
- * Andy Adler <adler@ncf.ca> (C) 1997
+ * Copyright (C) 1997 Andy Adler <adler@ncf.ca>
  * 
  * Compile like this
  * mkoctfile -L/usr/X11R6/lib -lX11 -I/usr/X11R6/include/ ginput.cc 
@@ -15,7 +15,7 @@
  */
 
 /*
- * Laurent Mazet <mazet@crm.mot.com> (C) 2001
+ * Copyright (C) 2001 Laurent Mazet <mazet@crm.mot.com>
  *
  * Fix error handler to avoid octave core-dump.
  * Change to avoid the input limit.
