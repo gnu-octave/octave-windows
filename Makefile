@@ -6,7 +6,7 @@ none: ; touch NOINSTALL
   endif
 endif
 
-LINKS= win32_MessageBox.oct win32_ReadRegistry.oct
+LINKS= $(patsubst %,%$(OCTLINK), win32_MessageBox win32_ReadRegistry)
 
 all: grab.oct win32api.oct $(LINKS)
 
@@ -17,5 +17,5 @@ win32api.oct: win32api.o win32api_win32part.o
 	$(MKOCTFILE) -o $@ $^
 
 $(LINKS): win32api.oct
-	$(LN_S) $< $@
+	$(MKOCTLINK) $< $@
 
