@@ -22,7 +22,7 @@ function [status, text] = dos (cmd, echo)
   if (nargin < 1 || nargin > 2)
     usage ( "[status, text] = dos (cmd, '-echo')");
   elseif ~isempty( findstr(computer(),'cygwin') )
-    [text, status] = system(['cmd /c ',cmd]);
+    [status, text] = system(['cmd /c ',cmd]);
     if (nargin > 1 || nargout == 0) disp (text); endif
   endif
 
