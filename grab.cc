@@ -83,7 +83,7 @@ DEFUN_DLD (grab, args, nargout,
         if ((nc == 2) || (nc == 4))
           break;
     default:
-      print_usage ("grab");
+      print_usage ();
       return octave_value_list();
   }
     

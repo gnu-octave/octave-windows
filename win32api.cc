@@ -66,7 +66,7 @@ DEFUN_DLD (win32_MessageBox, args, ,
          !args(0).is_string() ||
          !args(1).is_string() 
        ) {
-        print_usage("win32_MessageBox");
+        print_usage ();
         return retval;
     }
 
@@ -136,7 +136,7 @@ DEFUN_DLD (win32_ReadRegistry, args, ,
         !args(1).is_string() ||
         !args(2).is_string()
       ) {
-        print_usage("win32_ReadRegistry");
+        print_usage ();
         return retval;
     }
 
