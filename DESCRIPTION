@@ -1,0 +1,11 @@
+Name: Windows
+Version: 1.0.0
+Date: 2006-08-05
+Author: Andy Adler <alder@ncf.ca>
+Maintainer: Andy Adler <alder@ncf.ca>
+Title: Windows functions
+Description: Provides additional functionality on Windows
+Categories: Windows
+Depends: octave (>= 2.9.7)
+License: GPL version 2 or later
+Url: http://octave.sf.net

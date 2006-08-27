@@ -1,0 +1,2 @@
+autoload ("win32_MessageBox", which ("win32api"));
+autoload ("win32_ReadRegistry", which ("win32api"));
