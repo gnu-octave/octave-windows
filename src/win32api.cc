@@ -31,6 +31,11 @@ win32_ReadRegistry( const char *key,
 
 #include <octave/oct.h>
 
+DEFUN_DLD (win32api, args, , "")
+{
+    return octave_value();
+}
+
 DEFUN_DLD (win32_MessageBox, args, ,
            "rv= win32_MessageBox (...)\n"
            "\n"
@@ -140,9 +145,9 @@ DEFUN_DLD (win32_ReadRegistry, args, ,
         return retval;
     }
 
-    const char * key   = args(0).string_value().c_str();
-    const char * subkey= args(1).string_value().c_str();
-    const char * value = args(2).string_value().c_str();
+    char * key   = strdup(args(0).string_value().c_str());
+    char * subkey= strdup(args(1).string_value().c_str());
+    char * value = strdup(args(2).string_value().c_str());
 
     // call registry first time to get size and existance
     int buffer_sz=0;
@@ -161,6 +166,10 @@ DEFUN_DLD (win32_ReadRegistry, args, ,
         retval(2)= (double) buffer_sz;
         delete buffer;
     }
+
+    free(key);
+    free(subkey);
+    free(value);
 
     return retval;
 }
