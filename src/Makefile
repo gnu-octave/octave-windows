@@ -26,3 +26,5 @@ win32api.oct: win32api.o win32api_win32part.o
 ../inst/%.m : %.m.in
 	if [ ! -d ../inst ]; then mkdir ../inst; fi
 	cp $< $@
+
+clean: ; -rm *.o core octave-core *.oct *~
