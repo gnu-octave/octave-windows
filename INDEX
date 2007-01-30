@@ -3,3 +3,4 @@ Examples
  grab
  win32_MessageBox
  win32_ReadRegistry
+ win32api
