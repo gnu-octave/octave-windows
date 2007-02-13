@@ -1,6 +1,10 @@
 windows >> Windows
-Examples
+Windows Utilities
  grab
  win32_MessageBox
  win32_ReadRegistry
  win32api
+COM Interface
+ actxserver
+Examples
+ mat2xls
