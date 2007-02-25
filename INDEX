@@ -6,5 +6,11 @@ Windows Utilities
  win32api
 COM Interface
  actxserver
+ com_atexit
+ com_delete
+ com_get
+ com_invoke
+ com_release
+ com_set
 Examples
  mat2xls
