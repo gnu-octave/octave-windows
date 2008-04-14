@@ -36,6 +36,7 @@ DEFUN_DLD (win32api, args, , "")
     return octave_value();
 }
 
+// PKG_ADD: autoload ("win32_MessageBox", "win32api.oct");
 DEFUN_DLD (win32_MessageBox, args, ,
            "rv= win32_MessageBox (...)\n"
            "\n"
@@ -110,6 +111,7 @@ DEFUN_DLD (win32_MessageBox, args, ,
     return retval;
 }
 
+// PKG_ADD: autoload ("win32_ReadRegistry", "win32api.oct");
 DEFUN_DLD (win32_ReadRegistry, args, ,
            "[rv,code]= win32_ReadRegistry (key,subkey,value)\n"
            "\n"
