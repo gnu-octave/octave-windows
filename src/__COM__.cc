@@ -609,7 +609,7 @@ static string_vector do_invoke_list(const char *fname, WORD flag, const octave_c
 	}
 
 	string_vector v(name_list);
-	return v.qsort(true);
+	return v.sort(true);
 }
 	
 string_vector octave_com_object::map_keys(void) const

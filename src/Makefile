@@ -24,7 +24,7 @@ win32api.oct: win32api.o win32api_win32part.o
 	$(MKOCTFILE) -o $@ $^ -luser32 -ladvapi32
 
 __COM__.oct: __COM__.o
-	$(MKOCTFILE) -o $@ $^ -lole32 -loleaut32 -luser32
+	$(MKOCTFILE) -o $@ $^ -lole32 -loleaut32 -luser32 -luuid
 
 ../inst/%.m : %.m.in
 	if [ ! -d ../inst ]; then mkdir ../inst; fi
