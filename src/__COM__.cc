@@ -170,6 +170,12 @@ public:
 
 	octave_value_list subsref (const std::string& type, const std::list<octave_value_list>& idx, int nargout);
 
+	octave_value subsref (const std::string& type, const std::list<octave_value_list>& idx)
+	{
+		octave_value_list retval = subsref (type, idx, 1);
+		return (retval.length () > 0 ? retval(0) : octave_value ());
+	}
+
 	octave_value subsasgn (const std::string& type, const std::list<octave_value_list>& idx, const octave_value& rhs);
 
 private:
