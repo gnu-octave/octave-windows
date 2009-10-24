@@ -404,10 +404,16 @@ static octave_value com_to_octave(VARIANT *var)
 	case VT_R8:
 		retval = octave_value(var->dblVal);
 		break;
+	case VT_DATE:
+		retval = octave_value(var->dblVal);
+		break;
 	case VT_R4:
 		retval = octave_value(var->fltVal);
 		break;
 	case VT_EMPTY:
+		retval = octave_value(Matrix());
+		break;
+	case VT_ERROR:
 		retval = octave_value(Matrix());
 		break;
 	default:
