@@ -38,7 +38,7 @@
 function image (x, y, A, zoom)
   if (nargin == 0)
     ## Load Bobbie Jo Richardson (Born 3/16/94)
-    A = loadimage ("default.img");
+    A = imread ("default.img");
     zoom = [];
   elseif (nargin == 1)
     A = x;
