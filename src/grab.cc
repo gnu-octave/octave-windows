@@ -15,7 +15,7 @@
  */
 
 /*
- * Copyright (C) 2001 Laurent Mazet <laurent.mazet@math.cnrs.fr>
+ * Copyright (C) 2001 Laurent Mazet <mazet@crm.mot.com>
  *
  * Fix error handler to avoid octave core-dump.
  * Change to avoid the input limit.
