@@ -62,7 +62,7 @@ static std::string wstring_to_string(const std::wstring& ws)
 	return std::string(&tmp[0], len);
 }
 
-class octave_com_object : public octave_base_value
+class octave_com_object : public octave_base_value, public octave_auto_shlib
 {
 public:
 	// Constructors
@@ -336,7 +336,7 @@ static void terminate_com()
 }
 
 // PKG_ADD: autoload ("com_atexit", which ("__COM__"));
-// PKG_ADD: atexit ("com_atexit");
+// PKG_ADD: #atexit ("com_atexit");
 DEFUN_DLD(com_atexit, args, , "")
 {
 	terminate_com();
@@ -630,7 +630,6 @@ string_vector octave_com_object::map_keys(void) const
 }
 
 // PKG_ADD: autoload ("com_get", which ("__COM__"));
-// PKG_ADD: dispatch ("get", "com_get", "octave_com_object");
 DEFUN_DLD(com_get, args, ,"")
 {
 	octave_value retval;
@@ -652,7 +651,6 @@ DEFUN_DLD(com_get, args, ,"")
 }
 
 // PKG_ADD: autoload ("com_set", which ("__COM__"));
-// PKG_ADD: dispatch ("set", "com_set", "octave_com_object");
 DEFUN_DLD(com_set, args, , "")
 {
 	octave_value retval;
@@ -671,7 +669,6 @@ DEFUN_DLD(com_set, args, , "")
 }
 
 // PKG_ADD: autoload ("com_invoke", which ("__COM__"));
-// PKG_ADD: dispatch ("invoke", "com_invoke", "octave_com_object");
 DEFUN_DLD(com_invoke, args, , "")
 {
 	octave_value retval;
@@ -693,7 +690,6 @@ DEFUN_DLD(com_invoke, args, , "")
 }
 
 // PKG_ADD: autoload ("com_delete", which ("__COM__"));
-// PKG_ADD: dispatch ("delete", "com_delete", "octave_com_object");
 DEFUN_DLD(com_delete, args, , "")
 {
 	octave_value retval;
@@ -712,7 +708,6 @@ DEFUN_DLD(com_delete, args, , "")
 }
 
 // PKG_ADD: autoload ("com_release", which ("__COM__"));
-// PKG_ADD: dispatch ("release", "com_release", "octave_com_object");
 DEFUN_DLD(com_release, args, , "")
 {
 	octave_value retval;
