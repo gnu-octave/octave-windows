@@ -1,5 +1,5 @@
-function output = release (varargin)
+function release (varargin)
 
-  output = com_release (varargin{:});
+  com_release (varargin{:});
 
 endfunction

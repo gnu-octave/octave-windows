@@ -1,5 +1,5 @@
-function output = delete (varargin)
+function delete (varargin)
 
-  output = delete (varargin{:});
+  com_delete (varargin{:});
 
 endfunction
