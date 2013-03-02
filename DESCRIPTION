@@ -7,5 +7,5 @@ Title: Windows functions
 Description: Provides COM interface and additional functionality on Windows
 Categories: Windows
 Depends: octave (>= 3.2.0)
-License: GPL version 2 or later
+License: GPLv2+
 Url: http://octave.sf.net
