@@ -157,15 +157,23 @@ public:
 
 	dim_vector dims(void) const { static dim_vector dv(1, 1); return dv; }
 
-	void print(std::ostream& os, bool pr_as_read_syntax = false) const
+	void print_raw (std::ostream& os, bool pr_as_read_syntax = false) const
 	{
-		os << "<COM object " << (com_typename.empty() ? std::string("Unknown") : com_typename) << " (0x" << (void*)iface << ")>";
-		newline(os);
+		os << "<COM object " 
+                   << (com_typename.empty () ? std::string("Unknown") : com_typename) 
+                   << " (0x" << (void*)iface << ")>";
+	}
+
+	void print (std::ostream& os, bool pr_as_read_syntax = false)
+	{
+		print_raw (os, pr_as_read_syntax);
+		newline (os);
 	}
 	
-	void print_raw(std::ostream& os, bool pr_as_read_syntax = false) const
+	void print (std::ostream& os, bool pr_as_read_syntax = false) const
 	{
-		print(os, pr_as_read_syntax);
+		print_raw (os, pr_as_read_syntax);
+		newline (os);
 	}
 
 	octave_value_list subsref (const std::string& type, const std::list<octave_value_list>& idx, int nargout);
@@ -180,7 +188,9 @@ public:
 
 private:
 	// regular octave value declarations
+  #if defined (DEFINE_OCTAVE_ALLOCATOR)	
 	DECLARE_OCTAVE_ALLOCATOR
+  #endif
 	
 	DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 
@@ -189,7 +199,9 @@ private:
 	std::string com_typename;
 };
 
+#if defined (DEFINE_OCTAVE_ALLOCATOR)
 DEFINE_OCTAVE_ALLOCATOR (octave_com_object);
+#endif
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_com_object,
 		"octave_com_object",

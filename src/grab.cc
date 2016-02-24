@@ -123,8 +123,8 @@ DEFUN_DLD (grab, args, nargout,
 
 
   /* Wait for a click */
-  MArray<int> xc(maxpoints);
-  MArray<int> yc(maxpoints);
+  MArray<int> xc(dim_vector(maxpoints,1));
+  MArray<int> yc(dim_vector(maxpoints,1));
 
   int nb_elements = 0;
   while (1) {
@@ -142,8 +142,8 @@ DEFUN_DLD (grab, args, nargout,
     else break;
     
     if (nb_elements == xc.length()) {
-      xc.resize (xc.length()+maxpoints);
-      yc.resize (yc.length()+maxpoints);
+      xc.resize (dim_vector(xc.length()+maxpoints,1));
+      yc.resize (dim_vector(yc.length()+maxpoints,1));
     }
   }
 

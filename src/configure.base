@@ -49,6 +49,8 @@ dnl but defines --oct-site-dir and --m-site-dir
 dnl Check for mkoctfile
 AC_CHECK_PROG(MKOCTFILE,mkoctfile,mkoctfile)
 test -z "$MKOCTFILE" &&	AC_MSG_WARN([no mkoctfile found on path])
+AC_CHECK_PROG(OCTAVE_CONFIG,octave-config,octave-config)
+test -z "$OCTAVE_CONFIG" &&	AC_MSG_WARN([no octave-config found on path])
 
 AC_SUBST(ver)
 AC_SUBST(subver)
@@ -257,15 +259,22 @@ else
 fi
 ])
 
+AC_DEFUN(OCTAVE_CONFIG_EVAL,
+[AC_MSG_CHECKING([for $1 in octave-config])
+$2=`$OCTAVE_CONFIG -p $1`
+AC_MSG_RESULT($$2)
+AC_SUBST($2)
+])
+
 dnl should check that $(OCTAVE) --version matches $(MKOCTFILE) --version
 AC_CHECK_PROG(OCTAVE,octave,octave)
-OCTAVE_EVAL(OCTAVE_VERSION,OCTAVE_VERSION)
+OCTAVE_CONFIG_EVAL(VERSION,OCTAVE_VERSION)
 
 dnl grab canonical host type so we can write system specific install stuff
-OCTAVE_EVAL(octave_config_info('canonical_host_type'),canonical_host_type)
+OCTAVE_CONFIG_EVAL(CANONICAL_HOST_TYPE,canonical_host_type)
 
 dnl grab SHLEXT from octave config
-OCTAVE_EVAL(octave_config_info('SHLEXT'),SHLEXT)
+OCTAVE_CONFIG_EVAL(SHLEXT,SHLEXT)
 
 AC_PROG_LN_S
 
@@ -351,4 +360,5 @@ shell commands will install into the following directories:
 
 octave-forge is configured with
    octave:      $OCTAVE (version $OCTAVE_VERSION)
-   mkoctfile:	$MKOCTFILE for Octave $subver"
+   mkoctfile:	$MKOCTFILE for Octave $OCTAVE_VERSION
+   octave-config: $OCTAVE_CONFIG for Octave $OCTAVE_VERSION"
