@@ -2,7 +2,7 @@ Name: Windows
 Version: 1.2.1
 Date: 2013-02-28
 Author: Andy Adler <alder@ncf.ca>
-Maintainer: Andy Adler <alder@ncf.ca>
+Maintainer: John DOnoghue <john.donoghue@ieee.org>
 Title: Windows functions
 Description: Provides COM interface and additional functionality on Windows
 Categories: Windows
