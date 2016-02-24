@@ -356,7 +356,23 @@ DEFUN_DLD(com_atexit, args, , "")
 }
 
 // PKG_ADD: autoload ("actxserver", which ("__COM__"));
-DEFUN_DLD(actxserver, args, , "")
+DEFUN_DLD(actxserver, args, , 
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {@var{h} =} actxserver (@var{progid})\n \
+\n \
+Create a COM server using the @var{progid} identifier.\n \
+\n \
+Returns @var{h}, a handle to the default interface of the COM server.\n \
+\n \
+Example:\n \
+\n \
+@example @asis\n \
+# create a COM server running Microsoft Excel\n \
+app = actxserver ('Excel.Application');\n \
+# free the object\n \
+destroy (app); \n \
+@end example\n \
+@end deftypefn")
 {
 	octave_value retval;
 
