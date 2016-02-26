@@ -31,39 +31,58 @@ win32_ReadRegistry( const char *key,
 
 #include <octave/oct.h>
 
-DEFUN_DLD (win32api, args, , "")
+DEFUN_DLD (win32api, args, , "internal function")
 {
     return octave_value();
 }
 
 // PKG_ADD: autoload ("win32_MessageBox", "win32api.oct");
 DEFUN_DLD (win32_MessageBox, args, ,
-           "rv= win32_MessageBox (...)\n"
-           "\n"
-           "Usage:\n"
-           "   win32_MessageBox( 'title', 'text' )\n"
-           "   win32_MessageBox( 'title', 'text', MboxType )\n"
-           "\n"
-           "MBoxType can be an integer or a string,\n"
-           "   For integer values, consult <windows.h>\n"
-           "   The following string values are recognized:\n"
-           "       MB_OK\n"
-           "       MB_OKCANCEL\n"
-           "       MB_ABORTRETRYIGNORE\n"
-           "       MB_YESNOCANCEL\n"
-           "       MB_YESNO\n"
-           "       MB_RETRYCANCEL\n"
-           "   Default is MB_OK\n"
-           "Output values are:\n"
-           "       User Clicked OK         1\n"
-           "       User Clicked Cancel     2\n"
-           "       User Clicked Abort      3\n"
-           "       User Clicked Retry      4\n"
-           "       User Clicked Ignore     5\n"
-           "       User Clicked Yes        6\n"
-           "       User Clicked No         7\n"
-           "       User Clicked Try Again 10\n"
-           "       User Clicked Continue  11\n"
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {@var{rv} =} win32_MessageBox (@var{title}, @var{text})\n \
+@deftypefnx {Loadable Function} {@var{rv} =} win32_MessageBox (@var{title}, @var{text}, @var{MboxType})\n \
+\n \
+@var{title} MessageBox title string\n \
+\n \
+@var{text} MessageBox text string\n \
+\n \
+@var{MBoxType} can be an integer or a string. \n \
+\n \
+For integer values, consult <windows.h>\n \
+\n \
+The following string values are recognized:\n \
+@itemize\n \
+@item @code{MB_OK}\n \
+@item @code{MB_OKCANCEL}\n \
+@item @code{MB_ABORTRETRYIGNORE}\n \
+@item @code{MB_YESNOCANCEL}\n \
+@item @code{MB_YESNO}\n \
+@item @code{MB_RETRYCANCEL}\n \
+@end itemize\n \
+Default is MB_OK\n \
+\n \
+Returns a value @var{rv}: \n \
+@table @asis\n \
+@item 1\n \
+User Clicked OK\n \
+@item 2\n \
+User Clicked Cancel\n \
+@item 3\n \
+User Clicked Abort\n \
+i@item 4\n \
+User Clicked Retry\n \
+@item 5\n \
+User Clicked Ignore\n \
+@item 6 \n \
+User Clicked Yes\n \
+@item 7\n \
+User Clicked No\n \
+@item 10 \n \
+User Clicked Try Again\n \
+@item 11\n \
+User Clicked Continue\n \
+@end table\n \
+@end deftypefn"
           )
 {
     int nargin = args.length();
@@ -113,28 +132,37 @@ DEFUN_DLD (win32_MessageBox, args, ,
 
 // PKG_ADD: autoload ("win32_ReadRegistry", "win32api.oct");
 DEFUN_DLD (win32_ReadRegistry, args, ,
-           "[rv,code]= win32_ReadRegistry (key,subkey,value)\n"
-           "\n"
-           "Usage:\n"
-           "   key='SOFTWARE\\\\Cygnus Solutions\\\\Cygwin\\\\mounts v2';\n"
-           "   win32_ReadRegistry('HKLM',key,'cygdrive prefix')\n"
-           "\n"
-           "key must be one of the following strings\n"
-           "  HKCR  % -> HKEY_CLASSES_ROOT\n"
-           "  HKCU  % -> HKEY_CURRENT_USER\n"
-           "  HKLM  % -> HKEY_LOCAL_MACHINE\n"
-           "  HKU   % -> HKEY_USERS\n"
-           "\n"
-           "'rv' is an octave string of the returned bytes.\n"
-           "This is a natural format for REG_SZ data; however, \n"
-           "if the registry data was in another format, REG_DWORD\n"
-           "then the calling program will need to process them\n"
-           "\n"
-           "'code' is the success code. Values correspond to the\n"
-           "codes in the winerror.h header file. The code of 0 is\n"
-           "success, while other codes indicate failure\n"
-           "In the case of failure, 'rv' will be empty\n"
-          )
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {[ @var{rv}, @var{code} ] =} win32_ReadRegistry (@var{key}, @var{subkey}, @var{value})\n \
+\n \
+Example:\n \
+@example\n \
+key='SOFTWARE\\\\Cygnus Solutions\\\\Cygwin\\\\mounts v2';\n \
+win32_ReadRegistry('HKLM',key,'cygdrive prefix')\n \
+@end example\n \
+\n \
+key must be one of the following strings:\n \
+@table @asis\n \
+@item HKCR\n \
+HKEY_CLASSES_ROOT\n \
+@item HKCU\n \
+HKEY_CURRENT_USER\n \
+@item HKLM\n \
+HKEY_LOCAL_MACHINE\n \
+@item HKU\n \
+HKEY_USERS\n \
+@end table\n \
+\n \
+@var{rv} is an octave string of the returned bytes.\n \
+This is a natural format for REG_SZ data; however, \n \
+if the registry data was in another format, REG_DWORD\n \
+then the calling program will need to process them\n \
+\n \
+@var{code} is the success code. Values correspond to the\n \
+codes in the winerror.h header file. The code of 0 is\n \
+success, while other codes indicate failure\n \
+In the case of failure, 'rv' will be empty\n \
+@end deftypefn")
 {
     octave_value_list retval;
     int nargin = args.length();

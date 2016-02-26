@@ -349,7 +349,13 @@ static void terminate_com()
 
 // PKG_ADD: autoload ("com_atexit", which ("__COM__"));
 // PKG_ADD: #atexit ("com_atexit");
-DEFUN_DLD(com_atexit, args, , "")
+DEFUN_DLD(com_atexit, args, , 
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {} com_atexit ()\n \
+Close down all com hanles.\n \
+\n \
+Called during pkg unload.\n \
+@end deftypefn")
 {
 	terminate_com();
 	return octave_value();
@@ -658,7 +664,12 @@ string_vector octave_com_object::map_keys(void) const
 }
 
 // PKG_ADD: autoload ("com_get", which ("__COM__"));
-DEFUN_DLD(com_get, args, ,"")
+DEFUN_DLD(com_get, args, ,
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} { @var{S} = } com_get (@var{obj})\n \
+Call get function on comm object @var{obj}. Returns any result in @var{S}\n \
+\n \
+@end deftypefn")
 {
 	octave_value retval;
 
@@ -679,7 +690,12 @@ DEFUN_DLD(com_get, args, ,"")
 }
 
 // PKG_ADD: autoload ("com_set", which ("__COM__"));
-DEFUN_DLD(com_set, args, , "")
+DEFUN_DLD(com_set, args, , 
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} { @var{S} = } com_set (@var{obj}, @var{propname}, @var{value})\n \
+Call set function on comm object @var{obj} to set property @var{propname} to value @var{value}. Returns any result in @var{S}\n \
+\n \
+@end deftypefn")
 {
 	octave_value retval;
 
@@ -697,7 +713,16 @@ DEFUN_DLD(com_set, args, , "")
 }
 
 // PKG_ADD: autoload ("com_invoke", which ("__COM__"));
-DEFUN_DLD(com_invoke, args, , "")
+DEFUN_DLD(com_invoke, args, ,
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} { @var{result} = } com_invoke (@var{obj})\n \
+@deftypefnx {Loadable Function} { @var{result} = } com_invoke (@var{obj}, @var{method} )\n \
+\n \
+@code{com_invoke (@var{obj})} returns a list of all methods available for object @var{obj} in @var{result}\n \
+\n \
+@code{com_invoke (@var{obj}, @var{method} )} invokes @var{method} method for object @var{obj} and reurns result @var{result}\n \
+\n \
+@end deftypefn")
 {
 	octave_value retval;
 
@@ -718,7 +743,12 @@ DEFUN_DLD(com_invoke, args, , "")
 }
 
 // PKG_ADD: autoload ("com_delete", which ("__COM__"));
-DEFUN_DLD(com_delete, args, , "")
+DEFUN_DLD(com_delete, args, , 
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} { } com_delete (@var{obj})\n \
+Release interfaces from COM object @var{obj} and then delete the COM server\n \
+\n \
+@end deftypefn")
 {
 	octave_value retval;
 
@@ -736,7 +766,12 @@ DEFUN_DLD(com_delete, args, , "")
 }
 
 // PKG_ADD: autoload ("com_release", which ("__COM__"));
-DEFUN_DLD(com_release, args, , "")
+DEFUN_DLD(com_release, args, ,
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} { } com_release (@var{obj})\n \
+Release interfaces from COM object @var{obj}\n \
+\n \
+@end deftypefn")
 {
 	octave_value retval;
 
@@ -753,7 +788,7 @@ DEFUN_DLD(com_release, args, , "")
 	return retval;
 }
 
-DEFUN_DLD(__COM__, args, , "")
+DEFUN_DLD(__COM__, args, , "internal function")
 {
 	octave_value retval;
 	initialize_com();
