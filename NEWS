@@ -7,6 +7,8 @@ Summary of important user-visible changes for Windows 1.2.2:
 
  ** add tests for user visisble .m files
 
+ ** add initial texinfo documentation for com_xxxxx functions
+
 
 Summary of important user-visible changes for Windows 1.2.1:
 ------------------------------------------------------------
