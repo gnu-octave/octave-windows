@@ -42,27 +42,37 @@ int grab_win32_getmousepos ( int * xpt, int * ypt );
 #define maxpoints 20
 
 DEFUN_DLD (grab, args, nargout,
-           "[...] = grab (...)\n"
-           "\n"
-           "grab: grab positions of landmarks on the screen\n"
-           " \n"
-           "[x,y]= grab(axis)\n"
-           " x -> x coordinates of the points\n"
-           " y -> y coordinates of the points\n"
-           "\n"
-           " axis -> if specified then the first 2 clicks\n"
-           "      must be on the appropriate axes. x and y (or just x\n"
-           "      if only 2 points specified ) will then be normalised.\n"
-           "\n"
-           "for example: x=grab([1 10]) \n"
-           "   the first two clicks should correspond to x=1 and x=10 \n"
-           "   subsequent clicks will then be normalized to graph units.  \n"
-           "\n"
-           "for example: [x,y]=grab; \n"
-           "   gives x and y in screen pixel units (upper left = 0,0 ) \n"
-           "\n"
-           "select points by positioning the cursor over the points\n"
-           "and clicking <SPACE>. 'q' or <ESC> quits")
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {[@var{x},@var{y}] = } grab (@var{axis})\n \
+\n \
+Grab positions of landmarks on the screen.\n \
+\n \
+@var{x} is the x coordinates of the points.\n \
+\n \
+@var{y} is the y coordinates of the points.\n \
+\n \
+@var{axis} (optional) if specified then the first 2 clicks\n \
+must be on the appropriate axes. x and y (or just x\n \
+if only 2 points specified ) will then be normalised.\n \
+\n \
+for example: \n \
+@example @asis\n \
+x=grab([1 10]) \n \
+\n \
+the first two clicks should correspond to x=1 and x=10 \n \
+subsequent clicks will then be normalized to graph units.  \n \
+@end example\n \
+\n \
+for example:\n \
+@example @asis\n \
+[x,y]=grab; \n \
+\n \
+gives x and y in screen pixel units (upper left = 0,0 ) \n \
+@end example\n \
+\n \
+Select points by positioning the cursor over the points\n \
+and clicking <SPACE>. 'q' or <ESC> quits\n \
+@end deftypefn")
 {
   ColumnVector axis;
   ColumnVector xaxis(2);

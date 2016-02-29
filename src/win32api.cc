@@ -42,6 +42,8 @@ DEFUN_DLD (win32_MessageBox, args, ,
 @deftypefn {Loadable Function} {@var{rv} =} win32_MessageBox (@var{title}, @var{text})\n \
 @deftypefnx {Loadable Function} {@var{rv} =} win32_MessageBox (@var{title}, @var{text}, @var{MboxType})\n \
 \n \
+Display a message box using the win32 API.\n \
+\n \
 @var{title} MessageBox title string\n \
 \n \
 @var{text} MessageBox text string\n \
@@ -134,6 +136,8 @@ User Clicked Continue\n \
 DEFUN_DLD (win32_ReadRegistry, args, ,
   "-*- texinfo -*-\n \
 @deftypefn {Loadable Function} {[ @var{rv}, @var{code} ] =} win32_ReadRegistry (@var{key}, @var{subkey}, @var{value})\n \
+\n \
+Read a value from the Windows registry.\n \
 \n \
 Example:\n \
 @example\n \
