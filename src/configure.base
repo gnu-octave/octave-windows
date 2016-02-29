@@ -10,7 +10,7 @@ AC_INIT(configure.base)
 PACKAGE=windows
 MAJOR_VERSION=1
 MINOR_VERSION=2
-PATCH_LEVEL=2
+PATCH_LEVEL=3
 
 dnl Kill caching --- this ought to be the default
 define([AC_CACHE_LOAD], )dnl
