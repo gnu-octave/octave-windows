@@ -12,5 +12,6 @@ COM Interface
  com_invoke
  com_release
  com_set
+ iscom
 Examples
  mat2xls
