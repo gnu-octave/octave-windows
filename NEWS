@@ -2,6 +2,7 @@ Summary of important user-visible changes for Windows 1.2.3+:
 ------------------------------------------------------------
  
  ** added iscom function
+ ** support for returning 1-dimensional and 2-dimensional matrix data from COM objects
 
 Summary of important user-visible changes for Windows 1.2.3:
 ------------------------------------------------------------

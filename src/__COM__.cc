@@ -456,38 +456,198 @@ static octave_value com_to_octave(VARIANT *var)
 			int subtype = var->vt & VT_TYPEMASK;
 			SAFEARRAY *arr = var->parray;
 			dim_vector dv;
-
-			dv.resize(SafeArrayGetDim(arr));
-			for (int k=0; k<dv.length(); k++)
+			int dimCount;
+			
+			dimCount=SafeArrayGetDim(arr);
+			dv.resize(dimCount+1);
+			if (dimCount>2)
+				warning("maximum array dimensions supported is 2");
+			
+			for (int k=0; k<dimCount; k++)
 			{
 				long lb, ub;
 				SafeArrayGetLBound(arr, k+1, &lb);
 				SafeArrayGetUBound(arr, k+1, &ub);
 				dv(k) = ub-lb+1;
 			}
-
-			Cell cell(dv);
+			dv(dimCount) = 1; // allows 1-D arrays to work
 
 			switch (subtype)
 			{
 			case VT_VARIANT:
 				{
 					VARIANT *pvar;
-					SafeArrayAccessData(arr, (void**)&pvar);
-					for (int k=0; k<cell.length(); k++)
-						cell(k) = com_to_octave(&pvar[k]);
-					SafeArrayUnaccessData(arr);
+					HRESULT hr;
+					Cell cell(dv);
+
+					hr=SafeArrayAccessData(arr, (void **)&pvar);
+					if (FAILED(hr))
+					{
+						warning("failed accessing array data");
+						retval = octave_value(Matrix()); // return invalid data
+						break;
+					}
+					else
+					{
+						for (int k=0; k<cell.length(); k++)
+						{
+							cell(k) = com_to_octave(&pvar[k]);
+						}
+						SafeArrayUnaccessData(arr);
+					}
+					retval = octave_value(cell);
+				}
+				break;
+			case VT_R4:
+				{
+					VARIANT *pvar;
+					HRESULT hr;
+					FLOAT cellVal;
+					long arrDims[2] = {0,0};
+					Array<float> cell(dv);
+					
+					hr=SafeArrayAccessData(arr, (void **)&pvar);
+					if (FAILED(hr))
+					{
+						warning("failed accessing array data");
+						retval = octave_value(Matrix()); // return invalid data
+						break;
+					}
+					else
+					{
+						for (int dimNum=0; dimNum<dimCount;dimNum++)
+						{
+							arrDims[0] = dimNum; // overwritten for 1-dim arrays
+								
+							for(int k=0;k<dv(dimCount-1);k++) // index last value of array (handles 1- or 2-dimensions)
+							{
+								arrDims[dimCount-1] = k;
+								if(SafeArrayGetElement(arr,arrDims,&cellVal)==S_OK)
+								{
+									retval=octave_value(cellVal); // retval used as temporary value
+									if(dimCount==2) // 2D array
+										cell(dv(0)*k+dimNum)=retval.float_value();
+									else // 1D array
+										cell(k)=retval.float_value();
+								}
+								else 
+								{
+									warning("error accessing value (%d,%d)",dimNum,k);
+									// returns whatever data we already have
+									break;
+								}
+							}
+						}
+						SafeArrayUnaccessData(arr);
+					}
+					retval = octave_value(cell);
+				}
+				break;
+			case VT_UI1:
+				{
+					VARIANT *pvar;
+					HRESULT hr;
+					BYTE cellVal;
+					long arrDims[2] = {0,0};
+					Array<octave_uint8> cell(dv);
+					
+					hr=SafeArrayAccessData(arr, (void **)&pvar);
+					if (FAILED(hr))
+					{
+						warning("failed accessing array data");
+						retval = octave_value(Matrix()); // return invalid data
+						break;
+					}
+					else
+					{
+						for (int dimNum=0; dimNum<dimCount;dimNum++)
+						{
+							arrDims[0] = dimNum; // overwritten for 1-dim arrays
+								
+							for(int k=0;k<dv(dimCount-1);k++) // index last value of array (handles 1- or 2-dimensions)
+							{
+								arrDims[dimCount-1] = k;
+								if(SafeArrayGetElement(arr,arrDims,&cellVal)==S_OK)
+								{
+									retval=octave_value(cellVal); // retval used as temporary variable
+									if(dimCount==2) // 2D array
+										cell(dv(0)*k+dimNum)=retval.ushort_value();
+									else // 1D array
+										cell(k)=retval.ushort_value();
+								}
+								else
+								{
+									warning("error accessing value (%d,%d)",dimNum,k);
+									// returns whatever data we already have
+									break;
+								}
+							}
+						}
+						SafeArrayUnaccessData(arr);
+					}
+					retval = octave_value(cell);
+				}
+				break;
+			case VT_I2:
+				{
+					VARIANT *pvar;
+					HRESULT hr;
+					SHORT cellVal;
+					long arrDims[2] = {0,0};
+					Array<octave_int16> cell(dv);
+					
+					//warning("%d-D VT_I2 array detected",dimCount);
+					hr=SafeArrayAccessData(arr, (void **)&pvar);
+					if (FAILED(hr))
+					{
+						warning("failed accessing array data");
+						retval = octave_value(Matrix()); // return invalid data
+						break;
+					}
+					else
+					{
+						for (int dimNum=0; dimNum<dimCount;dimNum++)
+						{
+							arrDims[0] = dimNum; // overwritten for 1-dim arrays
+								
+							for(int k=0;k<dv(dimCount-1);k++) // index last value of array (handles 1- or 2-dimensions)
+							{
+								arrDims[dimCount-1] = k;
+								if(SafeArrayGetElement(arr,arrDims,&cellVal)==S_OK)
+								{
+									retval=octave_value(cellVal); // retval used as temporary variable
+									if(dimCount==2) // 2D array
+										cell(dv(0)*k+dimNum)=retval.int_value();
+									else // 1D array
+										cell(k)=retval.int_value();
+								}
+								else
+								{
+									warning("error accessing value (%d,%d)",dimNum,k);
+									// returns whatever data we already have
+									break;
+								}
+							}
+						}
+						SafeArrayUnaccessData(arr);
+					}
+					retval = octave_value(cell);
 				}
 				break;
 			default:
-				warning("cannot convert COM array of type `%d' to octave object", subtype);
+				{
+					warning("cannot convert COM array of type `0x%x' to octave object", subtype);
+					retval = octave_value(Matrix()); // return invalid data
+				}
 				break;
 			}
 
-			retval = octave_value(cell);
 		}
-		else
-			warning("cannot convert COM variant of type `%d' to octave object", var->vt);
+		else // if not (var->vt & VT_ARRAY)
+		{
+			warning("cannot convert COM variant of type `0x%x' to octave object", var->vt);
+			retval = octave_value(Matrix()); // return invalid data
+		}
 		break;
 	}
 
