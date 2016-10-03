@@ -17,7 +17,7 @@ along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include <octave/config.h>
+#include <octave/oct.h>
 #include <octave/ov.h>
 #include <octave/ov-base.h>
 #include <octave/ov-typeinfo.h>
@@ -372,11 +372,13 @@ Returns @var{h}, a handle to the default interface of the COM server.\n \
 \n \
 Example:\n \
 \n \
-@example @asis\n \
+@example\n \
+@group\n \
 # create a COM server running Microsoft Excel\n \
 app = actxserver ('Excel.Application');\n \
 # free the object\n \
 destroy (app); \n \
+@end group\n \
 @end example\n \
 @end deftypefn")
 {
@@ -489,7 +491,7 @@ static octave_value com_to_octave(VARIANT *var)
 					}
 					else
 					{
-						for (int k=0; k<cell.length(); k++)
+						for (int k=0; k<cell.numel(); k++)
 						{
 							cell(k) = com_to_octave(&pvar[k]);
 						}
@@ -698,7 +700,7 @@ static void octave_to_com(const octave_value& ov, VARIANT *var)
 		double *data;
 
 		SafeArrayAccessData(arr, (void**)&data);
-		for (int k=0; k<M.length(); k++)
+		for (int k=0; k<M.numel(); k++)
 			data[k] = M(k);
 		SafeArrayUnaccessData(arr);
 
@@ -712,7 +714,7 @@ static void octave_to_com(const octave_value& ov, VARIANT *var)
 		VARIANT *data;
 
 		SafeArrayAccessData(arr, (void**)&data);
-		for (int k=0; k<M.length(); k++)
+		for (int k=0; k<M.numel(); k++)
 			octave_to_com(M(k), &data[k]);
 		SafeArrayUnaccessData(arr);
 

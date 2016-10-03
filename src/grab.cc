@@ -56,19 +56,19 @@ must be on the appropriate axes. x and y (or just x\n \
 if only 2 points specified ) will then be normalised.\n \
 \n \
 for example: \n \
-@example @asis\n \
+@example\n \
 x=grab([1 10]) \n \
+@end example\n \
 \n \
 the first two clicks should correspond to x=1 and x=10 \n \
 subsequent clicks will then be normalized to graph units.  \n \
-@end example\n \
 \n \
 for example:\n \
-@example @asis\n \
+@example\n \
 [x,y]=grab; \n \
+@end example\n \
 \n \
 gives x and y in screen pixel units (upper left = 0,0 ) \n \
-@end example\n \
 \n \
 Select points by positioning the cursor over the points\n \
 and clicking <SPACE>. 'q' or <ESC> quits\n \
@@ -89,7 +89,7 @@ and clicking <SPACE>. 'q' or <ESC> quits\n \
            if (error_state) return octave_value_list();
            axis = tmp;
         }
-        nc = axis.length ();
+        nc = axis.numel ();
         if ((nc == 2) || (nc == 4))
           break;
     default:
@@ -151,9 +151,9 @@ and clicking <SPACE>. 'q' or <ESC> quits\n \
     }
     else break;
     
-    if (nb_elements == xc.length()) {
-      xc.resize (dim_vector(xc.length()+maxpoints,1));
-      yc.resize (dim_vector(yc.length()+maxpoints,1));
+    if (nb_elements == xc.numel()) {
+      xc.resize (dim_vector(xc.numel()+maxpoints,1));
+      yc.resize (dim_vector(yc.numel()+maxpoints,1));
     }
   }
 

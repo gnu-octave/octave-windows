@@ -10,7 +10,7 @@ AC_INIT(configure.base)
 PACKAGE=windows
 MAJOR_VERSION=1
 MINOR_VERSION=2
-PATCH_LEVEL=3
+PATCH_LEVEL=4
 
 dnl Kill caching --- this ought to be the default
 define([AC_CACHE_LOAD], )dnl
@@ -100,7 +100,7 @@ dnl Don't query if path/ver are given in the configure environment
 if test -z "$mpath" || test -z "$opath" || test -z "$xpath" || test -z "$ver" ; then
    dnl Construct program to get mkoctfile version and local install paths
    cat > conftest.cc <<EOF
-#include <octave/config.h>
+#include <octave/oct.h>
 #include <octave/version.h>
 #include <octave/defaults.h>
 
