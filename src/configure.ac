@@ -5,12 +5,8 @@ dnl configure.base and reprocess rather than modifying ./configure.
 dnl autoconf 2.13 certainly doesn't work! What is the minimum requirement?
 AC_PREREQ(2.2)
 
-AC_INIT(configure.base)
-
-PACKAGE=windows
-MAJOR_VERSION=1
-MINOR_VERSION=2
-PATCH_LEVEL=4
+AC_INIT([windows],[1.4.2])
+AC_CONFIG_HEADERS([config.h])
 
 dnl Kill caching --- this ought to be the default
 define([AC_CACHE_LOAD], )dnl
@@ -18,14 +14,6 @@ define([AC_CACHE_SAVE], )dnl
 
 dnl uncomment to put support files in another directory
 dnl AC_CONFIG_AUX_DIR(admin)
-
-VERSION=$MAJOR_VERSION.$MINOR_VERSION.$PATCH_LEVEL
-AC_SUBST(PACKAGE)
-AC_SUBST(VERSION)
-
-dnl need to find admin files, so keep track of the top dir.
-TOPDIR=`pwd`
-AC_SUBST(TOPDIR)
 
 dnl if mkoctfile doesn't work, then we need the following:
 dnl AC_PROG_CXX
@@ -279,8 +267,8 @@ else
 fi
 ])
 
-CONFIGURE_OUTPUTS="Makeconf"
-STATUS_MSG="
+AC_OUTPUT(Makefile)
+AC_MSG_RESULT([
 octave commands will install into the following directories:
    m-files:   $mpath
    oct-files: $opath
@@ -295,4 +283,5 @@ shell commands will install into the following directories:
 octave-forge is configured with
    octave:      $OCTAVE (version $OCTAVE_VERSION)
    mkoctfile:	$MKOCTFILE for Octave $OCTAVE_VERSION
-   octave-config: $OCTAVE_CONFIG for Octave $OCTAVE_VERSION"
+   octave-config: $OCTAVE_CONFIG for Octave $OCTAVE_VERSION
+])

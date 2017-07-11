@@ -41,7 +41,7 @@ M_SOURCES   := $(wildcard inst/*.m)
 CC_SOURCES  := $(wildcard src/*.cc)
 PKG_ADD     := $(shell $(GREP) -sPho '(?<=(//|\#\#) PKG_ADD: ).*' \
                          $(CC_SOURCES) $(M_SOURCES))
-AUTOCONF_TARGETS := src/configure src/Makeconf
+AUTOCONF_TARGETS := src/configure src/Makefile
 
 ## Targets that are not filenames.
 ## https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
@@ -126,10 +126,10 @@ clean:
 #
 # Recipes for testing purposes
 #
-src/configure: src/configure.base
+src/configure: src/configure.ac
 	cd src && $(SHELL) ./autogen.sh
 
-src/Makeconf: src/Makeconf.in src/configure
+src/Makefile: src/Makefile src/configure
 	cd src && ./configure
 
 autoconf_target: $(AUTOCONF_TARGETS)

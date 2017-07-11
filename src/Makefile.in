@@ -1,11 +1,3 @@
-
-## Makeconf is automatically generated from Makeconf.base and Makeconf.add
-## in the various subdirectories.  To regenerate, use ./autogen.sh to
-## create a new ./Makeconf.in, then use ./configure to generate a new
-## Makeconf.
-
-OCTAVE_FORGE = 1
-
 SHELL = @SHELL@
 
 canonical_host_type = @canonical_host_type@
@@ -18,19 +10,12 @@ datadir = @datadir@
 infodir = @infodir@
 includedir = @includedir@
 datarootdir = @datarootdir@
-INSTALL = @INSTALL@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@
-INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_DATA = @INSTALL_DATA@
-INSTALLOCT=octinst.sh
 
 DESTDIR =
 
 RANLIB = @RANLIB@
 STRIP = @STRIP@
 LN_S = @LN_S@
-
-AWK = @AWK@
 
 # Most octave programs will be compiled with $(MKOCTFILE).  Those which
 # cannot use mkoctfile directly can request the flags that mkoctfile 
@@ -64,3 +49,35 @@ XPATH = @xpath@
 %.o: %.f ; $(MKOCTFILE) -c $<
 %.o: %.cc ; $(MKOCTFILE) -c $<
 %.oct: %.cc ; $(MKOCTFILE) $<
+
+PROGS=grab.oct win32api.oct __COM__.oct # ../inst/BROWER.m ../inst/image.m
+
+ifeq (,$(findstring -cygwin,$(canonical_host_type)))
+  ifeq (,$(findstring -mingw,$(canonical_host_type)))
+    ifeq (,$(findstring -msdosmsvc,$(canonical_host_type)))
+all:
+	@echo "Not building Windows Specific functions"
+    else
+all: $(PROGS)
+    endif
+  else
+all: $(PROGS)
+  endif
+else
+all: $(PROGS)
+endif
+
+grab.oct: grab.o grab_win32part.o
+	$(MKOCTFILE) -o $@ $^ -luser32
+
+win32api.oct: win32api.o win32api_win32part.o
+	$(MKOCTFILE) -o $@ $^ -luser32 -ladvapi32
+
+__COM__.oct: __COM__.o
+	$(MKOCTFILE) -o $@ $^ -lole32 -loleaut32 -luser32 -luuid
+
+../inst/%.m : %.m.in
+	if [ ! -d ../inst ]; then mkdir ../inst; fi
+	cp $< $@
+
+clean: ; -rm -f *.o core octave-core *.oct *~
