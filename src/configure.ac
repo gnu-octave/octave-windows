@@ -188,9 +188,6 @@ ver=`echo $OCTAVE_VERSION | sed -e "s/\.//" -e "s/\..*$//"`
 dnl grab canonical host type so we can write system specific install stuff
 OCTAVE_CONFIG_EVAL(CANONICAL_HOST_TYPE,canonical_host_type)
 
-dnl grab SHLEXT from octave config
-OCTAVE_CONFIG_EVAL(SHLEXT,SHLEXT)
-
 if test -z "$mpath"; then
 OCTAVE_CONFIG_EVAL(LOCALVERFCNFILEDIR,mpath)
 fi
