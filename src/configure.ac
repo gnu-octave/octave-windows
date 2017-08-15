@@ -7,6 +7,7 @@ AC_PREREQ(2.2)
 
 AC_INIT([windows],[1.4.2])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIRS([m4])
 
 dnl Kill caching --- this ought to be the default
 define([AC_CACHE_LOAD], )dnl
@@ -111,7 +112,7 @@ dnl is appropriate for the most recent version of Octave.
 dnl Define the following macro:
 dnl    OF_CHECK_LIB(lib,fn,true,false,helpers)
 dnl This is just like AC_CHECK_LIB, but it doesn't update LIBS
-AC_DEFUN(OF_CHECK_LIB,
+AC_DEFUN([OF_CHECK_LIB],
 [save_LIBS="$LIBS"
 AC_CHECK_LIB($1,$2,$3,$4,$5)
 LIBS="$save_LIBS"
@@ -120,7 +121,7 @@ LIBS="$save_LIBS"
 dnl Define the following macro:
 dnl    TRY_MKOCTFILE(msg,program,action_if_true,action_if_false)
 dnl
-AC_DEFUN(TRY_MKOCTFILE,
+AC_DEFUN([TRY_MKOCTFILE],
 [AC_MSG_CHECKING($1)
 cat > conftest.cc << EOF
 #include <octave/config.h>
@@ -149,7 +150,7 @@ dnl Evaluate an expression in octave
 dnl
 dnl OCTAVE_EVAL(expr,var) -> var=expr
 dnl
-AC_DEFUN(OCTAVE_EVAL,
+AC_DEFUN([OCTAVE_EVAL],
 [AC_MSG_CHECKING([for $1 in Octave])
 $2=`echo "disp($1)" | $OCTAVE -qf`
 AC_MSG_RESULT($$2)
@@ -160,7 +161,7 @@ dnl Check status of an octave variable
 dnl
 dnl OCTAVE_CHECK_EXIST(variable,action_if_true,action_if_false)
 dnl
-AC_DEFUN(OCTAVE_CHECK_EXIST,
+AC_DEFUN([OCTAVE_CHECK_EXIST],
 [AC_MSG_CHECKING([for $1 in Octave])
 if test `echo 'disp(exist("$1"))' | $OCTAVE -qf`X != 0X ; then
    AC_MSG_RESULT(yes)
@@ -171,7 +172,7 @@ else
 fi
 ])
 
-AC_DEFUN(OCTAVE_CONFIG_EVAL,
+AC_DEFUN([OCTAVE_CONFIG_EVAL],
 [AC_MSG_CHECKING([for $1 in octave-config])
 $2=`$OCTAVE_CONFIG -p $1`
 AC_MSG_RESULT($$2)
@@ -197,6 +198,64 @@ fi
 if test -z "$xpath"; then
 OCTAVE_CONFIG_EVAL(LOCALVERARCHLIBDIR,xpath)
 fi
+
+# checks for depreciated octave symbols/functions
+AC_LANG_PUSH([C++])
+save_altsyms_CXX="$CXX"
+save_altsyms_CXXFLAGS="$CXXFLAGS"
+save_altsyms_LDFLAGS="$LDFLAGS"
+save_altsyms_LIBS="$LIBS"
+OCTINCLUDEDIR=${OCTINCLUDEDIR:-`$MKOCTFILE -p INCFLAGS`}
+OCTLIBDIR=${OCTLIBDIR:-`$MKOCTFILE -p OCTLIBDIR`}
+CXX=`${MKOCTFILE} -p CXX`
+CXXFLAGS="$OCTINCLUDEDIR $CXXFLAGS"
+LDFLAGS="-L$OCTLIBDIR $LDFLAGS"
+LIBS="-loctinterp $LIBS"
+
+OF_OCTAVE_LIST_ALT_SYMS([
+[dnl
+  [flush_octave_stdout],
+  [octave::flush_stdout],
+  [[octave::flush_stdout ();]],
+  [OCTAVE__FLUSH_STDOUT],
+  [],
+  []
+],
+
+[dnl
+  [feval],
+  [octave::feval],
+  [[octave::feval ("date");]],
+  [OCTAVE__FEVAL],
+  [[#include <octave/parse.h>]],
+  [[#include <octave/parse.h>]]
+],
+
+[dnl
+  [is_cell],
+  [iscell],
+  [[octave_value ().iscell ();]],
+  [OV_ISCELL],
+  [],
+  []
+],
+
+[dnl
+  [is_empty],
+  [isempty],
+  [[octave_value ().isempty ();]],
+  [OV_ISEMPTY],
+  [],
+  []
+]
+
+],[oct-alt-includes.h])
+
+CXX=$save_altsyms_CXX
+CXXFLAGS=$save_altsyms_CXXFLAGS
+LDFLAGS=$save_altsyms_LDFLAGS
+LIBS=$save_altsyms_LIBS
+AC_LANG_POP([C++])
 
 AC_PROG_LN_S
 

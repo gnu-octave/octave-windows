@@ -25,6 +25,10 @@
 #include <octave/Cell.h>
 #include <octave/parse.h>
 
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
+
 #include <windows.h>
 #include <ocidl.h>
 
@@ -235,7 +239,7 @@ octave_com_object::subsref (const std::string& type, const std::list<octave_valu
         ovl(1) = (idx.front ()) (0);
         std::list<octave_value_list>::const_iterator it = idx.begin ();
         ovl.append (*++it);
-        retval = feval (std::string ("com_invoke"), ovl, 1);
+        retval = OCTAVE__FEVAL (std::string ("com_invoke"), ovl, 1);
         skip++;
       }
     else
@@ -245,7 +249,7 @@ octave_com_object::subsref (const std::string& type, const std::list<octave_valu
         count++;
         ovl(0) = octave_value (this);
         ovl(1) = (idx.front ())(0);
-        retval = feval (std::string ("com_get"), ovl, 1);
+        retval = OCTAVE__FEVAL (std::string ("com_get"), ovl, 1);
       }
     break;
   }
@@ -275,7 +279,7 @@ octave_com_object::subsasgn (const std::string& type, const std::list<octave_val
         ovl (0) = octave_value (this);
         ovl (1) = (idx.front ()) (0);
         ovl (2) = rhs;
-        feval ("com_set", ovl, 0);
+        OCTAVE__FEVAL ("com_set", ovl, 0);
         if (!error_state)
           {
             count++;
@@ -707,7 +711,7 @@ octave_to_com(const octave_value& ov, VARIANT *var)
     var->vt = VT_R8;
     var->dblVal = ov.double_value ();
   }
-  else if (ov.is_real_matrix () && ov.is_empty ())
+  else if (ov.is_real_matrix () && ov.OV_ISEMPTY ())
   {
     var->vt = VT_EMPTY;
   }
@@ -725,7 +729,7 @@ octave_to_com(const octave_value& ov, VARIANT *var)
     var->vt = VT_ARRAY|VT_R8;
     var->parray = arr;
   }
-  else if (ov.is_cell ())
+  else if (ov.OV_ISCELL ())
   {
     Cell M = ov.cell_value ();
     SAFEARRAY *arr = make_safearray_from_dims (M.dims (), VT_VARIANT);

@@ -33,9 +33,15 @@
 
 
 #include <octave/oct.h>
+
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
+
 #include <iostream>
 #include "sysdep.h"
 #include <octave/pager.h>
+
 
 int grab_win32_getmousepos ( int * xpt, int * ypt );
 
@@ -101,14 +107,14 @@ and clicking <SPACE>. 'q' or <ESC> quits\n \
     case 2:
       octave_stdout << "First click on x-axis " << axis(0) << std::endl;
       octave_stdout << "Then click on x-axis " << axis(1) << std::endl;
-      flush_octave_stdout();
+      OCTAVE__FLUSH_STDOUT ();
       break;
     case 4:
       octave_stdout << "First click on point "
                     << "(" << axis(0) << "," << axis(2) << ")" << std::endl;
       octave_stdout << "Then click on point "
                     << "(" << axis(1) << "," << axis(3) << ")" << std::endl;
-      flush_octave_stdout();
+      OCTAVE__FLUSH_STDOUT ();
       break;
   }
 
