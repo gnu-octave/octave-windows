@@ -129,7 +129,7 @@ clean:
 src/configure: src/configure.ac
 	cd src && $(SHELL) ./autogen.sh
 
-src/Makefile: src/Makefile src/configure
+src/Makefile: src/Makefile.in src/configure
 	cd src && ./configure
 
 autoconf_target: $(AUTOCONF_TARGETS)
