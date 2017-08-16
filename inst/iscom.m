@@ -37,7 +37,7 @@ endfunction
 
 %!test assert(iscom(1), false)
 
-%!test
+%!testif HAVE_WINDOWS_H
 %! a = actxserver ("WScript.Shell");
 %! assert (iscom (a));
 %! delete(a);

@@ -4,6 +4,6 @@ function delete (varargin)
 
 endfunction
 
-%!test
+%!testif HAVE_WINDOWS_H
 %! wshell = actxserver ("WScript.Shell");
 %! delete (wshell)

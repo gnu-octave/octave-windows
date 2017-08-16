@@ -368,7 +368,7 @@ terminate_com()
 #endif
 
 // PKG_ADD: autoload ("com_atexit", which ("__COM__"));
-// PKG_ADD: #atexit ("com_atexit");
+// xPKG_ADD: #atexit ("com_atexit");
 DEFUN_DLD(com_atexit, args, , 
           "-*- texinfo -*-\n \
 @deftypefn {Loadable Function} {} com_atexit ()\n \

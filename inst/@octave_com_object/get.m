@@ -4,7 +4,7 @@ function output = get (varargin)
 
 endfunction
 
-%!test
+%!testif HAVE_WINDOWS_H
 %! wshell = actxserver ("WScript.Shell");
 %! assert(wshell.CurrentDirectory, get(wshell, "CurrentDirectory"));
 %! delete (wshell)

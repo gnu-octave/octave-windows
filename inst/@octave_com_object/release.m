@@ -4,7 +4,7 @@ function release (varargin)
 
 endfunction
 
-%!test
+%!testif HAVE_WINDOWS_H
 %! wshell = actxserver ("WScript.Shell");
 %! release (wshell);
 %! delete (wshell)
