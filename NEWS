@@ -1,8 +1,10 @@
 Summary of important user-visible changes for Windows 1.2.4+:
 ------------------------------------------------------------
-  ** updated configure files for 4.3+ dev octave
+  ** updated configure files for 4.4 octave
 
   ** octave_com_object marked as an object in base_value (Bug #51470)
+
+  ** allow install in non-windows with functions returning error
 
 Summary of important user-visible changes for Windows 1.2.4:
 ------------------------------------------------------------

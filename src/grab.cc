@@ -35,7 +35,7 @@
 #include <octave/oct.h>
 
 #ifdef HAVE_CONFIG_H
-#  include "../config.h"
+#  include "config.h"
 #endif
 
 #include <iostream>
@@ -80,6 +80,10 @@ Select points by positioning the cursor over the points\n \
 and clicking <SPACE>. 'q' or <ESC> quits\n \
 @end deftypefn")
 {
+#ifndef USING_WINDOWS
+  error ("grab: Your system doesn't support the COM interface");
+  return octave_value ();
+#else
   ColumnVector axis;
   ColumnVector xaxis(2);
   ColumnVector yaxis(2);
@@ -188,4 +192,5 @@ and clicking <SPACE>. 'q' or <ESC> quits\n \
       retval(1) = y;
   
   return retval;
+#endif
 }

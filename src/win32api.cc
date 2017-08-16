@@ -31,6 +31,11 @@ win32_ReadRegistry( const char *key,
 
 #include <octave/oct.h>
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
+
 DEFUN_DLD (win32api, args, , "internal function")
 {
     return octave_value();
@@ -87,6 +92,10 @@ User Clicked Continue\n \
 @end deftypefn"
           )
 {
+#ifndef USING_WINDOWS
+  error ("grab: Your system doesn't support the COM interface");
+  return octave_value ();
+#else
     int nargin = args.length();
     octave_value_list retval;
     if ( nargin < 2 || nargin >=4 ||
@@ -130,6 +139,7 @@ User Clicked Continue\n \
 
     retval(0)= (double) rv;
     return retval;
+#endif
 }
 
 // PKG_ADD: autoload ("win32_ReadRegistry", "win32api.oct");
@@ -169,6 +179,9 @@ In the case of failure, 'rv' will be empty\n \
 @end deftypefn")
 {
     octave_value_list retval;
+#ifndef USING_WINDOWS
+    error ("grab: Your system doesn't support the COM interface");
+#else
     int nargin = args.length();
     if( nargin != 3 ||
         !args(0).is_string() ||
@@ -204,6 +217,6 @@ In the case of failure, 'rv' will be empty\n \
     free(key);
     free(subkey);
     free(value);
-
+#endif
     return retval;
 }

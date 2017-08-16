@@ -28,7 +28,7 @@ CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 CPICFLAG = @CPICFLAG@
 CXX = @CXX@
-CXXFLAGS = @CXXFLAGS@
+CXXFLAGS = @CXXFLAGS@ @DEFS@
 CXXPICFLAG = @CXXPICFLAG@
 F77 = @F77@
 FFLAGS = @FFLAGS@
@@ -39,41 +39,30 @@ OCTAVE_VERSION = @OCTAVE_VERSION@
 MKOCTFILE = @MKOCTFILE@ -DHAVE_OCTAVE_$(ver) -v
 OCTAVE_CONFIG = @OCTAVE_CONFIG@
 
+OLELIBS = @OLELIBS@
+
 ver = @ver@
 MPATH = @mpath@
 OPATH = @opath@
 XPATH = @xpath@
 
-%.o: %.c ; $(MKOCTFILE) -c $<
-%.o: %.f ; $(MKOCTFILE) -c $<
-%.o: %.cc ; $(MKOCTFILE) -c $<
-%.oct: %.cc ; $(MKOCTFILE) $<
+%.o: %.c ; $(MKOCTFILE) -c $< $(CXXFLAGS)
+%.o: %.f ; $(MKOCTFILE) -c $< $(FFLAGS)
+%.o: %.cc ; $(MKOCTFILE) -c $< $(CXXFLAGS)
+%.oct: %.cc ; $(MKOCTFILE) $< $(CXXFLAGS)
 
 PROGS=grab.oct win32api.oct __COM__.oct # ../inst/BROWER.m ../inst/image.m
 
-ifeq (,$(findstring -cygwin,$(canonical_host_type)))
-  ifeq (,$(findstring -mingw,$(canonical_host_type)))
-    ifeq (,$(findstring -msdosmsvc,$(canonical_host_type)))
-all:
-	@echo "Not building Windows Specific functions"
-    else
 all: $(PROGS)
-    endif
-  else
-all: $(PROGS)
-  endif
-else
-all: $(PROGS)
-endif
 
 grab.oct: grab.o grab_win32part.o
-	$(MKOCTFILE) -o $@ $^ -luser32
+	$(MKOCTFILE) -o $@ $^
 
 win32api.oct: win32api.o win32api_win32part.o
-	$(MKOCTFILE) -o $@ $^ -luser32 -ladvapi32
+	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
 
 __COM__.oct: __COM__.o
-	$(MKOCTFILE) -o $@ $^ -lole32 -loleaut32 -luser32 -luuid
+	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
 
 ../inst/%.m : %.m.in
 	if [ ! -d ../inst ]; then mkdir ../inst; fi

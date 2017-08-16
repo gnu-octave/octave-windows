@@ -26,9 +26,10 @@
 #include <octave/parse.h>
 
 #ifdef HAVE_CONFIG_H
-#  include "../config.h"
+#  include "config.h"
 #endif
 
+#ifdef USING_WINDOWS
 #include <windows.h>
 #include <ocidl.h>
 
@@ -364,6 +365,7 @@ terminate_com()
       initialized = false;
     }
 }
+#endif
 
 // PKG_ADD: autoload ("com_atexit", which ("__COM__"));
 // PKG_ADD: #atexit ("com_atexit");
@@ -375,7 +377,11 @@ Close down all GNU Octave managed COM handles.\n \
 Called during pkg unload.\n \
 @end deftypefn")
 {
+#ifndef USING_WINDOWS
+  error ("com_atexit: Your system doesn't support the COM interface");
+#else
   terminate_com ();
+#endif
   return octave_value ();
 }
 
@@ -402,6 +408,9 @@ destroy (app); \n \
 {
   octave_value retval;
 
+#ifndef USING_WINDOWS
+  error ("actxserver: Your system doesn't support the COM interface");
+#else
   initialize_com ();
 
   if (args.length () == 1)
@@ -432,10 +441,11 @@ destroy (app); \n \
     }
   else
     print_usage ();
-
+#endif
   return retval;
 }
 
+#ifdef USING_WINDOWS
 static octave_value
 com_to_octave (VARIANT *var)
 {
@@ -850,6 +860,7 @@ octave_com_object::map_keys (void) const
 {
   return do_invoke_list ("map_keys", DISPATCH_METHOD|DISPATCH_PROPERTYGET|DISPATCH_PROPERTYPUT, this);
 }
+#endif
 
 // PKG_ADD: autoload ("com_get", which ("__COM__"));
 DEFUN_DLD(com_get, args, ,
@@ -861,6 +872,9 @@ Call get function on COM object @var{obj}. Returns any result in @var{S}\n \
 {
   octave_value retval;
 
+#ifndef USING_WINDOWS
+  error ("com_get: Your system doesn't support the COM interface");
+#else
   initialize_com ();
 
   if (args.length () < 1 || args (0).class_name () != "octave_com_object")
@@ -873,7 +887,7 @@ Call get function on COM object @var{obj}. Returns any result in @var{S}\n \
     retval = octave_value (Cell (do_invoke_list ("com_get", DISPATCH_PROPERTYGET, OV_COMOBJ (args (0)))));
   else
     retval = do_invoke ("com_get", DISPATCH_PROPERTYGET, args);
-
+#endif
   return retval;
 }
 
@@ -886,6 +900,9 @@ Call set function on COM object @var{obj} to set property @var{propname} to valu
 @end deftypefn")
 {
   octave_value retval;
+#ifndef USING_WINDOWS
+  error ("com_set: Your system doesn't support the COM interface");
+#else
 
   initialize_com ();
 
@@ -896,7 +913,7 @@ Call set function on COM object @var{obj} to set property @var{propname} to valu
   }
 
   retval = do_invoke ("com_set", DISPATCH_PROPERTYPUT, args);
-
+#endif
   return retval;
 }
 
@@ -916,6 +933,9 @@ Call invoke on @var{obj} to run a method, or obtain a list of all methods.\n \
 {
   octave_value retval;
 
+#ifndef USING_WINDOWS
+  error ("com_invoke: Your system doesn't support the COM interface");
+#else
   initialize_com ();
 
   if (args.length () < 1 || args (0).class_name () != "octave_com_object")
@@ -928,7 +948,7 @@ Call invoke on @var{obj} to run a method, or obtain a list of all methods.\n \
     retval = octave_value (Cell (do_invoke_list ("com_get", DISPATCH_METHOD, OV_COMOBJ (args (0)))));
   else
     retval = do_invoke ("com_invoke", DISPATCH_METHOD|DISPATCH_PROPERTYGET, args);
-
+#endif
   return retval;
 }
 
@@ -942,6 +962,9 @@ Release interfaces from COM object @var{obj} and then delete the COM server\n \
 {
   octave_value retval;
 
+#ifndef USING_WINDOWS
+  error ("com_delete: Your system doesn't support the COM interface");
+#else
   initialize_com ();
 
   if (args.length () != 1 || args (0).class_name () != "octave_com_object")
@@ -951,7 +974,7 @@ Release interfaces from COM object @var{obj} and then delete the COM server\n \
   }
 
   OV_COMOBJ (args (0))->com_delete ();
-
+#endif
   return retval;
 }
 
@@ -965,6 +988,9 @@ Release interfaces from COM object @var{obj}\n \
 {
   octave_value retval;
 
+#ifndef USING_WINDOWS
+  error ("com_release: Your system doesn't support the COM interface");
+#else
   initialize_com ();
 
   if (args.length () != 1 || args (0).class_name () != "octave_com_object")
@@ -974,13 +1000,17 @@ Release interfaces from COM object @var{obj}\n \
   }
 
   OV_COMOBJ (args (0))->com_release ();
-
+#endif
   return retval;
 }
 
 DEFUN_DLD(__COM__, args, , "internal function")
 {
   octave_value retval;
+#ifndef USING_WINDOWS
+  error ("__COM__: Your system doesn't support the COM interface");
+#else
   initialize_com ();
+#endif
   return retval;
 }

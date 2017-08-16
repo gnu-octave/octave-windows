@@ -9,7 +9,11 @@
  * $Id$
  */
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 
+#ifdef USING_WINDOWS
 #include <windows.h>
 
  
@@ -46,3 +50,11 @@ grab_win32_getmousepos ( int * xpt, int * ypt )
     *ypt= pt.y;
     return 0;
 }
+#else
+int
+grab_win32_getmousepos ( int * xpt, int * ypt )
+{
+  *xpt = *ypt = 0;
+  return 0;
+}
+#endif

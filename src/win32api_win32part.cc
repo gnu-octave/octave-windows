@@ -16,7 +16,11 @@
  * $Id$
  */
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 
+#ifdef USING_WINDOWS
 #include <windows.h>
 
 int
@@ -70,3 +74,4 @@ win32_ReadRegistry( const char *key,
     RegCloseKey(hsubkey);
     return retval;
 }
+#endif

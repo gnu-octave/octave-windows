@@ -26,6 +26,28 @@ dnl need with mkoctfile -p.
 dnl XXX FIXME XXX should use mkoctfile to get CC and CFLAGS
 AC_PROG_CC
 
+dnl Check if we are windows or not - COM only works in windows 
+# Check for Windows
+AC_MSG_CHECKING([for windows])
+have_windows=no
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+   #include <windows.h>
+   #ifndef __WIN32__
+     #error "Not windows!"
+   #endif
+  ]], [])],
+ [AC_MSG_RESULT([yes])
+  have_windows=yes],
+ [AC_MSG_RESULT([no])])
+
+OLELIBS=
+if test $have_windows = yes; then
+  AC_DEFINE([USING_WINDOWS], [1], [are we a windows system])
+  OLELIBS="-ladvapi32 -lole32 -loleaut32 -luuid"
+fi
+AC_SUBST(OLELIBS)
+
+
 dnl XXX FIXME XXX need tests for -p -c -s in mkoctfile.
 
 dnl *******************************************************************
