@@ -764,7 +764,7 @@ octave_to_com(const octave_value& ov, VARIANT *var)
 }
 
 static octave_value
-do_invoke(const char *fname, WORD flag, const octave_value_list& args)
+do_invoke (const char *fname, WORD flag, const octave_value_list& args)
 {
   octave_value retval;
   octave_com_object *com = OV_COMOBJ (args (0));
@@ -779,13 +779,13 @@ do_invoke(const char *fname, WORD flag, const octave_value_list& args)
   method_name = string_to_wstring (args (1).string_value ());
   if (error_state)
     {
-      error("%s: invalid property/method name as argument 2", fname);
+      error ("%s: invalid property/method name as argument 2", fname);
       return retval;
     }
   method_wstr = const_cast<wchar_t*>(method_name.c_str ());
   if (com->com_iface ()->GetIDsOfNames (IID_NULL, &method_wstr, 1, LOCALE_USER_DEFAULT, &method_ID) != S_OK)
     {
-      error("%s: unknown property/method name `%s'", fname, args (1).string_value ().c_str ());
+      error ("%s: unknown property/method name `%s'", fname, args (1).string_value ().c_str ());
       return retval;
     }
 
@@ -803,8 +803,8 @@ do_invoke(const char *fname, WORD flag, const octave_value_list& args)
 
   // Invoke property/method on the COM object
   VariantInit (&result);
-  if ((hr=com->com_iface()->Invoke(method_ID, IID_NULL, LOCALE_USER_DEFAULT, flag, &dispParams,
-                                   &result, NULL, NULL)) != S_OK)
+  if ((hr = com->com_iface ()->Invoke (method_ID, IID_NULL, LOCALE_USER_DEFAULT, flag, &dispParams,
+                                       &result, NULL, NULL)) != S_OK)
     {
       error ("%s: property/method invocation on the COM object failed with error `0x%08x'", fname, hr);
       goto cleanup;
@@ -824,7 +824,7 @@ cleanup:
 }
 
 static string_vector
-do_invoke_list(const char *fname, WORD flag, const octave_com_object *com)
+do_invoke_list (const char *fname, WORD flag, const octave_com_object *com)
 {
   ITypeInfo *ti;
   unsigned int tiCount;
@@ -832,24 +832,24 @@ do_invoke_list(const char *fname, WORD flag, const octave_com_object *com)
   std::list<std::string> name_list;
 
   if ((hr=com->com_iface ()->GetTypeInfoCount (&tiCount)) == S_OK && tiCount == 1)
-  {
-    TYPEATTR *pAttr;
-
-    hr = com->com_iface ()->GetTypeInfo (0, LOCALE_USER_DEFAULT, &ti);
-    hr = ti->GetTypeAttr (&pAttr);
-    for (int k=0; k<pAttr->cFuncs; k++)
     {
-      FUNCDESC *pFuncDesc;
-      BSTR name;
-      hr = ti->GetFuncDesc (k, &pFuncDesc);
-      hr = ti->GetDocumentation (pFuncDesc->memid, &name, NULL, NULL, NULL);
-      if (pFuncDesc->invkind & flag)
-        name_list.push_back (wstring_to_string (std::wstring (name)));
-      SysFreeString (name);
-      ti->ReleaseFuncDesc( pFuncDesc);
+      TYPEATTR *pAttr;
+
+      hr = com->com_iface ()->GetTypeInfo (0, LOCALE_USER_DEFAULT, &ti);
+      hr = ti->GetTypeAttr (&pAttr);
+      for (int k=0; k<pAttr->cFuncs; k++)
+        {
+          FUNCDESC *pFuncDesc;
+          BSTR name;
+          hr = ti->GetFuncDesc (k, &pFuncDesc);
+          hr = ti->GetDocumentation (pFuncDesc->memid, &name, NULL, NULL, NULL);
+          if (pFuncDesc->invkind & flag)
+            name_list.push_back (wstring_to_string (std::wstring (name)));
+          SysFreeString (name);
+          ti->ReleaseFuncDesc( pFuncDesc);
+        }
+      ti->ReleaseTypeAttr (pAttr);
     }
-    ti->ReleaseTypeAttr (pAttr);
-  }
 
   string_vector v (name_list);
   return v.sort (true);
@@ -878,10 +878,10 @@ Call get function on COM object @var{obj}. Returns any result in @var{S}\n \
   initialize_com ();
 
   if (args.length () < 1 || args (0).class_name () != "octave_com_object")
-  {
-    print_usage ();
-    return retval;
-  }
+    {
+      print_usage ();
+      return retval;
+    }
 
   if (args.length () == 1)
     retval = octave_value (Cell (do_invoke_list ("com_get", DISPATCH_PROPERTYGET, OV_COMOBJ (args (0)))));
@@ -907,10 +907,10 @@ Call set function on COM object @var{obj} to set property @var{propname} to valu
   initialize_com ();
 
   if (args.length () < 3 || args (0).class_name () != "octave_com_object")
-  {
-    print_usage ();
-    return retval;
-  }
+    {
+      print_usage ();
+      return retval;
+    }
 
   retval = do_invoke ("com_set", DISPATCH_PROPERTYPUT, args);
 #endif
@@ -939,10 +939,10 @@ Call invoke on @var{obj} to run a method, or obtain a list of all methods.\n \
   initialize_com ();
 
   if (args.length () < 1 || args (0).class_name () != "octave_com_object")
-  {
-    print_usage();
-    return retval;
-  }
+    {
+      print_usage();
+      return retval;
+    }
 
   if (args.length () == 1)
     retval = octave_value (Cell (do_invoke_list ("com_get", DISPATCH_METHOD, OV_COMOBJ (args (0)))));
@@ -968,10 +968,10 @@ Release interfaces from COM object @var{obj} and then delete the COM server\n \
   initialize_com ();
 
   if (args.length () != 1 || args (0).class_name () != "octave_com_object")
-  {
-    error ("com_delete: first argument must be a COM object");
-    return retval;
-  }
+    {
+      error ("com_delete: first argument must be a COM object");
+      return retval;
+    }
 
   OV_COMOBJ (args (0))->com_delete ();
 #endif
@@ -994,10 +994,10 @@ Release interfaces from COM object @var{obj}\n \
   initialize_com ();
 
   if (args.length () != 1 || args (0).class_name () != "octave_com_object")
-  {
-    error ("com_release: first argument must be a COM object");
-    return retval;
-  }
+    {
+      error ("com_release: first argument must be a COM object");
+      return retval;
+    }
 
   OV_COMOBJ (args (0))->com_release ();
 #endif

@@ -42,17 +42,17 @@
 // returns -ve if error
 
 int
-grab_win32_getmousepos ( int * xpt, int * ypt )
+grab_win32_getmousepos (int *xpt, int *ypt)
 {
     POINT pt;
-    GetCursorPos( &pt );
+    GetCursorPos (&pt);
     *xpt= pt.x;
     *ypt= pt.y;
     return 0;
 }
 #else
 int
-grab_win32_getmousepos ( int * xpt, int * ypt )
+grab_win32_getmousepos (int *xpt, int *ypt )
 {
   *xpt = *ypt = 0;
   return 0;

@@ -38,7 +38,7 @@ win32_ReadRegistry( const char *key,
 
 DEFUN_DLD (win32api, args, , "internal function")
 {
-    return octave_value();
+  return octave_value ();
 }
 
 // PKG_ADD: autoload ("win32_MessageBox", "win32api.oct");
@@ -96,49 +96,50 @@ User Clicked Continue\n \
   error ("grab: Your system doesn't support the COM interface");
   return octave_value ();
 #else
-    int nargin = args.length();
-    octave_value_list retval;
-    if ( nargin < 2 || nargin >=4 ||
-         !args(0).is_string() ||
-         !args(1).is_string() 
-       ) {
-        print_usage ();
-        return retval;
+  int nargin = args.length ();
+  octave_value_list retval;
+  if ( nargin < 2 || nargin >=4 ||
+       !args (0).is_string () ||
+       !args (1).is_string () )
+    {
+      print_usage ();
+      return retval;
     }
 
-    std::string titleparam = args(0).string_value();
-    std::string textparam  = args(1).string_value();
-    int  boxtype =0;
-    if (nargin==3) 
+  std::string titleparam = args(0).string_value ();
+  std::string textparam  = args(1).string_value ();
+  int  boxtype = 0;
+  if (nargin == 3) 
     {
-        if (!args(2).is_string() )
-            boxtype = (int) args(2).double_value();
-        else {
-            std::string mboxtype= args(2).string_value();
-            if (mboxtype == "MB_OK")               boxtype=0;
-            else
-            if (mboxtype == "MB_OKCANCEL")         boxtype=1;
-            else
-            if (mboxtype == "MB_ABORTRETRYIGNORE") boxtype=2;
-            else
-            if (mboxtype == "MB_YESNOCANCEL")      boxtype=3;
-            else
-            if (mboxtype == "MB_YESNO")            boxtype=4;
-            else
-            if (mboxtype == "MB_RETRYCANCEL")      boxtype=4;
-            else {
-                error(
-                 "mboxtype does not correspond to a registed MB type");
-                return retval;
+      if (!args(2).is_string ())
+        boxtype = (int) args (2).double_value ();
+      else
+        {
+          std::string mboxtype= args(2).string_value ();
+          if (mboxtype == "MB_OK")
+            boxtype=0;
+          else if (mboxtype == "MB_OKCANCEL")
+            boxtype=1;
+          else if (mboxtype == "MB_ABORTRETRYIGNORE")
+            boxtype=2;
+          else if (mboxtype == "MB_YESNOCANCEL")
+            boxtype=3;
+          else if (mboxtype == "MB_YESNO")
+            boxtype=4;
+          else if (mboxtype == "MB_RETRYCANCEL")
+            boxtype=4;
+          else
+            {
+              error ("mboxtype does not correspond to a registed MB type");
+              return retval;
             }
         }
     }
 
-    int rv=
-    win32_MessageBox( textparam.c_str(), titleparam.c_str(), boxtype);
+  int rv= win32_MessageBox (textparam.c_str (), titleparam.c_str (), boxtype);
 
-    retval(0)= (double) rv;
-    return retval;
+  retval (0)= (double) rv;
+  return retval;
 #endif
 }
 
@@ -178,45 +179,46 @@ success, while other codes indicate failure\n \
 In the case of failure, 'rv' will be empty\n \
 @end deftypefn")
 {
-    octave_value_list retval;
+  octave_value_list retval;
 #ifndef USING_WINDOWS
-    error ("grab: Your system doesn't support the COM interface");
+  error ("grab: Your system doesn't support the COM interface");
 #else
-    int nargin = args.length();
-    if( nargin != 3 ||
-        !args(0).is_string() ||
-        !args(1).is_string() ||
-        !args(2).is_string()
-      ) {
-        print_usage ();
-        return retval;
+  int nargin = args.length();
+  if ( nargin != 3 ||
+       !args (0).is_string () ||
+       !args (1).is_string () ||
+       !args (2).is_string ())
+    {
+      print_usage ();
+      return retval;
     }
 
-    char * key   = strdup(args(0).string_value().c_str());
-    char * subkey= strdup(args(1).string_value().c_str());
-    char * value = strdup(args(2).string_value().c_str());
+  char * key   = strdup (args (0).string_value ().c_str ());
+  char * subkey= strdup (args (1).string_value ().c_str ());
+  char * value = strdup (args (2).string_value ().c_str ());
 
-    // call registry first time to get size and existance
-    int buffer_sz=0;
-    int retcode=
-    win32_ReadRegistry(key,subkey,value,NULL, &buffer_sz);
-    if (retcode != 0) {
-        retval(0)= new Matrix(0,0);
-        retval(1)= (double) retcode;
-        error("asdf");
-    } else {
-        char * buffer= new char[ buffer_sz ];
-        int retcode=
-        win32_ReadRegistry(key,subkey,value,buffer, &buffer_sz);
-        retval(0)= string_vector( buffer );
-        retval(1)= (double) retcode;
-        retval(2)= (double) buffer_sz;
-        delete buffer;
+  // call registry first time to get size and existance
+  int buffer_sz=0;
+  int retcode= win32_ReadRegistry (key, subkey, value, NULL, &buffer_sz);
+  if (retcode != 0)
+    {
+      retval (0)= new Matrix (0,0);
+      retval (1)= (double) retcode;
+      error ("asdf");
+    }
+  else
+    {
+      char * buffer= new char[ buffer_sz ];
+      int retcode= win32_ReadRegistry (key,subkey,value,buffer, &buffer_sz);
+      retval(0)= string_vector (buffer);
+      retval(1)= (double) retcode;
+      retval(2)= (double) buffer_sz;
+      delete buffer;
     }
 
-    free(key);
-    free(subkey);
-    free(value);
+  free (key);
+  free (subkey);
+  free (value);
 #endif
-    return retval;
+  return retval;
 }

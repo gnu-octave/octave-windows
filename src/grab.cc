@@ -89,107 +89,116 @@ and clicking <SPACE>. 'q' or <ESC> quits\n \
   ColumnVector yaxis(2);
   int nc;
   
-  switch (args.length()) {
+  switch (args.length())
+    {
     case 0:
       nc = 0;
       break;
     case 1:
-        { // we need to do this to allow arbitrary orientation
-           ColumnVector tmp( args(0).vector_value() );
-           if (error_state) return octave_value_list();
-           axis = tmp;
-        }
-        nc = axis.numel ();
-        if ((nc == 2) || (nc == 4))
-          break;
+      { // we need to do this to allow arbitrary orientation
+        ColumnVector tmp(args (0).vector_value ());
+        if (error_state) return octave_value_list ();
+        axis = tmp;
+      }
+      nc = axis.numel ();
+      if ((nc == 2) || (nc == 4))
+        break;
     default:
       print_usage ();
-      return octave_value_list();
-  }
+      return octave_value_list ();
+    }
     
-  switch (nc) {
+  switch (nc)
+    {
     case 2:
-      octave_stdout << "First click on x-axis " << axis(0) << std::endl;
-      octave_stdout << "Then click on x-axis " << axis(1) << std::endl;
+      octave_stdout << "First click on x-axis " << axis (0) << std::endl;
+      octave_stdout << "Then click on x-axis " << axis (1) << std::endl;
       OCTAVE__FLUSH_STDOUT ();
       break;
     case 4:
       octave_stdout << "First click on point "
-                    << "(" << axis(0) << "," << axis(2) << ")" << std::endl;
+                    << "(" << axis(0) << "," << axis (2) << ")" << std::endl;
       octave_stdout << "Then click on point "
-                    << "(" << axis(1) << "," << axis(3) << ")" << std::endl;
+                    << "(" << axis(1) << "," << axis (3) << ")" << std::endl;
       OCTAVE__FLUSH_STDOUT ();
       break;
   }
 
 
-  if (nc != 0) {
-    int axispoints=0;
-    while ( axispoints < 2 ) {
-      int ch;
-      int xpt; int ypt;
+  if (nc != 0)
+    {
+      int axispoints=0;
+      while ( axispoints < 2 )
+        {
+          int ch;
+          int xpt; int ypt;
 
-      ch= octave_kbhit( 0 );
-      grab_win32_getmousepos ( & xpt, & ypt );
+          ch= octave_kbhit( 0 );
+          grab_win32_getmousepos ( & xpt, & ypt );
 
-      if (ch == ' ') {
-        xaxis (axispoints) = (double)xpt;
-        yaxis (axispoints) = (double)ypt;
-        axispoints++;
-      }
+          if (ch == ' ')
+            {
+              xaxis (axispoints) = (double)xpt;
+              yaxis (axispoints) = (double)ypt;
+              axispoints++;
+            }
 
+        }
     }
-  }
-
 
   /* Wait for a click */
   MArray<int> xc(dim_vector(maxpoints,1));
   MArray<int> yc(dim_vector(maxpoints,1));
 
   int nb_elements = 0;
-  while (1) {
-    int ch;
-    int xpt, ypt;
+  while (1)
+    {
+      int ch;
+      int xpt, ypt;
 
-    ch= octave_kbhit( 0 );
-    grab_win32_getmousepos ( & xpt, & ypt );
+      ch = octave_kbhit (0);
+      grab_win32_getmousepos (&xpt, &ypt);
 
-    if (ch == ' ') {
-      xc (nb_elements) = xpt;
-      yc (nb_elements) = ypt;
-      nb_elements++;
-    }
-    else break;
+      if (ch == ' ')
+        {
+          xc (nb_elements) = xpt;
+          yc (nb_elements) = ypt;
+          nb_elements++;
+        }
+      else
+        break;
     
-    if (nb_elements == xc.numel()) {
-      xc.resize (dim_vector(xc.numel()+maxpoints,1));
-      yc.resize (dim_vector(yc.numel()+maxpoints,1));
+      if (nb_elements == xc.numel ())
+        {
+          xc.resize (dim_vector (xc.numel ()+maxpoints,1));
+          yc.resize (dim_vector (yc.numel ()+maxpoints,1));
+        }
     }
-  }
 
-  
   double xb=0, xm=1, yb=0, ym=1;
-  if ((nc == 2) || (nc == 4)) {
-    double xdiff = xaxis(1) - xaxis(0);
-    xm = -(axis(0)-axis(1)) / xdiff;
-    xb = (xaxis(1)*axis(0)-xaxis(0)*axis(1)) / xdiff;
-    if (nc == 4) {
-      double ydiff = yaxis(1) - yaxis(0);
-      ym = -(axis(2)-axis(3)) / ydiff;
-      yb = (yaxis(1)*axis(2)-yaxis(0)*axis(3)) / ydiff;
+  if ((nc == 2) || (nc == 4))
+    {
+      double xdiff = xaxis (1) - xaxis (0);
+      xm = -(axis (0) - axis (1)) / xdiff;
+      xb = (xaxis (1) * axis (0) - xaxis (0) * axis (1)) / xdiff;
+      if (nc == 4)
+        {
+          double ydiff = yaxis (1) - yaxis (0);
+          ym = -(axis (2) - axis (3)) / ydiff;
+          yb = (yaxis (1) * axis (2) - yaxis (0) * axis (3)) / ydiff;
+        }
     }
-  }
 
-  ColumnVector x(nb_elements), y(nb_elements);
+  ColumnVector x (nb_elements), y (nb_elements);
   for(int i=0; i<nb_elements; i++) {
-    x(i) = xc(i)*xm + xb;
-    y(i) = yc(i)*ym + yb;
+    x (i) = xc (i) * xm + xb;
+    y (i) = yc (i) * ym + yb;
   }
 
   octave_value_list retval;
   retval (0) = x;
   if (nargout == 2) 
-      retval(1) = y;
+      retval (1) = y;
   
   return retval;
 #endif
