@@ -7,6 +7,11 @@ AC_PREREQ(2.2)
 
 AC_INIT([windows],[1.4.2])
 AC_CONFIG_HEADERS([config.h])
+
+# Avoid warnings for redefining AH-generated preprocessor symbols of
+# Octave.
+AH_TOP([#include "undef-ah-octave.h"])
+
 AC_CONFIG_MACRO_DIRS([m4])
 
 dnl Kill caching --- this ought to be the default
