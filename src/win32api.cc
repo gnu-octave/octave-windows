@@ -93,7 +93,7 @@ User Clicked Continue\n \
           )
 {
 #ifndef USING_WINDOWS
-  error ("grab: Your system doesn't support the COM interface");
+  error ("win32api: Your system doesn't support the COM interface");
   return octave_value ();
 #else
   int nargin = args.length ();
@@ -181,7 +181,7 @@ In the case of failure, 'rv' will be empty\n \
 {
   octave_value_list retval;
 #ifndef USING_WINDOWS
-  error ("grab: Your system doesn't support the COM interface");
+  error ("win32api: Your system doesn't support the COM interface");
 #else
   int nargin = args.length();
   if ( nargin != 3 ||
