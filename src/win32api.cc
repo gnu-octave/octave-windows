@@ -243,17 +243,17 @@ In the case of failure, 'rv' will be empty\n \
 // PKG_ADD: autoload ("winqueryreg", "win32api.oct");
 DEFUN_DLD (winqueryreg, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {@var{valnames}=} winqueryreg ('name', @var{rootkey}, @var{subkey})\n \
+@deftypefn {Loadable Function} {@var{valnames} =} winqueryreg ('name', @var{rootkey}, @var{subkey})\n \
 @deftypefnx {Loadable Function} {@var{value} =} winqueryreg (@var{rootkey}, @var{subkey}, @var{valuename})\n \
 @deftypefnx {Loadable Function} {@var{value} =} winqueryreg (@var{rootkey}, @var{subkey})\n \
 \n \
 Read a value from the Windows registry.\n \
 \n \
-@var{valnames}= winqueryreg ('name', @var{rootkey}, @var{subkey}) will return the value names for the key/subkey.\n \
+@var{valuenames}= winqueryreg ('name', @var{rootkey}, @var{subkey}) will return the value names for the rootkey/subkey.\n \
 \n \
-@var{value} = winqueryreg (@var{rootkey}, @var{subkey}, @var{valuename}) will return the value of the valuename within the key/subkey\n \
+@var{value} = winqueryreg (@var{rootkey}, @var{subkey}, @var{valuename}) will return the value of the valuename within the rootkey/subkey\n \
 \n \
-@var{value} = winqueryreg (@var{rootkey}, @var{subkey}) will return the default value of the key/subkey\n \
+@var{value} = winqueryreg (@var{rootkey}, @var{subkey}) will return the default value (if it exists) of the rootkey/subkey\n \
 \n \
 rootkey must be one of the following strings:\n \
 @table @asis\n \
@@ -274,7 +274,25 @@ This is a natural format for REG_SZ data; however, \n \
 if the registry data was in another format, REG_DWORD\n \
 then the calling program will need to process them\n \
 \n \
-@var{valuenames} is an attay of octave strings of the value names within the registry key.\n \
+@var{valuenames} is an array of octave strings of the value names within the registry key.\n \
+\n \
+Examples:\n \
+\n \
+Get a list of ket value names from the User\Environment registry:\n \
+@example\n \
+valuenames = winqueryreg ('name', 'HKEY_CURRENT_USER', 'Environment');\n \
+@end example\n \
+\n \
+For each valuenames, display the value:\n \
+@example\n \
+for k = 1:length (valuenames)\n \
+   setting = winqueryreg ('HKEY_CURRENT_USER', 'Environment', valuenames{k});\n \
+   str = sprintf ('%s = %s', valuenames{k}, num2str(setting));\n \
+   disp (str)\n \
+endfor\n \
+@end example\n \
+\n \
+@seealso{win32_ReadRegistry}\n \
 \n \
 @end deftypefn")
 {
@@ -309,7 +327,7 @@ then the calling program will need to process them\n \
 
   if ((strcmp(args (0).string_value ().c_str (), "name") == 0 &&
        !win32_IsValidRootKey(args (1).string_value ().c_str ())) ||
-      (win32_IsValidRootKey(args (0).string_value ().c_str ()))
+      (win32_IsValidRootKey(args (0).string_value ().c_str ())))
     {
       error ("winqueryreg: invalid root key provided");
       return retval;
