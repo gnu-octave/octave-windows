@@ -4,6 +4,7 @@ Windows Utilities
  win32_MessageBox
  win32_ReadRegistry
  win32api
+ winqueryreg
 COM Interface
  actxserver
  com_atexit

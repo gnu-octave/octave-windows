@@ -25,22 +25,10 @@
 #ifdef USING_WINDOWS
 #include <windows.h>
 
-int
-win32_MessageBox (const char * text,
-                  const char * title,
-                  int boxtype)
+HKEY string_to_rootkey(const char *key)
 {
-  return MessageBox (NULL, text, title, boxtype | MB_SETFOREGROUND );
-}
+  HKEY hprimkey = 0;
 
-int
-win32_ReadRegistry (const char *key,
-                    const char *subkey,
-                    const char *value,
-                    char * buffer,
-                    int  * buffer_sz)
-{
-  HKEY hprimkey, hsubkey;
   if (0 == strcmp(key, "HKEY_CLASSES_ROOT") ||
       0 == strcmp(key, "HKCR"))
     {
@@ -61,7 +49,78 @@ win32_ReadRegistry (const char *key,
       {
         hprimkey= HKEY_USERS;
       }
-  else
+
+  return hprimkey;
+}
+
+bool win32_IsValidRootKey (const char *key)
+{
+  return string_to_rootkey (key) != 0;
+}
+
+int
+win32_MessageBox (const char * text,
+                  const char * title,
+                  int boxtype)
+{
+  return MessageBox (NULL, text, title, boxtype | MB_SETFOREGROUND );
+}
+
+int
+win32_ScanRegistry (const char *key,
+                    const char *subkey,
+                    std::list<std::string> &fields)
+{
+  HKEY hprimkey, hsubkey;
+
+  fields.clear ();
+
+  hprimkey = string_to_rootkey (key);
+  if (hprimkey == 0)
+    {
+      return -1; // We can't handle this key
+    }
+
+  int retval;
+
+  retval= RegOpenKeyEx (hprimkey, subkey, 0, KEY_READ, &hsubkey);
+  if (retval == NO_ERROR)
+    {
+      int count = 0;
+      #define MAX_KEYNAME_SIZE 256
+      DWORD keynamesize = MAX_KEYNAME_SIZE;
+      char keyname[MAX_KEYNAME_SIZE+1];
+
+      while ( (retval = RegEnumValue (hsubkey, count, keyname, 
+                                      &keynamesize, NULL, NULL, NULL, NULL
+            )) == ERROR_SUCCESS)
+        {
+          fields.push_back(keyname);
+          keynamesize = MAX_KEYNAME_SIZE;
+          count ++;
+        }
+
+      if (retval == ERROR_NO_MORE_ITEMS)
+        retval = NO_ERROR;
+
+      RegCloseKey (hsubkey);
+    }
+
+  return retval;
+}
+
+int
+win32_ReadRegistry (const char *key,
+                    const char *subkey,
+                    const char *value,
+                    char * buffer,
+                    int  * buffer_sz)
+{
+  HKEY hprimkey, hsubkey;
+
+  hprimkey = string_to_rootkey(key);
+
+  if (hprimkey == 0)
     {
       return -1; // We can't handle this key
     }

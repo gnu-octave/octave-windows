@@ -6,6 +6,8 @@ Summary of important user-visible changes for Windows 1.2.4+:
 
   ** allow install in non-windows with functions returning error
 
+  ** added new function winqueryreg
+
 Summary of important user-visible changes for Windows 1.2.4:
 ------------------------------------------------------------
  
