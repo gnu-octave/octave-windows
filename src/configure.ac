@@ -23,7 +23,6 @@ dnl AC_CONFIG_AUX_DIR(admin)
 
 dnl if mkoctfile doesn't work, then we need the following:
 dnl AC_PROG_CXX
-dnl AC_PROG_F77
 
 dnl Need C compiler regardless so define it in a way that
 dnl makes autoconf happy and we can override whatever we
@@ -116,14 +115,6 @@ AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(CPICFLAG)
 
-dnl Fortran compiler and flags
-F77=`$MKOCTFILE -p F77`
-FFLAGS=`$MKOCTFILE -p FFLAGS`
-FPICFLAG=`$MKOCTFILE -p FPICFLAG`
-AC_SUBST(F77)
-AC_SUBST(FFLAGS)
-AC_SUBST(FPICFLAG)
-
 dnl C++ compiler and flags
 CXX=`$MKOCTFILE -p CXX`
 CXXFLAGS=`$MKOCTFILE -p CXXFLAGS`
@@ -166,13 +157,6 @@ else
    $4
 fi
 ])
-
-dnl
-dnl Check if F77_FUNC works with MKOCTFILE
-dnl
-TRY_MKOCTFILE([for F77_FUNC],
-[int F77_FUNC (hello, HELLO) (const int &n);],,
-[MKOCTFILE="$MKOCTFILE -DF77_FUNC=F77_FCN"])
 
 dnl **********************************************************
 
