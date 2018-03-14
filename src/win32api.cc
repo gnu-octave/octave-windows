@@ -240,6 +240,7 @@ In the case of failure, 'rv' will be empty\n \
   return retval;
 }
 
+#ifndef OCTAVE__WINQUERYREG
 // PKG_ADD: autoload ("winqueryreg", "win32api.oct");
 DEFUN_DLD (winqueryreg, args, ,
   "-*- texinfo -*-\n \
@@ -391,3 +392,5 @@ endfor\n \
 #endif
   return retval;
 }
+#endif
+

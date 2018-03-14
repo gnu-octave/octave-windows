@@ -62,6 +62,9 @@ dnl XXX FIXME XXX latest octave has octave-config so we don't
 dnl need to discover things here.  Doesn't have --exe-site-dir
 dnl but defines --oct-site-dir and --m-site-dir
 
+AC_CHECK_PROG(OCTAVE,octave,octave)
+test -z "$OCTAVE" && AC_MSG_ERROR([no octave found on path])
+
 dnl Check for mkoctfile
 AC_CHECK_PROG(MKOCTFILE,mkoctfile,mkoctfile)
 test -z "$MKOCTFILE" &&	AC_MSG_WARN([no mkoctfile found on path])
@@ -206,9 +209,6 @@ AC_MSG_RESULT($$2)
 AC_SUBST($2)
 ])
 
-dnl should check that $(OCTAVE) --version matches $(MKOCTFILE) --version
-AC_CHECK_PROG(OCTAVE,octave,octave)
-
 OCTAVE_CONFIG_EVAL(VERSION,OCTAVE_VERSION)
 dnl get major ver part as used for a HAVE_OCTAVE_XXX define
 ver=`echo $OCTAVE_VERSION | sed -e "s/\.//" -e "s/\..*$//"`
@@ -227,6 +227,11 @@ OCTAVE_CONFIG_EVAL(LOCALVERARCHLIBDIR,xpath)
 fi
 
 # checks for depreciated octave symbols/functions
+
+OCTAVE_CHECK_EXIST([winqueryreg],
+  AC_DEFINE(OCTAVE__WINQUERYREG,[1],[have winqueryreg function])
+)
+
 AC_LANG_PUSH([C++])
 save_altsyms_CXX="$CXX"
 save_altsyms_CXXFLAGS="$CXXFLAGS"
