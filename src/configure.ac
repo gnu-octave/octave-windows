@@ -212,9 +212,12 @@ fi
 
 # checks for depreciated octave symbols/functions
 
+PKGWINQUERYREGFUNC=
 OCTAVE_CHECK_EXIST([winqueryreg],
-  AC_DEFINE(OCTAVE__WINQUERYREG,[1],[have winqueryreg function])
+  [],
+  [PKGWINQUERYREGFUNC=winqueryreg]
 )
+AC_SUBST(PKGWINQUERYREGFUNC)
 
 AC_LANG_PUSH([C++])
 save_altsyms_CXX="$CXX"
@@ -304,7 +307,7 @@ case "$canonical_host_type" in
     ;;
 esac
 
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile ../INDEX)
 AC_MSG_RESULT([
 octave commands will install into the following directories:
    m-files:   $mpath
@@ -321,4 +324,7 @@ octave-forge is configured with
    octave:      $OCTAVE (version $OCTAVE_VERSION)
    mkoctfile:	$MKOCTFILE for Octave $OCTAVE_VERSION
    octave-config: $OCTAVE_CONFIG for Octave $OCTAVE_VERSION
+
+including conditional functions
+   $PKGWINQUERYREGFUNC
 ])
