@@ -86,7 +86,7 @@ then the calling program will need to process them\n \
 \n \
 Examples:\n \
 \n \
-Get a list of ket value names from the User\Environment registry:\n \
+Get a list of ket value names from the User\\Environment registry:\n \
 @example\n \
 valuenames = winqueryreg ('name', 'HKEY_CURRENT_USER', 'Environment');\n \
 @end example\n \
@@ -94,8 +94,8 @@ valuenames = winqueryreg ('name', 'HKEY_CURRENT_USER', 'Environment');\n \
 For each valuenames, display the value:\n \
 @example\n \
 for k = 1:length (valuenames)\n \
-   setting = winqueryreg ('HKEY_CURRENT_USER', 'Environment', valuenames{k});\n \
-   str = sprintf ('%s = %s', valuenames{k}, num2str(setting));\n \
+   setting = winqueryreg ('HKEY_CURRENT_USER', 'Environment', valuenames@{k@});\n \
+   str = sprintf ('%s = %s', valuenames@{k@}, num2str(setting));\n \
    disp (str)\n \
 endfor\n \
 @end example\n \
