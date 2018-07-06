@@ -1,11 +1,8 @@
 MKOCTFILE ?= @MKOCTFILE@
-
+DEFS = @DEFS@
 OLELIBS = @OLELIBS@
 
-%.o: %.c ; $(MKOCTFILE) -c $< $(CXXFLAGS)
-%.o: %.f ; $(MKOCTFILE) -c $< $(FFLAGS)
-%.o: %.cc ; $(MKOCTFILE) -c $< $(CXXFLAGS)
-%.oct: %.cc ; $(MKOCTFILE) $< $(CXXFLAGS)
+%.o: %.cc ; $(MKOCTFILE) -c $< $(DEFS)
 
 PROGS=grab.oct win32api.oct __COM__.oct # ../inst/BROWER.m ../inst/image.m
 
