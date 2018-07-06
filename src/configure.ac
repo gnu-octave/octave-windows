@@ -86,59 +86,6 @@ test -z "$MKOCTFILE" &&	AC_MSG_WARN([no mkoctfile found on path])
 AC_CHECK_PROG(OCTAVE_CONFIG,octave-config,octave-config)
 test -z "$OCTAVE_CONFIG" &&	AC_MSG_WARN([no octave-config found on path])
 
-AC_SUBST(ver)
-AC_SUBST(mpath)
-AC_SUBST(opath)
-AC_SUBST(xpath)
-
-AC_ARG_WITH(path, 
-	[  --with-path             install path prefix],
-	[ path=$withval ])
-AC_ARG_WITH(mpath,
-	[  --with-mpath            override path for m-files],
-	[mpath=$withval])
-AC_ARG_WITH(opath,
-	[  --with-opath            override path for oct-files],
-	[opath=$withval])
-AC_ARG_WITH(xpath,
-	[  --with-xpath            override path for executables],
-	[xpath=$withval])
-
-if test -n "$path" ; then
-   test -z "$mpath" && mpath=$path 
-   test -z "$opath" && opath=$path/oct 
-   test -z "$xpath" && xpath=$path/bin
-fi
-
-dnl *******************************************************************
-
-dnl XXX FIXME XXX Should we allow the user to override these?
-dnl Do we even need them?  The individual makefiles can call mkoctfile -p
-dnl themselves, so the only reason to keep them is for configure, and
-dnl for those things which are not built using mkoctfile (e.g., aurecord)
-dnl but it is not clear we should be using octave compile flags for those.
-
-dnl C compiler and flags
-AC_MSG_RESULT([retrieving compile and link flags from $MKOCTFILE])
-CC=`$MKOCTFILE -p CC`
-CFLAGS=`$MKOCTFILE -p CFLAGS`
-CPPFLAGS=`$MKOCTFILE -p CPPFLAGS`
-CPICFLAG=`$MKOCTFILE -p CPICFLAG`
-LDFLAGS=`$MKOCTFILE -p LDFLAGS`
-LIBS=`$MKOCTFILE -p LIBS`
-AC_SUBST(CC)
-AC_SUBST(CFLAGS)
-AC_SUBST(CPPFLAGS)
-AC_SUBST(CPICFLAG)
-
-dnl C++ compiler and flags
-CXX=`$MKOCTFILE -p CXX`
-CXXFLAGS=`$MKOCTFILE -p CXXFLAGS`
-CXXPICFLAG=`$MKOCTFILE -p CXXPICFLAG`
-AC_SUBST(CXX)
-AC_SUBST(CXXFLAGS)
-AC_SUBST(CXXPICFLAG)
-
 dnl *******************************************************************
 
 dnl Check for features of your version of mkoctfile.
@@ -209,22 +156,8 @@ AC_MSG_RESULT($$2)
 AC_SUBST($2)
 ])
 
-OCTAVE_CONFIG_EVAL(VERSION,OCTAVE_VERSION)
-dnl get major ver part as used for a HAVE_OCTAVE_XXX define
-ver=`echo $OCTAVE_VERSION | sed -e "s/\.//" -e "s/\..*$//"`
-
 dnl grab canonical host type so we can write system specific install stuff
 OCTAVE_CONFIG_EVAL(CANONICAL_HOST_TYPE,canonical_host_type)
-
-if test -z "$mpath"; then
-OCTAVE_CONFIG_EVAL(LOCALVERFCNFILEDIR,mpath)
-fi
-if test -z "$opath"; then
-OCTAVE_CONFIG_EVAL(LOCALVEROCTFILEDIR,opath)
-fi
-if test -z "$xpath"; then
-OCTAVE_CONFIG_EVAL(LOCALVERARCHLIBDIR,xpath)
-fi
 
 # checks for depreciated octave symbols/functions
 
@@ -292,54 +225,11 @@ LDFLAGS=$save_altsyms_LDFLAGS
 LIBS=$save_altsyms_LIBS
 AC_LANG_POP([C++])
 
-AC_PROG_LN_S
-
-AC_PROG_RANLIB
-
-dnl Use $(COPY_FLAGS) to set options for cp when installing .oct files.
-COPY_FLAGS="-Rfp"
-case "$canonical_host_type" in
-    *-*-linux*)
-        COPY_FLAGS="-fdp"
-    ;;
-esac
-AC_SUBST(COPY_FLAGS)
-
-dnl Use $(STRIP) in the makefile to strip executables.  If not found, 
-dnl STRIP expands to ':', which in the makefile does nothing.
-dnl Don't need this for .oct files since mkoctfile handles them directly
-STRIP=${STRIP-strip}
-AC_CHECK_PROG(STRIP,$STRIP,$STRIP,:)
-
-dnl Strip on windows, don't strip on Mac OS/X or IRIX
-dnl For the rest, you can force strip using MKOCTFILE="mkoctfile -s"
-dnl or avoid strip using STRIP=: before ./configure
-case "$canonical_host_type" in
-    powerpc-apple-darwin*|*-sgi-*)
-	STRIP=:
-    ;;
-    *-cygwin-*|*-mingw-*) 
-	MKOCTFILE="$MKOCTFILE -s" 
-    ;;
-esac
-
 AC_OUTPUT(Makefile ../INDEX)
 AC_MSG_RESULT([
-octave commands will install into the following directories:
-   m-files:   $mpath
-   oct-files: $opath
-   binaries:  $xpath
-
-shell commands will install into the following directories:
-   binaries:  $bindir
-   man pages: $mandir
-   libraries: $libdir
-   headers:   $includedir
-
-octave-forge is configured with
-   octave:      $OCTAVE (version $OCTAVE_VERSION)
-   mkoctfile:	$MKOCTFILE for Octave $OCTAVE_VERSION
-   octave-config: $OCTAVE_CONFIG for Octave $OCTAVE_VERSION
+$PACKAGE_NAME is configured with
+   mkoctfile:	$MKOCTFILE
+   octave-config: $OCTAVE_CONFIG
 
 including conditional functions
    $PKGWINQUERYREGFUNC
