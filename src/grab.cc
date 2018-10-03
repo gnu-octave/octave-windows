@@ -39,7 +39,7 @@
 #endif
 
 #include <iostream>
-#include "sysdep.h"
+#include <octave/sysdep.h>
 #include <octave/pager.h>
 
 
@@ -133,7 +133,7 @@ and clicking <SPACE>. 'q' or <ESC> quits\n \
           int ch;
           int xpt; int ypt;
 
-          ch= octave_kbhit( 0 );
+          ch = OCTAVE__KBHIT( 0 );
           grab_win32_getmousepos ( & xpt, & ypt );
 
           if (ch == ' ')
@@ -156,7 +156,7 @@ and clicking <SPACE>. 'q' or <ESC> quits\n \
       int ch;
       int xpt, ypt;
 
-      ch = octave_kbhit (0);
+      ch = OCTAVE__KBHIT (0);
       grab_win32_getmousepos (&xpt, &ypt);
 
       if (ch == ' ')

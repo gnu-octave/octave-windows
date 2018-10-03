@@ -200,6 +200,15 @@ OF_OCTAVE_LIST_ALT_SYMS([
 ],
 
 [dnl
+  [octave_kbhit],
+  [octave::kbhit],
+  [[octave::kbhit (1);]],
+  [OCTAVE__KBHIT],
+  [[#include <octave/sysdep.h>]],
+  [[#include <octave/sysdep.h>]]
+],
+
+[dnl
   [is_cell],
   [iscell],
   [[octave_value ().iscell ();]],
