@@ -1,7 +1,7 @@
 ## Copyright 2015-2016 Mike Miller
 ## Copyright 2015-2016 Carnë Draug
 ## Copyright 2015-2016 Oliver Heimlich
-## Copyright 2016 John Donoghue
+## Copyright 2016-2018 John Donoghue
 ##
 ## Copying and distribution of this file, with or without modification,
 ## are permitted in any medium without royalty provided the copyright
@@ -9,6 +9,7 @@
 ## without any warranty.
 
 ## Makefile to simplify Octave Forge package maintenance tasks
+TOPDIR := $(shell pwd)
 
 ## Some shell programs
 MD5SUM    ?= md5sum
@@ -162,4 +163,4 @@ check: all
 	$(OCTAVE) --silent --path "inst/" --path "src/" --path "examples/" \
 	  --eval 'if(!isempty("$(DEPENDS)")); pkg load $(DEPENDS); endif;' \
 	  --eval '${PKG_ADD}' \
-	  --eval "__run_test_suite__ ({'inst'}, {})"
+	  --eval "__run_test_suite__ ({'$(TOPDIR)/inst'}, {})"
