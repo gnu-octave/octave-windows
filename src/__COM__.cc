@@ -1,6 +1,7 @@
 /*
 
   Copyright (C) 2006-2018 Michael Goffioul <michael.goffioul@swing.be>
+  Copyright (C) 2019 John DOnoghue <john.donoghue@ieee.org>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -69,7 +70,7 @@ wstring_to_string (const std::wstring& ws)
   return std::string (&tmp[0], len);
 }
 
-class octave_com_object : public octave_base_value, public octave_auto_shlib
+class octave_com_object : public octave_base_value
 {
 public:
   // Constructors
