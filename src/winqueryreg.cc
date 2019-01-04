@@ -86,7 +86,7 @@ then the calling program will need to process them\n \
 \n \
 Examples:\n \
 \n \
-Get a list of ket value names from the User\\Environment registry:\n \
+Get a list of key value names from the User\\Environment registry:\n \
 @example\n \
 valuenames = winqueryreg ('name', 'HKEY_CURRENT_USER', 'Environment');\n \
 @end example\n \

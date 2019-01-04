@@ -19,7 +19,7 @@
  *
  * Fix error handler to avoid octave core-dump.
  * Change to avoid the input limit.
- * Minimize the number of cliks for full x-y axis definitions.
+ * Minimize the number of clicks for full x-y axis definitions.
  * Make the code a bit less ugly.
  */
 
