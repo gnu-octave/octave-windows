@@ -21,7 +21,7 @@ dnl configure.base and reprocess rather than modifying ./configure.
 dnl autoconf 2.13 certainly doesn't work! What is the minimum requirement?
 AC_PREREQ(2.2)
 
-AC_INIT([windows],[1.3.0])
+AC_INIT([windows],[1.3.1])
 AC_CONFIG_HEADERS([config.h])
 
 # Avoid warnings for redefining AH-generated preprocessor symbols of
