@@ -83,8 +83,6 @@ test -z "$OCTAVE" && AC_MSG_ERROR([no octave found on path])
 dnl Check for mkoctfile
 AC_CHECK_PROG(MKOCTFILE,mkoctfile,mkoctfile)
 test -z "$MKOCTFILE" &&	AC_MSG_WARN([no mkoctfile found on path])
-AC_CHECK_PROG(OCTAVE_CONFIG,octave-config,octave-config)
-test -z "$OCTAVE_CONFIG" &&	AC_MSG_WARN([no octave-config found on path])
 
 dnl *******************************************************************
 
@@ -123,17 +121,6 @@ fi
 
 dnl **********************************************************
 
-dnl Evaluate an expression in octave
-dnl
-dnl OCTAVE_EVAL(expr,var) -> var=expr
-dnl
-AC_DEFUN([OCTAVE_EVAL],
-[AC_MSG_CHECKING([for $1 in Octave])
-$2=`echo "disp($1)" | $OCTAVE -qf`
-AC_MSG_RESULT($$2)
-AC_SUBST($2)
-])
-
 dnl Check status of an octave variable
 dnl
 dnl OCTAVE_CHECK_EXIST(variable,action_if_true,action_if_false)
@@ -148,16 +135,6 @@ else
    $3
 fi
 ])
-
-AC_DEFUN([OCTAVE_CONFIG_EVAL],
-[AC_MSG_CHECKING([for $1 in octave-config])
-$2=`$OCTAVE_CONFIG -p $1`
-AC_MSG_RESULT($$2)
-AC_SUBST($2)
-])
-
-dnl grab canonical host type so we can write system specific install stuff
-OCTAVE_CONFIG_EVAL(CANONICAL_HOST_TYPE,canonical_host_type)
 
 # checks for depreciated octave symbols/functions
 
@@ -238,7 +215,6 @@ AC_OUTPUT(Makefile ../INDEX)
 AC_MSG_RESULT([
 $PACKAGE_NAME is configured with
    mkoctfile:	$MKOCTFILE
-   octave-config: $OCTAVE_CONFIG
 
 including conditional functions
    $PKGWINQUERYREGFUNC
