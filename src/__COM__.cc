@@ -1015,3 +1015,27 @@ DEFUN_DLD(__COM__, args, , "internal function")
 #endif
   return retval;
 }
+
+// PKG_ADD: autoload ("__windows_pkg_lock__", which ("__COM__"));
+// PKG_ADD: __windows_pkg_lock__(1);
+// PKG_DEL: __windows_pkg_lock__(0);
+#ifdef DEFMETHOD_DLD
+DEFMETHOD_DLD (__windows_pkg_lock__, interp, args, , "internal function")
+{
+  octave_value retval;
+  if (args.length () >= 1)
+    {
+      if (args(0).int_value () == 1)
+        interp.mlock();
+      else if (args(0).int_value () == 0 &&  interp.mislocked("__windows_pkg_lock__"))
+        interp.munlock("__windows_pkg_lock__");
+    }
+  return retval;
+}
+#else
+DEFUN_DLD(__windows_pkg_lock__, args, ,  "internal function")
+{
+  octave_value retval;
+  return retval;
+}
+#endif
