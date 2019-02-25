@@ -447,6 +447,30 @@ destroy (app); \n \
 }
 
 #ifdef USING_WINDOWS
+
+template<typename T>
+octave_value 
+safearray_to_octave_value(const dim_vector& dv, SAFEARRAY *parray)
+{
+  T *pvalues;
+  HRESULT hr;
+  Array<T> cell(dv);
+
+  hr = SafeArrayAccessData(parray, (void **)&pvalues);
+  if (FAILED(hr))
+  {
+    warning("failed accessing array data");
+    return octave_value(Matrix()); /*return invalid data */
+  }
+
+  for (int k = 0; k < cell.numel(); k++) {
+    cell(k) = pvalues[k];
+  }
+  SafeArrayUnaccessData(parray);
+
+  return octave_value(cell);
+}
+
 static octave_value
 com_to_octave (VARIANT *var)
 {
@@ -533,140 +557,28 @@ com_to_octave (VARIANT *var)
           }
           break;
         case VT_R4:
-          {
-            VARIANT *pvar;
-            HRESULT hr;
-            FLOAT cellVal;
-            long arrDims[2] = {0,0};
-            Array<float> cell (dv);
-
-            hr=SafeArrayAccessData (arr, (void **)&pvar);
-            if (FAILED (hr))
-              {
-                warning("failed accessing array data");
-                retval = octave_value (Matrix ()); // return invalid data
-                break;
-              }
-            else
-              {
-                for (int dimNum=0; dimNum<dimCount; dimNum++)
-                  {
-                    arrDims[0] = dimNum; // overwritten for 1-dim arrays
-
-                    for (int k=0; k<dv (dimCount-1); k++) // index last value of array (handles 1- or 2-dimensions)
-                      {
-                        arrDims[dimCount-1] = k;
-                        if (SafeArrayGetElement (arr,arrDims,&cellVal)==S_OK)
-                          {
-                            retval=octave_value (cellVal); // retval used as temporary value
-                            if (dimCount==2) // 2D array
-                              cell (dv (0)*k+dimNum)=retval.float_value ();
-                            else // 1D array
-                              cell (k)=retval.float_value ();
-                          }
-                        else 
-                          {
-                            warning ("error accessing value (%d,%d)", dimNum,k);
-                            // returns whatever data we already have
-                            break;
-                          }
-                      }
-                  }
-                SafeArrayUnaccessData (arr);
-              }
-            retval = octave_value (cell);
-          }
+          retval = safearray_to_octave_value<float>(dv, arr);
+          break;
+        case VT_R8:
+          retval = safearray_to_octave_value<double>(dv, arr);
+          break;
+        case VT_I1:
+          retval = safearray_to_octave_value<octave_int8>(dv, arr);
           break;
         case VT_UI1:
-          {
-            VARIANT *pvar;
-            HRESULT hr;
-            BYTE cellVal;
-            long arrDims[2] = {0,0};
-            Array<octave_uint8> cell (dv);
-
-            hr=SafeArrayAccessData (arr, (void **)&pvar);
-            if (FAILED (hr))
-              {
-                warning("failed accessing array data");
-                retval = octave_value(Matrix()); // return invalid data
-                break;
-              }
-            else
-              {
-                for (int dimNum=0; dimNum<dimCount; dimNum++)
-                  {
-                    arrDims[0] = dimNum; // overwritten for 1-dim arrays
-
-                    for (int k=0; k<dv(dimCount-1); k++) // index last value of array (handles 1- or 2-dimensions)
-                      {
-                        arrDims[dimCount-1] = k;
-                        if (SafeArrayGetElement (arr, arrDims, &cellVal)==S_OK)
-                          {
-                            retval=octave_value (cellVal); // retval used as temporary variable
-                            if (dimCount==2) // 2D array
-                              cell (dv (0)*k+dimNum)=retval.ushort_value ();
-                            else // 1D array
-                              cell (k) = retval.ushort_value ();
-                          }
-                        else
-                          {
-                            warning ("error accessing value (%d,%d)", dimNum, k);
-                            // returns whatever data we already have
-                            break;
-                          }
-                      }
-                  }
-                SafeArrayUnaccessData (arr);
-              }
-            retval = octave_value (cell);
-          }
+          retval = safearray_to_octave_value<octave_uint8>(dv, arr);
           break;
         case VT_I2:
-          {
-            VARIANT *pvar;
-            HRESULT hr;
-            SHORT cellVal;
-            long arrDims[2] = {0,0};
-            Array<octave_int16> cell (dv);
-
-            //warning("%d-D VT_I2 array detected",dimCount);
-            hr=SafeArrayAccessData (arr, (void **)&pvar);
-            if (FAILED (hr))
-              {
-                warning ("failed accessing array data");
-                retval = octave_value (Matrix ()); // return invalid data
-                break;
-              }
-            else
-              {
-                for (int dimNum=0; dimNum<dimCount; dimNum++)
-                  {
-                    arrDims[0] = dimNum; // overwritten for 1-dim arrays
-
-                    for (int k=0; k<dv (dimCount-1); k++) // index last value of array (handles 1- or 2-dimensions)
-                      {
-                        arrDims[dimCount-1] = k;
-                        if (SafeArrayGetElement (arr,arrDims,&cellVal)==S_OK)
-                          {
-                            retval=octave_value (cellVal); // retval used as temporary variable
-                            if(dimCount==2) // 2D array
-                              cell (dv (0)*k+dimNum) = retval.int_value ();
-                            else // 1D array
-                              cell (k) = retval.int_value ();
-                          }
-                        else
-                          {
-                            warning ("error accessing value (%d,%d)", dimNum, k);
-                            // returns whatever data we already have
-                           break;
-                          }
-                      }
-                  }
-                SafeArrayUnaccessData (arr);
-              }
-            retval = octave_value (cell);
-          }
+          retval = safearray_to_octave_value<octave_int16>(dv, arr);
+          break;
+        case VT_UI2:
+          retval = safearray_to_octave_value<octave_uint16>(dv, arr);
+          break;
+        case VT_I4:
+          retval = safearray_to_octave_value<octave_int32>(dv, arr);
+          break;
+        case VT_UI4:
+          retval = safearray_to_octave_value<octave_uint32>(dv, arr);
           break;
         default:
           {
