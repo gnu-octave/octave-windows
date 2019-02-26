@@ -508,6 +508,45 @@ com_to_octave (VARIANT *var)
 
         switch (subtype)
         {
+        case VT_BSTR:
+          {
+            VARIANT *pvar;
+            HRESULT hr;
+            BSTR cellVal;
+            long arrDims[2] = {0,0};
+            Cell cell (dv);
+
+            hr=SafeArrayAccessData (arr, (void **)&pvar);
+
+            if (FAILED (hr))
+              {
+                warning("failed accessing array data");
+                retval = octave_value (Matrix ()); // return invalid data
+                break;
+              }
+            else
+              {
+                for (int k=0; k<cell.numel (); k++)
+                  {
+                    arrDims[0] = k;
+                    if (SafeArrayGetElement (arr,arrDims,&cellVal)==S_OK)
+                      {
+                       // retval=octave_value (cellVal); // retval used as temporary value
+                       cell (k) = octave_value (wstring_to_string (std::wstring ( cellVal)));
+                      }
+                    else 
+                      {
+                        warning ("error accessing value (%d)", k);
+                        // returns whatever data we already have
+                        break;
+                      }
+                  }
+
+                retval = octave_value (cell); // return invalid data
+              }
+
+          }
+          break;
         case VT_VARIANT:
           {
             VARIANT *pvar;
@@ -526,6 +565,51 @@ com_to_octave (VARIANT *var)
                 for (int k=0; k<cell.numel (); k++)
                   {
                     cell (k) = com_to_octave (&pvar[k]);
+                  }
+                SafeArrayUnaccessData (arr);
+              }
+            retval = octave_value (cell);
+          }
+          break;
+        case VT_R8:
+          {
+            VARIANT *pvar;
+            HRESULT hr;
+            DOUBLE cellVal;
+            long arrDims[2] = {0,0};
+            Array<double> cell (dv);
+
+            hr=SafeArrayAccessData (arr, (void **)&pvar);
+            if (FAILED (hr))
+              {
+                warning("failed accessing array data");
+                retval = octave_value (Matrix ()); // return invalid data
+                break;
+              }
+            else
+              {
+                for (int dimNum=0; dimNum<dimCount; dimNum++)
+                  {
+                    arrDims[0] = dimNum; // overwritten for 1-dim arrays
+
+                    for (int k=0; k<dv (dimCount-1); k++) // index last value of array (handles 1- or 2-dimensions)
+                      {
+                        arrDims[dimCount-1] = k;
+                        if (SafeArrayGetElement (arr,arrDims,&cellVal) == S_OK)
+                          {
+                            retval=octave_value (cellVal); // retval used as temporary value
+                            if (dimCount == 2) // 2D array
+                              cell (dv (0)*k+dimNum) = retval.double_value ();
+                            else // 1D array
+                              cell (k) = retval.double_value ();
+                          }
+                        else 
+                          {
+                            warning ("error accessing value (%d,%d)", dimNum, k);
+                            // returns whatever data we already have
+                            break;
+                          }
+                      }
                   }
                 SafeArrayUnaccessData (arr);
               }
