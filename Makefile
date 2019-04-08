@@ -1,7 +1,7 @@
 ## Copyright 2015-2016 Mike Miller
 ## Copyright 2015-2016 Carnë Draug
 ## Copyright 2015-2016 Oliver Heimlich
-## Copyright 2016-2018 John Donoghue
+## Copyright 2016-2019 John Donoghue
 ##
 ## Copying and distribution of this file, with or without modification,
 ## are permitted in any medium without royalty provided the copyright
@@ -25,6 +25,15 @@ TOLOWER   := $(SED) -e 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/
 PACKAGE := $(shell $(SED) -n -e 's/^Name: *\(\w\+\)/\1/p' DESCRIPTION | $(TOLOWER))
 VERSION := $(shell $(SED) -n -e 's/^Version: *\(\w\+\)/\1/p' DESCRIPTION | $(TOLOWER))
 DEPENDS := $(shell $(SED) -n -e 's/^Depends[^,]*, \(.*\)/\1/p' DESCRIPTION | $(SED) 's/ *([^()]*),*/ /g')
+
+HG           := hg
+HG_CMD        = $(HG) --config alias.$(1)=$(1) --config defaults.$(1)= $(1)
+HG_ID        := $(shell $(call HG_CMD,identify) --id | sed -e 's/+//' )
+HG_TIMESTAMP := $(firstword $(shell $(call HG_CMD,log) --rev $(HG_ID) --template '{date|hgdate}'))
+
+TAR_REPRODUCIBLE_OPTIONS := --sort=name --mtime="@$(HG_TIMESTAMP)" --owner=0 --group=0 --numeric-owner
+TAR_OPTIONS  := --format=ustar $(TAR_REPRODUCIBLE_OPTIONS)
+
 
 ## This are the files that will be created for the releases.
 TARGET_DIR      := release
@@ -71,7 +80,7 @@ html: $(HTML_TARBALL)
 
 # An implicit rule with a recipe to build the tarballs correctly.
 %.tar.gz: %
-	tar -c -f - --posix -C "$(TARGET_DIR)/" "$(notdir $<)" | gzip -9n > "$@"
+	$(TAR) -cf - $(TAR_OPTIONS) -C "$(TARGET_DIR)/" "$(notdir $<)" | gzip -9n > "$@"
 
 # Some packages are distributed outside Octave Forge in non tar.gz format.
 %.zip: %
