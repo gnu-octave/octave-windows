@@ -95,7 +95,7 @@ $(RELEASE_DIR): .hg/dirstate
 	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/"
 	cp "$@/examples/"*.m "$@/inst/"
 #	cd "$@/src" && aclocal -Im4 && autoconf && $(RM) -r "src/autom4te.cache"
-	cd "$@/src" && $(SHELL) ./autogen.sh && $(RM) -r "src/autom4te.cache"
+	cd "$@/src" && $(SHELL) ./autogen.sh && $(RM) -r "autom4te.cache"
 	chmod -R a+rX,u+w,go-w "$@"
 
 # install is a prerequesite to the html directory (note that the html
