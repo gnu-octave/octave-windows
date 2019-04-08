@@ -16,15 +16,15 @@ MD5SUM    ?= md5sum
 SED       ?= sed
 GREP      ?= grep
 TAR       ?= tar
-
-## Helper function
-TOLOWER   := $(SED) -e 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/'
+CUT       ?= cut
+TR        ?= tr
 
 ### Note the use of ':=' (immediate set) and not just '=' (lazy set).
 ### http://stackoverflow.com/a/448939/1609556
-PACKAGE := $(shell $(SED) -n -e 's/^Name: *\(\w\+\)/\1/p' DESCRIPTION | $(TOLOWER))
-VERSION := $(shell $(SED) -n -e 's/^Version: *\(\w\+\)/\1/p' DESCRIPTION | $(TOLOWER))
-DEPENDS := $(shell $(SED) -n -e 's/^Depends[^,]*, \(.*\)/\1/p' DESCRIPTION | $(SED) 's/ *([^()]*),*/ /g')
+PACKAGE := $(shell $(GREP) "^Name: " DESCRIPTION | $(CUT) -f2 -d" " | \
+$(TR) '[:upper:]' '[:lower:]')
+VERSION := $(shell $(GREP) "^Version: " DESCRIPTION | $(CUT) -f2 -d" ")
+DEPENDS := 
 
 HG           := hg
 HG_CMD        = $(HG) --config alias.$(1)=$(1) --config defaults.$(1)= $(1)
