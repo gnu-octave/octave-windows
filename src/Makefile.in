@@ -10,6 +10,8 @@ ifeq ("@PKGWINQUERYREGFUNC@","winqueryreg")
   PROGS += winqueryreg.oct
 endif
 
+PROGS += winopen.oct
+
 all: $(PROGS)
 
 grab.oct: grab.o grab_win32part.o
@@ -19,6 +21,9 @@ win32api.oct: win32api.o win32api_win32part.o
 	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
 
 winqueryreg.oct: winqueryreg.o win32api_win32part.o
+	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
+
+winopen.oct: winopen.o
 	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
 
 __COM__.oct: __COM__.o
