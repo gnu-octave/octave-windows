@@ -460,11 +460,32 @@ com_to_octave (VARIANT *var)
   case VT_BOOL:
     retval = octave_value (var->boolVal == VARIANT_TRUE ? true : false);
     break;
+  case VT_I1:
+    retval = octave_value (var->cVal);
+    break;
+  case VT_UI1:
+    retval = octave_value (var->bVal);
+    break;
+  case VT_I2:
+    retval = octave_value (var->iVal);
+    break;
+  case VT_UI2:
+    retval = octave_value (var->uiVal);
+    break;
   case VT_I4:
     retval = octave_value (var->lVal);
     break;
+  case VT_UI4:
+    retval = octave_value (var->ulVal);
+    break;
+  case VT_I8:
+    retval = octave_value (var->llVal);
+    break;
   case VT_INT:
     retval = octave_value (var->intVal);
+    break;
+  case VT_UINT:
+    retval = octave_value (var->uintVal);
     break;
   case VT_BSTR:
     retval = octave_value (wstring_to_string (std::wstring (var->bstrVal)));
