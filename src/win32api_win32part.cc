@@ -86,7 +86,7 @@ octave_value win32_reg_to_octave(char *buffer, int sz, int type)
 
   if (type == REG_DWORD)
     {
-      retval = octave_value(*(reinterpret_cast<DWORD*>(buffer)));
+      retval = octave_int32(*(reinterpret_cast<DWORD*>(buffer)));
     }
   else if (type == REG_SZ || type == REG_EXPAND_SZ)
     {
