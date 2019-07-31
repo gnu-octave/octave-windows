@@ -197,8 +197,6 @@ endfor\n \
       }
     else
       {
-	printf("type=%d sz=%d\n", type, buffer_sz);
-
         //char * buffer= new char[ buffer_sz + 1 ];
         OCTAVE_LOCAL_BUFFER(char, buffer, buffer_sz + 1);
         int retcode= win32_ReadRegistry (rootkey,subkey,nargin == 3 ? value : NULL,buffer, &buffer_sz, &type);
