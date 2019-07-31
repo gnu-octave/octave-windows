@@ -4,6 +4,8 @@ Summary of important user-visible changes for Windows 1.3.1+
 
  ** added conversion of arrays of double and char, add unsigned conversions
 
+ ** bugfix winqueryreg root prefix check
+
 Summary of important user-visible changes for Windows 1.3.1
 ------------------------------------------------------------
   ** updated configure files for 5.0 octave function changes

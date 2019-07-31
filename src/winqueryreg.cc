@@ -1,7 +1,7 @@
 /*
  * winqueryreg
  * 
- * Copyright (C) 2017-2018 John Donoghue <john.donoghue@ieee.org>
+ * Copyright (C) 2017-2019 John Donoghue <john.donoghue@ieee.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,7 +135,7 @@ endfor\n \
 
   if ((strcmp(args (0).string_value ().c_str (), "name") == 0 &&
        !win32_IsValidRootKey(args (1).string_value ().c_str ())) ||
-      (win32_IsValidRootKey(args (0).string_value ().c_str ())))
+      (!win32_IsValidRootKey(args (0).string_value ().c_str ())))
     {
       error ("winqueryreg: invalid root key provided");
       return retval;
