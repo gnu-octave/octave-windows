@@ -32,7 +32,8 @@ win32_ReadRegistry( const char *key,
                     const char *subkey,
                     const char *value,
                     char * buffer,
-                    int  * buffer_sz
+                    int  * buffer_sz,
+		    int  * type
                   );
 
 bool win32_IsValidRootKey(const char *key);
@@ -44,6 +45,11 @@ win32_ScanRegistry (const char *key,
 
 #include <octave/oct.h>
 #include <octave/Cell.h>
+
+octave_value
+win32_reg_to_octave(char *buffer,
+                    int sz,
+                    int type);
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -67,10 +73,14 @@ rootkey must be one of the following strings:\n \
 @table @asis\n \
 @item HKCR\n \
 HKEY_CLASSES_ROOT\n \
+@item HKCC\n \
+HKEY_CURRENT_CONFIG\n \
 @item HKCU\n \
 HKEY_CURRENT_USER\n \
 @item HKLM\n \
 HKEY_LOCAL_MACHINE\n \
+@item HKEY_PERFORMANCE_DATA\n \
+ \n \
 @item HKU\n \
 HKEY_USERS\n \
 @end table\n \
@@ -178,7 +188,8 @@ endfor\n \
 
     // call registry first time to get size and existance
     int buffer_sz=0;
-    int retcode= win32_ReadRegistry (rootkey, subkey, nargin == 3 ? value : NULL, NULL, &buffer_sz);
+    int type;
+    int retcode= win32_ReadRegistry (rootkey, subkey, nargin == 3 ? value : NULL, NULL, &buffer_sz, &type);
     if (retcode != 0)
       {
         retval (0) = new Matrix (0,0);
@@ -186,10 +197,13 @@ endfor\n \
       }
     else
       {
-        char * buffer= new char[ buffer_sz + 1 ];
-        int retcode= win32_ReadRegistry (rootkey,subkey,nargin == 3 ? value : NULL,buffer, &buffer_sz);
-        retval (0) = string_vector (buffer);
-        delete buffer;
+	printf("type=%d sz=%d\n", type, buffer_sz);
+
+        //char * buffer= new char[ buffer_sz + 1 ];
+        OCTAVE_LOCAL_BUFFER(char, buffer, buffer_sz + 1);
+        int retcode= win32_ReadRegistry (rootkey,subkey,nargin == 3 ? value : NULL,buffer, &buffer_sz, &type);
+
+        retval (0) = win32_reg_to_octave(buffer, buffer_sz, type);
       }
   }
 

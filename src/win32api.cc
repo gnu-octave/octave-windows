@@ -1,7 +1,7 @@
 /*
  * Interface to win32 APIs
  * 
- * Copyright (C) 2002-2018 Andy Adler <adler@ncf.ca>
+ * Copyright (C) 2002-2019 Andy Adler <adler@ncf.ca>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,8 @@ win32_ReadRegistry( const char *key,
                     const char *subkey,
                     const char *value,
                     char * buffer,
-                    int  * buffer_sz
+                    int  * buffer_sz,
+		    int  * type
                   );
 
 bool win32_IsValidRootKey(const char *key);
@@ -207,7 +208,7 @@ In the case of failure, 'rv' will be empty\n \
       return retval;
     }
 
-  if (win32_IsValidRootKey(args (0).string_value ().c_str ()))
+  if (! win32_IsValidRootKey(args (0).string_value ().c_str ()))
     {
       error ("win32_ReadRegistry: invalid reg key");
       return retval;
@@ -219,7 +220,8 @@ In the case of failure, 'rv' will be empty\n \
 
   // call registry first time to get size and existance
   int buffer_sz=0;
-  int retcode= win32_ReadRegistry (key, subkey, value, NULL, &buffer_sz);
+  int type;
+  int retcode= win32_ReadRegistry (key, subkey, value, NULL, &buffer_sz, &type);
   if (retcode != 0)
     {
       retval (0)= new Matrix (0,0);
@@ -229,7 +231,7 @@ In the case of failure, 'rv' will be empty\n \
   else
     {
       char * buffer= new char[ buffer_sz ];
-      int retcode= win32_ReadRegistry (key,subkey,value,buffer, &buffer_sz);
+      int retcode= win32_ReadRegistry (key,subkey,value,buffer, &buffer_sz, &type);
       retval(0)= string_vector (buffer);
       retval(1)= (double) retcode;
       retval(2)= (double) buffer_sz;

@@ -2,6 +2,7 @@
  * Interface to win32 APIs
  * 
  * Copyright (C) 2002-2018 Andy Adler <adler@ncf.ca>
+ * Copyright (C) 2019 John Donoghue <john.donoghue@ieee.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@
  */
 
 #include <octave/oct.h>
+#include <octave/Cell.h>
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -52,6 +54,15 @@ HKEY string_to_rootkey(const char *key)
       {
         hprimkey= HKEY_USERS;
       }
+  else if ( 0== strcmp(key, "HKEY_CURRENT_CONFIG") ||
+            0== strcmp(key, "HKCC")) 
+      {
+        hprimkey= HKEY_CURRENT_CONFIG;
+      }
+  else if ( 0== strcmp(key, "HKEY_PERFORMANCE_DATA"))
+      {
+        hprimkey= HKEY_PERFORMANCE_DATA;
+      }
 
   return hprimkey;
 }
@@ -67,6 +78,26 @@ win32_MessageBox (const char * text,
                   int boxtype)
 {
   return MessageBox (NULL, text, title, boxtype | MB_SETFOREGROUND );
+}
+
+octave_value win32_reg_to_octave(char *buffer, int sz, int type)
+{
+  octave_value retval;
+
+  if (type == REG_DWORD)
+    {
+      retval = octave_value(*(reinterpret_cast<DWORD*>(buffer)));
+    }
+  else if (type == REG_SZ || type == REG_EXPAND_SZ)
+    {
+      retval = string_vector (std::string(buffer, sz));
+    }
+  else
+    {
+      retval = Matrix(0,0);
+    }
+
+  return retval;
 }
 
 int
@@ -117,7 +148,8 @@ win32_ReadRegistry (const char *key,
                     const char *subkey,
                     const char *value,
                     char * buffer,
-                    int  * buffer_sz)
+                    int  * buffer_sz,
+		    int  * type)
 {
   HKEY hprimkey, hsubkey;
 
@@ -134,9 +166,12 @@ win32_ReadRegistry (const char *key,
   if (retval == NO_ERROR)
     {
       DWORD dwBuffSz= *buffer_sz;
-      retval= RegQueryValueEx (hsubkey, value, NULL, NULL, 
+      DWORD reg_type;
+      retval= RegQueryValueEx (hsubkey, value, NULL, &reg_type, 
                                (BYTE *) buffer, & dwBuffSz);
       *buffer_sz = dwBuffSz;
+      if (type)
+        *type = (int)reg_type;
     }
 
   RegCloseKey (hsubkey);
