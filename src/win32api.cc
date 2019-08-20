@@ -244,3 +244,14 @@ In the case of failure, 'rv' will be empty\n \
 #endif
   return retval;
 }
+
+#if 0
+%!testif HAVE_WINDOWS_H
+%! fail ("win32_ReadRegistry('X','Y','Z')", "invalid reg key");
+%! fail ("win32_ReadRegistry('HKLM','Y','Z')", "error reading registry value");
+
+%!testif HAVE_WINDOWS_H
+%! val = win32_ReadRegistry('HKLM', 'SOFTWARE\Microsoft\Windows NT\CurrentVersion', "CurrentVersion");
+%! assert (ischar(val));
+%! assert (length(val) > 0);
+#endif

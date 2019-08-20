@@ -133,6 +133,10 @@ clean:
 	$(RM) -r $(RELEASE_DIR) $(RELEASE_TARBALL) $(HTML_TARBALL) $(HTML_DIR)
 	$(MAKE) -C src clean
 
+distclean: clean
+	-$(RM) -r inst/test
+	-$(RM) INDEX
+
 #
 # Recipes for testing purposes
 #

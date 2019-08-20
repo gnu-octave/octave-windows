@@ -1,4 +1,5 @@
 MKOCTFILE ?= @MKOCTFILE@
+GREP ?= @GREP@
 DEFS = @DEFS@
 OLELIBS = @OLELIBS@
 
@@ -12,8 +13,12 @@ endif
 
 PROGS += winopen.oct
 
-all: $(PROGS)
+CC_SOURCES  := $(patsubst %.oct,%.cc,$(PROGS))
+CC_TST_SOURCES := $(shell $(GREP) --files-with-matches '^%!' $(CC_SOURCES))
+TST_SOURCES := $(patsubst %.cc,../inst/test/%.cc-tst,$(CC_TST_SOURCES))
 
+all: $(PROGS) $(TST_SOURCES)
+	
 grab.oct: grab.o grab_win32part.o
 	$(MKOCTFILE) -o $@ $^
 
@@ -32,5 +37,15 @@ __COM__.oct: __COM__.o
 ../inst/%.m : %.m.in
 	if [ ! -d ../inst ]; then mkdir ../inst; fi
 	cp $< $@
+
+../inst/test:
+	@mkdir -p "$@"
+
+$(TST_SOURCES): ../inst/test/%.cc-tst: %.cc | ../inst/test
+	@echo "Extracting tests from $< ..."
+	@$(RM) -f "$@" "$@-t"
+	@(      echo "## Generated from $<"; \
+	        $(GREP) '^%!' "$<") > "$@"
+
 
 clean: ; -rm -f *.o core octave-core *.oct *~

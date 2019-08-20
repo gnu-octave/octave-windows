@@ -46,6 +46,8 @@ dnl need with mkoctfile -p.
 dnl XXX FIXME XXX should use mkoctfile to get CC and CFLAGS
 AC_PROG_CC
 
+AC_PROG_GREP
+
 dnl Check if we are windows or not - COM only works in windows 
 # Check for Windows
 AC_MSG_CHECKING([for windows])

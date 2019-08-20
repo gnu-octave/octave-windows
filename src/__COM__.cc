@@ -1011,3 +1011,29 @@ DEFUN_DLD(__windows_pkg_lock__, args, ,  "internal function")
   return retval;
 }
 #endif
+
+#if 0
+%!testif HAVE_WINDOWS_H
+%! wshell = actxserver ("WScript.Shell");
+%! assert (!isempty (wshell));
+#! assert (strcmp (wshell.CurrentDirectory, pwd));
+
+%!testif HAVE_WINDOWS_H
+%! wshell = actxserver ("WScript.Shell");
+%! # type REG_SZ
+%! val = wshell.RegRead('HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\CurrentVersion');
+%! assert (isa (val, 'char'));
+%! # type REG_DWORD
+%! val = wshell.RegRead('HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\InstallDate');
+%! assert (isscalar (val));
+%! # type REG_BINARY
+%! val = wshell.RegRead('HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\DigitalProductId');
+%! assert (iscell (val));
+%! assert (length (val) > 0);
+%! # type REG_EXPANDSZ
+%! val = wshell.RegRead('HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ProgramFilesPath');
+%! assert (isa (val, 'char'));
+
+%!testif HAVE_WINDOWS_H
+%! fail ("actxserver(0)", "invalid ActiveX server name");
+#endif

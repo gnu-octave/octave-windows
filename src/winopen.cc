@@ -74,3 +74,11 @@ winopen (pwd);\n \
 #endif
   return retval;
 }
+
+#if 0
+%!testif HAVE_WINDOWS_H
+%! fail ("winopen(0)", "expected a string filename or directory");
+
+%!testif HAVE_WINDOWS_H
+%! winopen(cd);
+#endif
