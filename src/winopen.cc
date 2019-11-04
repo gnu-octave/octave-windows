@@ -27,6 +27,7 @@
 
 #ifdef USING_WINDOWS
 #include <windows.h>
+#include <shellapi.h>
 #endif
 
 DEFUN_DLD (winopen, args, ,
