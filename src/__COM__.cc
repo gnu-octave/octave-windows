@@ -1027,7 +1027,7 @@ DEFUN_DLD(__windows_pkg_lock__, args, ,  "internal function")
 %! val = wshell.RegRead('HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\InstallDate');
 %! assert (isscalar (val));
 %! # type REG_BINARY
-%! val = wshell.RegRead('HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\DigitalProductId');
+%! val = wshell.RegRead('HKLM\SOFTWARE\Microsoft\DirectX\InstalledVersion');
 %! assert (iscell (val));
 %! assert (length (val) > 0);
 %! # type REG_EXPANDSZ
