@@ -117,7 +117,6 @@ and clicking <SPACE>. 'q' or <ESC> quits\n \
     case 1:
       { // we need to do this to allow arbitrary orientation
         ColumnVector tmp(args (0).vector_value ());
-        if (error_state) return octave_value_list ();
         axis = tmp;
       }
       nc = axis.numel ();

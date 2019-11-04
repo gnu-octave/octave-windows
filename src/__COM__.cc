@@ -282,11 +282,8 @@ octave_com_object::subsasgn (const std::string& type, const std::list<octave_val
         ovl (1) = (idx.front ()) (0);
         ovl (2) = rhs;
         OCTAVE__FEVAL ("com_set", ovl, 0);
-        if (!error_state)
-          {
-            count++;
-            retval = octave_value (this);
-          }
+        count++;
+        retval = octave_value (this);
       }
     else if (type.length () > 2 && type[1] == '(')
       {
@@ -296,33 +293,27 @@ octave_com_object::subsasgn (const std::string& type, const std::list<octave_val
         new_idx.push_back (*it++);
         new_idx.push_back (*it++);
         octave_value_list u = subsref (type.substr (0, 2), new_idx, 1);
-        if (!error_state)
+        if (u.length())
           {
             std::list<octave_value_list> next_idx (idx);
             next_idx.erase (next_idx.begin ());
             next_idx.erase (next_idx.begin ());
             u (0).subsasgn (type.substr (2), next_idx, rhs);
-            if (!error_state)
-              {
-                count++;
-                retval = octave_value (this);
-              }
+            count++;
+            retval = octave_value (this);
           }
       }
     else if (type.length () > 1 && type[1] == '.')
       {
         // get property and continue assignment
         octave_value_list u = subsref (type.substr (0, 1), idx, 1);
-        if (!error_state)
+        if (u.length())
           {
             std::list<octave_value_list> next_idx (idx);
             next_idx.erase (next_idx.begin ());
             u (0).subsasgn(type.substr (1), next_idx, rhs);
-            if (!error_state)
-              {
-                count++;
-                retval = octave_value (this);
-              }
+            count++;
+            retval = octave_value (this);
           }
       }
     else
@@ -750,7 +741,7 @@ do_invoke (const char *fname, WORD flag, const octave_value_list& args)
 
   // Get method dispatch ID
   method_name = string_to_wstring (args (1).string_value ());
-  if (error_state)
+  if (method_name.length() == 0)
     {
       error ("%s: invalid property/method name as argument 2", fname);
       return retval;
