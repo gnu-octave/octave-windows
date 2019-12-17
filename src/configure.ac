@@ -129,7 +129,7 @@ dnl OCTAVE_CHECK_EXIST(variable,action_if_true,action_if_false)
 dnl
 AC_DEFUN([OCTAVE_CHECK_EXIST],
 [AC_MSG_CHECKING([for $1 in Octave])
-if test `echo 'disp(exist("$1"))' | $OCTAVE -qf`X != 0X ; then
+if test "`echo 'disp(exist("$1"))' | $OCTAVE -qf`X" != "0X" ; then
    AC_MSG_RESULT(yes)
    $2
 else
