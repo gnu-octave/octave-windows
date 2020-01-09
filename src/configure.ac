@@ -86,6 +86,8 @@ dnl Check for mkoctfile
 AC_CHECK_PROG(MKOCTFILE,mkoctfile,mkoctfile)
 test -z "$MKOCTFILE" &&	AC_MSG_WARN([no mkoctfile found on path])
 
+AC_CHECK_PROG(OCTAVE_CONFIG,octave-config,octave-config)
+test -z "$OCTAVE_CONFIG" && OCTAVE_CONFIG=$MKOCTFILE
 dnl *******************************************************************
 
 dnl Check for features of your version of mkoctfile.
