@@ -1,7 +1,7 @@
 /*
 
   Copyright (C) 2006-2018 Michael Goffioul <michael.goffioul@swing.be>
-  Copyright (C) 2019 John DOnoghue <john.donoghue@ieee.org>
+  Copyright (C) 2019-2020 John Donoghue <john.donoghue@ieee.org>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -470,7 +470,10 @@ com_to_octave (VARIANT *var)
   switch (var->vt)
   {
   case VT_DISPATCH:
-    retval = octave_value (new octave_com_object (var->pdispVal, true));
+    if (var->pdispVal)
+        retval = octave_value (new octave_com_object (var->pdispVal, true));
+    else
+        retval = octave_value (Matrix());
     break;
   case VT_BOOL:
     retval = octave_value (var->boolVal == VARIANT_TRUE ? true : false);
