@@ -1,7 +1,7 @@
 ## Copyright 2015-2016 Mike Miller
 ## Copyright 2015-2016 Carnë Draug
 ## Copyright 2015-2016 Oliver Heimlich
-## Copyright 2016-2019 John Donoghue
+## Copyright 2016-2020 John Donoghue
 ##
 ## Copying and distribution of this file, with or without modification,
 ## are permitted in any medium without royalty provided the copyright
@@ -18,6 +18,7 @@ GREP      ?= grep
 TAR       ?= tar
 CUT       ?= cut
 TR        ?= tr
+TEXI2PDF  ?= texi2pdf -q
 
 ### Note the use of ':=' (immediate set) and not just '=' (lazy set).
 ### http://stackoverflow.com/a/448939/1609556
@@ -100,22 +101,44 @@ html: $(HTML_TARBALL)
 $(RELEASE_DIR): .hg/dirstate
 	@echo "Creating package version $(VERSION) release ..."
 	$(RM) -r "$@"
-	hg archive --exclude ".hg*" --exclude Makefile --type files "$@"
-	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/"
+	hg archive --exclude ".hg*" --type files "$@"
+	$(MAKE) -C "$@" docs
+	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/" & $(RM) -f doc/mkfuncdocs.py
 	cp "$@/examples/"*.m "$@/inst/"
 #	cd "$@/src" && aclocal -Im4 && autoconf && $(RM) -r "src/autom4te.cache"
 	cd "$@/src" && $(SHELL) ./autogen.sh && $(RM) -r "autom4te.cache"
+	cd "$@" && $(RM) Makefile
 	chmod -R a+rX,u+w,go-w "$@"
+
+.PHONY: docs
+docs: doc/$(PACKAGE).pdf
+
+.PHONY: clean-docs
+clean-docs:
+	$(RM) -f doc/$(PACKAGE).info
+	$(RM) -f doc/$(PACKAGE).pdf
+	$(RM) -f doc/functions.texi
+
+doc/$(PACKAGE).pdf: doc/$(PACKAGE).texi doc/functions.texi
+	cd doc && SOURCE_DATE_EPOCH=$(HG_TIMESTAMP) $(TEXI2PDF) $(PACKAGE).texi
+	# remove temp files
+	cd doc && $(RM) -f $(PACKAGE).aux $(PACKAGE).cp $(PACKAGE).cps $(PACKAGE).fn  $(PACKAGE).fns $(PACKAGE).log $(PACKAGE).toc
+
+doc/functions.texi:
+	cd doc && ./mkfuncdocs.py --allowscan --ignore="@PKGWINQUERYREGFUNC@" --src-dir=../inst/ --src-dir=../src/ ../INDEX.in | $(SED) 's/@seealso/@xseealso/g' > functions.texi
 
 # install is a prerequesite to the html directory (note that the html
 # tarball will use the implicit rule for ".tar.gz" files).
+html_options = --eval 'options = get_html_options ("octave-forge");' \
+               --eval 'options.package_doc = "$(PACKAGE).texi";'
 $(HTML_DIR): install
 	@echo "Generating HTML documentation. This may take a while ..."
 	$(RM) -r "$@"
 	$(OCTAVE) --no-window-system --silent \
 	  --eval "pkg load generate_html; " \
 	  --eval "pkg load $(PACKAGE);" \
-	  --eval 'generate_package_html ("${PACKAGE}", "$@", "octave-forge");'
+	  $(html_options)               \
+	  --eval 'generate_package_html ("${PACKAGE}", "$@", options);'
 	chmod -R a+rX,u+w,go-w $@
 
 # To make a release, build the distribution and html tarballs.
@@ -129,7 +152,7 @@ install: $(RELEASE_TARBALL)
 	@echo "Installing package locally ..."
 	$(OCTAVE) --silent --eval 'pkg ("install", "-verbose", "$(RELEASE_TARBALL)")'
 
-clean:
+clean: clean-docs
 	$(RM) -r $(RELEASE_DIR) $(RELEASE_TARBALL) $(HTML_TARBALL) $(HTML_DIR)
 	$(MAKE) -C src clean
 

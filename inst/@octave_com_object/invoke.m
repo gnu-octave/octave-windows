@@ -18,8 +18,8 @@
 
 ## -*- texinfo -*-
 ## @deftypefn  {} {} invoke (@var{obj})
-## @deftypefnx  {} {@var(S) =} invoke (@var{obj}, @var{methodname})
-## @deftypefnx  {} {@var(S) =} invoke (@var{obj}, @var{methodname}, @var{@arg1}, @dots, @var{argN})
+## @deftypefnx  {} {@var{S} =} invoke (@var{obj}, @var{methodname})
+## @deftypefnx  {} {@var{S} =} invoke (@var{obj}, @var{methodname}, @var{arg1}, @dots{}, @var{argN})
 ## Invoke a method on a COM object.
 ##
 ## When called with just the single @var{obj}, invoke displays the methods available to the object.

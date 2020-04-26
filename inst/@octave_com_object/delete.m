@@ -22,7 +22,7 @@
 ##
 ## Release interfaces from COM object @var{obj} and then delete the COM server.
 ##
-## @seealso{com_delete, delete}
+## @seealso{com_delete delete}
 ## @end deftypefn
 
 function delete (varargin)

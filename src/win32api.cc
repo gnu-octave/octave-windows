@@ -1,7 +1,7 @@
 /*
  * Interface to win32 APIs
  * 
- * Copyright (C) 2002-2019 Andy Adler <adler@ncf.ca>
+ * Copyright (C) 2002-2020 Andy Adler <adler@ncf.ca>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,8 +104,7 @@ User Clicked Try Again\n \
 @item 11\n \
 User Clicked Continue\n \
 @end table\n \
-@end deftypefn"
-          )
+@end deftypefn")
 {
 #ifndef USING_WINDOWS
   error ("win32api: Your system doesn't support the COM interface");

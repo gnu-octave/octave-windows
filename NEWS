@@ -5,6 +5,8 @@ Summary of important user-visible changes for Windows 1.4.0+
 
  ** add override methods function
 
+ ** added package documentation
+
 Summary of important user-visible changes for Windows 1.4.0
 ------------------------------------------------------------
  ** added winopen function
