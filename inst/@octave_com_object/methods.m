@@ -27,6 +27,8 @@
 ## When called with no output arguments, @code{methods} prints the list of
 ## method names to the screen.  Otherwise, the output argument @var{mtds}
 ## contains the list in a cell array of strings.
+##
+## @seealso{methods}
 ## @end deftypefn
 
 function mtds = methods (obj)
