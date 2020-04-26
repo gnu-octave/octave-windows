@@ -103,7 +103,7 @@ $(RELEASE_DIR): .hg/dirstate
 	$(RM) -r "$@"
 	hg archive --exclude ".hg*" --type files "$@"
 	$(MAKE) -C "$@" docs
-	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/" & $(RM) -f doc/mkfuncdocs.py
+	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/" && $(RM) -f doc/mkfuncdocs.py
 	cp "$@/examples/"*.m "$@/inst/"
 #	cd "$@/src" && aclocal -Im4 && autoconf && $(RM) -r "src/autom4te.cache"
 	cd "$@/src" && $(SHELL) ./autogen.sh && $(RM) -r "autom4te.cache"
