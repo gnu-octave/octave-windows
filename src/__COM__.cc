@@ -853,7 +853,7 @@ Call get function on COM object @var{obj}. Returns any result in @var{S}\n \
   if (args.length () == 1)
     retval = octave_value (Cell (do_invoke_list ("com_get", DISPATCH_PROPERTYGET, OV_COMOBJ (args (0)))));
   else
-    retval = do_invoke ("com_get", DISPATCH_PROPERTYGET, args);
+    retval = do_invoke ("com_get", DISPATCH_PROPERTYGET|DISPATCH_METHOD, args);
 #endif
   return retval;
 }
