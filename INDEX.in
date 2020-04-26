@@ -15,5 +15,11 @@ COM Interface
  com_release
  com_set
  iscom
+ @octave_com_object/get
+ @octave_com_object/invoke
+ @octave_com_object/set
+ @octave_com_object/release
+ @octave_com_object/delete
+ @octave_com_object/methods
 Examples
  mat2xls
