@@ -33,6 +33,7 @@
 #ifdef USING_WINDOWS
 #include <windows.h>
 #include <ocidl.h>
+#include <comdef.h>
 
 #if 0
 #define DEBUGF(x) printf x
@@ -68,6 +69,19 @@ wstring_to_string (const std::wstring& ws)
   std::use_facet<std::ctype<wchar_t> >(std::locale ()).narrow (
       wcs, wcs+len, ' ', &tmp[0]);
   return std::string (&tmp[0], len);
+}
+
+static std::string
+hresult_to_string (HRESULT hr)
+{
+  std::string str;
+
+  _com_error err(hr);
+
+  LPCTSTR errorText = err.ErrorMessage();
+
+  str = errorText;
+  return str;
 }
 
 class octave_com_object : public octave_base_value
@@ -773,7 +787,8 @@ do_invoke (const char *fname, WORD flag, const octave_value_list& args)
   if ((hr = com->com_iface ()->Invoke (method_ID, IID_NULL, LOCALE_USER_DEFAULT, flag, &dispParams,
                                        &result, NULL, NULL)) != S_OK)
     {
-      error ("%s: property/method invocation on the COM object failed with error `0x%08x'", fname, hr);
+      std::string errstr = hresult_to_string(hr);
+      error ("%s: property/method invocation on the COM object failed with error `0x%08x' - %s", fname, hr, errstr.c_str());
       goto cleanup;
     }
 
