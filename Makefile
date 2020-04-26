@@ -102,9 +102,9 @@ $(RELEASE_DIR): .hg/dirstate
 	@echo "Creating package version $(VERSION) release ..."
 	$(RM) -r "$@"
 	hg archive --exclude ".hg*" --type files "$@"
+	cp "$@/examples/"*.m "$@/inst/"
 	$(MAKE) -C "$@" docs
 	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/" && $(RM) -f doc/mkfuncdocs.py
-	cp "$@/examples/"*.m "$@/inst/"
 #	cd "$@/src" && aclocal -Im4 && autoconf && $(RM) -r "src/autom4te.cache"
 	cd "$@/src" && $(SHELL) ./autogen.sh && $(RM) -r "autom4te.cache"
 	cd "$@" && $(RM) Makefile
