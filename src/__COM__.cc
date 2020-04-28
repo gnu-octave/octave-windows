@@ -33,7 +33,6 @@
 #ifdef USING_WINDOWS
 #include <windows.h>
 #include <ocidl.h>
-#include <comdef.h>
 
 #if 0
 #define DEBUGF(x) printf x
@@ -74,13 +73,20 @@ wstring_to_string (const std::wstring& ws)
 static std::string
 hresult_to_string (HRESULT hr)
 {
+  char errstring[100];
   std::string str;
 
-  _com_error err(hr);
-
-  LPCTSTR errorText = err.ErrorMessage();
-
-  str = errorText;
+  if (FormatMessageA (
+    FORMAT_MESSAGE_FROM_SYSTEM,
+    0, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), errstring,
+    sizeof(errstring)-1, 0) < 0)
+    {
+      str = "Unknown";
+    }
+  else
+    {
+      str = errstring;
+    }
   return str;
 }
 
