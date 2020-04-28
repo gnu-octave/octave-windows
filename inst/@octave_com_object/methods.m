@@ -1,4 +1,4 @@
-## Copyright (C) John Donoghue
+## Copyright (C) 2020 John Donoghue
 ## Based heavily of the on the octave function of same name,
 ## Copyright (C) 2012-2019 Rik Wehbring
 ##
@@ -35,6 +35,9 @@ function mtds = methods (obj)
 
   if isa(obj, 'octave_com_object')
     mtds_list = com_invoke (obj);
+    # add the class methods
+    class_mtds_list = __methods__ ("octave_com_object");
+    mtds_list = [mtds_list; class_mtds_list]; 
   else
     mtds_list = __methods__ (obj);
   endif
@@ -52,8 +55,9 @@ endfunction
 %!testif HAVE_WINDOWS_H
 %! wshell = actxserver ("WScript.Shell");
 %! mtds = methods(wshell);
-%! assert(com_invoke(wshell), mtds);
-%! delete (wshell)
+%! class_mtds = methods("octave_com_object");
+%! assert([com_invoke(wshell); class_mtds], mtds);
+%! delete (wshell);
 
 %!testif HAVE_WINDOWS_H
 %! mtds = methods ("octave_com_object");
