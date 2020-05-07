@@ -1,9 +1,11 @@
-Summary of important user-visible changes for Windows 1.4.0+
+Summary of important user-visible changes for Windows 1.5.0
 ------------------------------------------------------------
 
  ** bugfix return empty value for a null dispatch type
 
  ** add override methods function
+
+ ** allow no arg function access without requiring use of ().
 
  ** added package documentation
 
