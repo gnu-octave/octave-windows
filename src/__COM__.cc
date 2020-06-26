@@ -399,6 +399,14 @@ feature(const std::string &name, octave_value &val, int dir)
     }
 }
 
+static octave_value
+get_feature(const std::string &name)
+{
+  octave_value v;
+  feature(name, v, 1);
+  return v;
+}
+
 // PKG_ADD: autoload ("windows_feature", which ("__COM__"));
 DEFUN_DLD(windows_feature, args, , 
           "-*- texinfo -*-\n \
@@ -738,15 +746,22 @@ com_to_octave (VARIANT *var)
 }
 
 static SAFEARRAY*
-make_safearray_from_dims(const dim_vector& dv, VARTYPE vt)
+make_safearray_from_dims(const dim_vector& dv, VARTYPE vt, int maxDim)
 {
   SAFEARRAY *arr;
   SAFEARRAYBOUND *bounds;
 
-  bounds = (SAFEARRAYBOUND*)LocalAlloc (LMEM_FIXED|LMEM_ZEROINIT, sizeof (SAFEARRAYBOUND)*dv.length ());
-  for (int k=0; k<dv.length (); k++)
+  int arrayDim;
+  if (dv.length () > maxDim && maxDim != 0) 
+    arrayDim = maxDim;
+  else
+    arrayDim = dv.length ();
+	
+  bounds = (SAFEARRAYBOUND*)LocalAlloc (LMEM_FIXED|LMEM_ZEROINIT, sizeof (SAFEARRAYBOUND)*arrayDim);
+  for (int k=0; k<arrayDim; k++)
     bounds[k].cElements = dv (k);
-  arr = SafeArrayCreate (vt, dv.length (), bounds);
+
+  arr = SafeArrayCreate (vt, arrayDim, bounds);
   LocalFree (bounds);
 
   return arr;
@@ -756,6 +771,10 @@ static void
 octave_to_com(const octave_value& ov, VARIANT *var)
 {
   VariantInit (var);
+
+  int maxDims = 0;
+  if(get_feature("COM_SafeArraySingleDim").int_value() == 1)
+    maxDims = 1;
 
   if (ov.is_string ())
   {
@@ -779,7 +798,8 @@ octave_to_com(const octave_value& ov, VARIANT *var)
   else if (ov.is_real_matrix ())
   {
     NDArray M = ov.array_value ();
-    SAFEARRAY *arr = make_safearray_from_dims (M.dims (), VT_R8);
+
+    SAFEARRAY *arr = make_safearray_from_dims (M.dims (), VT_R8, maxDims);
     double *data;
 
     SafeArrayAccessData (arr, (void**)&data);
@@ -793,7 +813,7 @@ octave_to_com(const octave_value& ov, VARIANT *var)
   else if (ov.OV_ISCELL ())
   {
     Cell M = ov.cell_value ();
-    SAFEARRAY *arr = make_safearray_from_dims (M.dims (), VT_VARIANT);
+    SAFEARRAY *arr = make_safearray_from_dims (M.dims (), VT_VARIANT, maxDims);
     VARIANT *data;
 
     SafeArrayAccessData (arr, (void**)&data);
