@@ -21,5 +21,7 @@ COM Interface
  @octave_com_object/release
  @octave_com_object/delete
  @octave_com_object/methods
+Features
+ windows_feature
 Examples
  mat2xls

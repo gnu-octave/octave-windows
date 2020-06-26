@@ -379,6 +379,70 @@ terminate_com()
 }
 #endif
 
+static void
+feature(const std::string &name, octave_value &val, int dir)
+{
+  static octave_scalar_map features;
+
+  if (features.nfields() == 0)
+    {
+      features.assign("COM_SafeArraySingleDim", octave_value(0));
+    }
+
+  if (dir == 0)
+    {
+      features.setfield(name, val);
+    }
+  else
+    {
+      val = features.getfield(name);
+    }
+}
+
+// PKG_ADD: autoload ("windows_feature", which ("__COM__"));
+DEFUN_DLD(windows_feature, args, , 
+          "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {} windows_feature (@var{name})\n \
+@deftypefnx {Loadable Function} {} windows_feature (@var{name}, @var{value})\n \
+Set or get a feature value.\n \
+\n \
+@var{name} - name of feature to get or set.@*\n \
+@var{value} - value to set for feature.@*\n \
+@end deftypefn")
+{
+  octave_value_list retval;
+
+  if (args.length () != 1 && args.length () != 2)
+    {
+      error ("windows_feature: Expected a name and optional value");
+      return retval;
+    }
+
+  std::string name;
+  if (! args(0).is_string())
+    {
+      error ("windows_feature: Expected a string for first argument");
+      return retval;
+    }
+
+  name = args(0).string_value ();
+
+  if (args.length () == 1)
+    {
+      octave_value val;
+      feature (name, val, 1);
+      retval(0) = val;
+    }
+  else
+    {
+      octave_value val = args(1);
+      feature (name, val, 0);
+    }
+
+  return retval;
+}
+
+
 // PKG_ADD: autoload ("com_atexit", which ("__COM__"));
 // xPKG_ADD: #atexit ("com_atexit");
 DEFUN_DLD(com_atexit, args, , 
@@ -1051,4 +1115,15 @@ DEFUN_DLD(__windows_pkg_lock__, args, ,  "internal function")
 
 %!testif HAVE_WINDOWS_H
 %! fail ("actxserver(0)", "invalid ActiveX server name");
+
+%!test
+%! assert(windows_feature("COM_SafeArraySingleDim"), 0)
+%! windows_feature("COM_SafeArraySingleDim", 1)
+%! assert(windows_feature("COM_SafeArraySingleDim"), 1)
+
+%!test
+%! fail ("windows_feature()", "Expected a name and optional value");
+%! fail ("windows_feature(1)", "Expected a string");
+%! fail ("windows_feature('a', 1, 1)", "Expected a name and optional value");
+
 #endif
