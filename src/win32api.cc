@@ -43,6 +43,12 @@ win32_ScanRegistry (const char *key,
                     const char *subkey,
                     std::list<std::string> &fields);
 
+int
+win32_ScanRegistryKeys (const char *key,
+                    const char *subkey,
+                    std::list<std::string> &fields);
+
+
 #include <octave/oct.h>
 #include <octave/Cell.h>
 
@@ -244,6 +250,181 @@ In the case of failure, 'rv' will be empty\n \
   return retval;
 }
 
+// PKG_ADD: autoload ("win32_RegEnumValue", "win32api.oct");
+DEFUN_DLD (win32_RegEnumValue, args, ,
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {[ @var{rv}, @var{code} ] =} win32_RegEnumValue (@var{key}, @var{subkey})\n \
+\n \
+Read value names from from the Windows registry.\n \
+\n \
+Example:\n \
+@example\n \
+key='SOFTWARE\\\\Cygnus Solutions\\\\Cygwin\\\\mounts v2';\n \
+win32_RegEnumValue('HKLM',key)\n \
+@end example\n \
+\n \
+key must be one of the following strings:\n \
+@table @asis\n \
+@item HKCR\n \
+HKEY_CLASSES_ROOT\n \
+@item HKCU\n \
+HKEY_CURRENT_USER\n \
+@item HKLM\n \
+HKEY_LOCAL_MACHINE\n \
+@item HKU\n \
+HKEY_USERS\n \
+@end table\n \
+\n \
+@var{rv} is an array of value strings for the name of values\n \
+for a given key and subkey.\n \
+\n \
+@var{code} is the success code. Values correspond to the\n \
+codes in the winerror.h header file. The code of 0 is\n \
+success, while other codes indicate failure\n \
+In the case of failure, 'rv' will be empty\n \
+\n \
+@seealso{winqueryreg}\n \
+@end deftypefn")
+{
+  octave_value_list retval;
+#ifndef USING_WINDOWS
+  error ("win32api: Your system doesn't support the COM interface");
+#else
+  int nargin = args.length();
+  if ( nargin != 2 ||
+       !args (0).is_string () ||
+       !args (1).is_string ())
+    {
+      print_usage ();
+      return retval;
+    }
+
+  if (! win32_IsValidRootKey(args (0).string_value ().c_str ()))
+    {
+      error ("win32_RegEnumValue: invalid reg key");
+      return retval;
+    }
+
+  char * key   = strdup (args (0).string_value ().c_str ());
+  char * subkey= strdup (args (1).string_value ().c_str ());
+
+  std::list<std::string> fields;
+
+  int retcode = win32_ScanRegistry (key, subkey, fields);
+  if (retcode != 0)
+    {
+      retval (0) = new Matrix (0,0);
+      error ("win32_RegEnumValue: error reading registry values");
+    }
+  else
+    {
+      Cell fieldnames (dim_vector (1, fields.size ()));
+      int i;
+      std::list<std::string>::const_iterator iterator;
+      for (i=0, iterator = fields.begin ();
+           iterator != fields.end (); ++iterator, ++i)
+        {
+          fieldnames (i) = *iterator;
+        }
+      retval (0) = octave_value (fieldnames);
+    }
+
+  retval (1) = (double) retcode;
+
+  free (key);
+  free (subkey);
+#endif
+  return retval;
+}
+
+// PKG_ADD: autoload ("win32_RegEnumKey", "win32api.oct");
+DEFUN_DLD (win32_RegEnumKey, args, ,
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {[ @var{rv}, @var{code} ] =} win32_RegEnumKey (@var{key}, @var{subkey})\n \
+\n \
+Read the keys of a given subkey from the Windows registry.\n \
+\n \
+Example:\n \
+@example\n \
+key='SOFTWARE\\\\Cygnus Solutions\\\\Cygwin\\\\mounts v2';\n \
+win32_RegEnumKey('HKLM',key)\n \
+@end example\n \
+\n \
+key must be one of the following strings:\n \
+@table @asis\n \
+@item HKCR\n \
+HKEY_CLASSES_ROOT\n \
+@item HKCU\n \
+HKEY_CURRENT_USER\n \
+@item HKLM\n \
+HKEY_LOCAL_MACHINE\n \
+@item HKU\n \
+HKEY_USERS\n \
+@end table\n \
+\n \
+@var{rv} is an array of value strings for the name of keys\n \
+for a given key and subkey.\n \
+\n \
+@var{code} is the success code. Values correspond to the\n \
+codes in the winerror.h header file. The code of 0 is\n \
+success, while other codes indicate failure\n \
+In the case of failure, 'rv' will be empty\n \
+\n \
+@seealso{winqueryreg}\n \
+@end deftypefn")
+{
+  octave_value_list retval;
+#ifndef USING_WINDOWS
+  error ("win32api: Your system doesn't support the COM interface");
+#else
+  int nargin = args.length();
+  if ( nargin != 2 ||
+       !args (0).is_string () ||
+       !args (1).is_string ())
+    {
+      print_usage ();
+      return retval;
+    }
+
+  if (! win32_IsValidRootKey(args (0).string_value ().c_str ()))
+    {
+      error ("win32_RegEnumKey: invalid reg key");
+      return retval;
+    }
+
+  char * key   = strdup (args (0).string_value ().c_str ());
+  char * subkey= strdup (args (1).string_value ().c_str ());
+
+  std::list<std::string> fields;
+
+  int retcode = win32_ScanRegistryKeys (key, subkey, fields);
+  if (retcode != 0)
+    {
+      retval (0) = new Matrix (0,0);
+      error ("win32_RegEnumKey: error reading registry values");
+    }
+  else
+    {
+      Cell fieldnames (dim_vector (1, fields.size ()));
+      int i;
+      std::list<std::string>::const_iterator iterator;
+      for (i=0, iterator = fields.begin ();
+           iterator != fields.end (); ++iterator, ++i)
+        {
+          fieldnames (i) = *iterator;
+        }
+      retval (0) = octave_value (fieldnames);
+    }
+
+  retval (1) = (double) retcode;
+
+  free (key);
+  free (subkey);
+#endif
+  return retval;
+}
+
+
 #if 0
 %!testif HAVE_WINDOWS_H
 %! fail ("win32_ReadRegistry('X','Y','Z')", "invalid reg key");
@@ -253,4 +434,22 @@ In the case of failure, 'rv' will be empty\n \
 %! val = win32_ReadRegistry('HKLM', 'SOFTWARE\Microsoft\Windows NT\CurrentVersion', "CurrentVersion");
 %! assert (ischar(val));
 %! assert (length(val) > 0);
+
+%!testif HAVE_WINDOWS_H
+%! fail ("win32_RegEnumValue('X','Y')", "invalid reg key");
+%! fail ("win32_RegEnumValue('HKLM','Y')", "error reading registry values");
+
+%!testif HAVE_WINDOWS_H
+%! val = win32_RegEnumValue('HKLM', 'SOFTWARE\Microsoft\Windows NT\CurrentVersion');
+%! assert (iscellstr(val));
+%! qval = winqueryreg("name", 'HKLM', 'SOFTWARE\Microsoft\Windows NT\CurrentVersion');
+%! assert (val, qval);
+
+%!testif HAVE_WINDOWS_H
+%! fail ("win32_RegEnumKey('X','Y')", "invalid reg key");
+%! fail ("win32_RegEnumKey('HKLM','Y')", "error reading registry values");
+
+%!testif HAVE_WINDOWS_H
+%! val = win32_RegEnumKey('HKLM', 'SOFTWARE\Microsoft\Windows NT\CurrentVersion');
+%! assert (iscellstr(val));
 #endif

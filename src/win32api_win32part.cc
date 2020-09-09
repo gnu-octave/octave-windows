@@ -2,7 +2,7 @@
  * Interface to win32 APIs
  * 
  * Copyright (C) 2002-2018 Andy Adler <adler@ncf.ca>
- * Copyright (C) 2019 John Donoghue <john.donoghue@ieee.org>
+ * Copyright (C) 2019-2020 John Donoghue <john.donoghue@ieee.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,6 +142,51 @@ win32_ScanRegistry (const char *key,
 
   return retval;
 }
+
+int
+win32_ScanRegistryKeys (const char *key,
+                    const char *subkey,
+                    std::list<std::string> &fields)
+{
+  HKEY hprimkey, hsubkey;
+
+  fields.clear ();
+
+  hprimkey = string_to_rootkey (key);
+  if (hprimkey == 0)
+    {
+      return -1; // We can't handle this key
+    }
+
+  int retval;
+
+  retval= RegOpenKeyEx (hprimkey, subkey, 0, KEY_READ, &hsubkey);
+  if (retval == NO_ERROR)
+    {
+      int count = 0;
+      #define MAX_KEYNAME_SIZE 256
+      DWORD keynamesize = MAX_KEYNAME_SIZE;
+      char keyname[MAX_KEYNAME_SIZE+1];
+
+      while ( (retval = RegEnumKeyEx (hsubkey, count, keyname, 
+                                      &keynamesize, NULL, NULL, NULL, NULL
+            )) == ERROR_SUCCESS)
+        {
+          fields.push_back(keyname);
+          keynamesize = MAX_KEYNAME_SIZE;
+          count ++;
+        }
+
+      if (retval == ERROR_NO_MORE_ITEMS)
+        retval = NO_ERROR;
+
+      RegCloseKey (hsubkey);
+    }
+
+  return retval;
+}
+
+
 
 int
 win32_ReadRegistry (const char *key,

@@ -3,6 +3,8 @@ Windows Utilities
  grab
  win32_MessageBox
  win32_ReadRegistry
+ win32_RegEnumValue
+ win32_RegEnumKey
  win32api
  winopen
  @PKGWINQUERYREGFUNC@

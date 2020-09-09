@@ -1,7 +1,7 @@
 Summary of important user-visible changes for Windows TBD
 ------------------------------------------------------------
 
-* added new function 'windows_feature'
+* added new function 'windows_feature', win32_RegEnumValue, win32_RegEnumKey
 
 
 Summary of important user-visible changes for Windows 1.5.0
