@@ -25,6 +25,7 @@
 #include <octave/defun-dld.h>
 #include <octave/Cell.h>
 #include <octave/parse.h>
+#include <octave/oct-map.h>
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
