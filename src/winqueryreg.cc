@@ -143,12 +143,21 @@ endfor\n \
       return retval;
     }
 
-  if ((strcmp(args (0).string_value ().c_str (), "name") == 0 &&
-       !win32_IsValidRootKey(args (1).string_value ().c_str ())) ||
-      (!win32_IsValidRootKey(args (0).string_value ().c_str ())))
+  if (strcmp(args (0).string_value ().c_str (), "name") == 0)
     {
-      error ("winqueryreg: invalid root key provided");
-      return retval;
+       if (!win32_IsValidRootKey(args (1).string_value ().c_str ()))
+         {
+           error ("winqueryreg1: invalid root key provided");
+           return retval;
+         }
+    }
+  else
+    {
+      if (!win32_IsValidRootKey(args (0).string_value ().c_str ()))
+       {
+         error ("winqueryreg2: invalid root key provided");
+         return retval;
+       }
     }
 
   char * rootkey   = strdup (args (0).string_value ().c_str ());
