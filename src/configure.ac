@@ -80,74 +80,18 @@ dnl XXX FIXME XXX latest octave has octave-config so we don't
 dnl need to discover things here.  Doesn't have --exe-site-dir
 dnl but defines --oct-site-dir and --m-site-dir
 
-AC_CHECK_PROG(OCTAVE,octave,octave)
-test -z "$OCTAVE" && AC_MSG_ERROR([no octave found on path])
-
 dnl Check for mkoctfile
 AC_CHECK_PROG(MKOCTFILE,mkoctfile,mkoctfile)
 test -z "$MKOCTFILE" &&	AC_MSG_WARN([no mkoctfile found on path])
 
 AC_CHECK_PROG(OCTAVE_CONFIG,octave-config,octave-config)
 test -z "$OCTAVE_CONFIG" && OCTAVE_CONFIG=$MKOCTFILE
-dnl *******************************************************************
-
-dnl Check for features of your version of mkoctfile.
-dnl All checks should be designed so that the default
-dnl action if the tests are not performed is to do whatever
-dnl is appropriate for the most recent version of Octave.
-
-dnl Define the following macro:
-dnl    OF_CHECK_LIB(lib,fn,true,false,helpers)
-dnl This is just like AC_CHECK_LIB, but it doesn't update LIBS
-AC_DEFUN([OF_CHECK_LIB],
-[save_LIBS="$LIBS"
-AC_CHECK_LIB($1,$2,$3,$4,$5)
-LIBS="$save_LIBS"
-])
-
-dnl Define the following macro:
-dnl    TRY_MKOCTFILE(msg,program,action_if_true,action_if_false)
-dnl
-AC_DEFUN([TRY_MKOCTFILE],
-[AC_MSG_CHECKING($1)
-cat > conftest.cc << EOF
-#include <octave/config.h>
-$2
-EOF
-ac_try="$MKOCTFILE -c conftest.cc"
-if AC_TRY_EVAL(ac_try) ; then
-   AC_MSG_RESULT(yes)
-   $3
-else
-   AC_MSG_RESULT(no)
-   $4
-fi
-])
 
 dnl **********************************************************
 
-dnl Check status of an octave variable
-dnl
-dnl OCTAVE_CHECK_EXIST(variable,action_if_true,action_if_false)
-dnl
-AC_DEFUN([OCTAVE_CHECK_EXIST],
-[AC_MSG_CHECKING([for $1 in Octave])
-if test "`echo 'disp(exist("$1"))' | $OCTAVE -qf`X" != "0X" ; then
-   AC_MSG_RESULT(yes)
-   $2
-else
-   AC_MSG_RESULT(no)
-   $3
-fi
-])
-
 # checks for depreciated octave symbols/functions
 
-PKGWINQUERYREGFUNC=
-OCTAVE_CHECK_EXIST([winqueryreg],
-  [],
-  [PKGWINQUERYREGFUNC=winqueryreg]
-)
+OCTAVE_HAS_FUNCTION([winqueryreg], [], [PKGWINQUERYREGFUNC=winqueryreg])
 AC_SUBST(PKGWINQUERYREGFUNC)
 
 AC_LANG_PUSH([C++])
