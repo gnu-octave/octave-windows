@@ -23,6 +23,7 @@
 #include <string>
 #include <list>
 
+
 int
 win32_MessageBox( const char * text,
                   const char * title,
@@ -34,6 +35,15 @@ win32_ReadRegistry( const char *key,
                     char * buffer,
                     int  * buffer_sz,
 		    int  * type
+                  );
+
+int
+win32_WriteRegistry(const char *key,
+                    const char *subkey,
+                    const char *value,
+                    char * buffer,
+                    int  buffer_sz,
+		    int  type
                   );
 
 bool win32_IsValidRootKey(const char *key);
@@ -48,8 +58,11 @@ win32_ScanRegistryKeys (const char *key,
                     const char *subkey,
                     std::list<std::string> &fields);
 
-
 #include <octave/oct.h>
+
+char *
+octave_to_win32_reg(const octave_value &v, int *sz, int *type);
+
 #include <octave/Cell.h>
 
 #ifdef HAVE_CONFIG_H
@@ -249,6 +262,94 @@ In the case of failure, 'rv' will be empty\n \
 #endif
   return retval;
 }
+
+// PKG_ADD: autoload ("win32_WriteRegistry", "win32api.oct");
+DEFUN_DLD (win32_WriteRegistry, args, ,
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {@var{code} =} win32_WriteRegistry (@var{key}, @var{subkey}, @var{valuename}, @var{value})\n \
+\n \
+Write a value to the Windows registry.\n \
+\n \
+Example:\n \
+@example\n \
+key='test\\\\temp';\n \
+win32_WriteRegistry('HKLM',key,'test_value', 0)\n \
+@end example\n \
+\n \
+key must be one of the following strings:\n \
+@table @asis\n \
+@item HKCR\n \
+HKEY_CLASSES_ROOT\n \
+@item HKCU\n \
+HKEY_CURRENT_USER\n \
+@item HKLM\n \
+HKEY_LOCAL_MACHINE\n \
+@item HKU\n \
+HKEY_USERS\n \
+@end table\n \
+\n \
+@var{subkey} is the subkey to the registry value.\n \
+\n \
+@var{valuename} is the name of the value to write to the registry.\n \
+\n \
+@var{value} is the value to write. It must be a a string or an integer value.\n \
+\n \
+@var{code} is the success code. Values correspond to the\n \
+codes in the winerror.h header file. The code of 0 is\n \
+success, while other codes indicate failure\n \
+@end deftypefn")
+{
+  octave_value_list retval;
+#ifndef USING_WINDOWS
+  error ("win32api: Your system doesn't support the COM interface");
+#else
+  int nargin = args.length();
+  if ( nargin != 4 ||
+       !args (0).is_string () ||
+       !args (1).is_string () ||
+       !args (2).is_string ())
+    {
+      print_usage ();
+      return retval;
+    }
+
+  if (! win32_IsValidRootKey(args (0).string_value ().c_str ()))
+    {
+      error ("win32_ReadRegistry: invalid reg key");
+      return retval;
+    }
+
+  char * key   = strdup (args (0).string_value ().c_str ());
+  char * subkey= strdup (args (1).string_value ().c_str ());
+  char * value = strdup (args (2).string_value ().c_str ());
+
+  // call registry first time to get size and existance
+  int buffer_sz=0;
+  int type;
+
+  octave_value v = args(3);
+
+  char * buffer = octave_to_win32_reg (v, &buffer_sz, &type);
+
+  if (!buffer)
+    {
+      error ("win32_ReadRegistry: unsupported type to registry conversion");
+    }
+  else
+    {
+      int retcode = win32_WriteRegistry (key, subkey, value, buffer, buffer_sz, type);
+      retval (0)= (double) retcode;
+
+      free(buffer);
+    }
+
+  free (key);
+  free (subkey);
+  free (value);
+#endif
+  return retval;
+}
+
 
 // PKG_ADD: autoload ("win32_RegEnumValue", "win32api.oct");
 DEFUN_DLD (win32_RegEnumValue, args, ,
@@ -452,4 +553,20 @@ In the case of failure, 'rv' will be empty\n \
 %!testif HAVE_WINDOWS_H
 %! val = win32_RegEnumKey('HKLM', 'SOFTWARE\Microsoft\Windows NT\CurrentVersion');
 %! assert (iscellstr(val));
+
+%!testif HAVE_WINDOWS_H
+%! fail ("win32_WriteRegistry('HKCX','Environment','test_value', 'x')", "invalid reg key");
+%! err = win32_WriteRegistry('HKCU','Environment','test_value', 0);
+%! assert(err, 0);
+%! qval = winqueryreg('HKCU', 'Environment', 'test_value');
+%! assert(qval, int32(0));
+%! err = win32_WriteRegistry('HKCU','Environment','test_value', 1);
+%! qval = winqueryreg('HKCU', 'Environment', 'test_value');
+%! assert(qval, int32(1));
+%! err = win32_WriteRegistry('HKCU','Environment','test_value', "string");
+%! qval = winqueryreg('HKCU', 'Environment', 'test_value');
+%! assert(strcmp(qval, "string"));
+%! err = win32_WriteRegistry('HKCU','Environment\\\\Notvalid','test_value', "string");
+%! assert(err != 0);
+%! fail ("win32_WriteRegistry('HKCU','Environment','test_value', {})", "unsupported type to registry conversion");
 #endif

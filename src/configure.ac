@@ -150,6 +150,15 @@ OF_OCTAVE_LIST_ALT_SYMS([
   [OV_ISEMPTY],
   [],
   []
+],
+
+[dnl
+  [is_numeric_type],
+  [isnumeric],
+  [[octave_value ().isnumeric ();]],
+  [OV_ISNUMERIC],
+  [],
+  []
 ]
 
 ],[oct-alt-includes.h])

@@ -80,6 +80,31 @@ win32_MessageBox (const char * text,
   return MessageBox (NULL, text, title, boxtype | MB_SETFOREGROUND );
 }
 
+char *octave_to_win32_reg(const octave_value &v, int *sz, int *type)
+{
+  if (v.is_string ())
+    {
+      std::string str = v.string_value();
+      *sz = str.length();
+      *type = REG_SZ;
+      return strdup(str.c_str());
+    }
+
+  else if (v.length() == 1 && v.OV_ISNUMERIC())
+    {
+      DWORD val = v.int_value();
+
+      char * buffer = new char[sizeof(DWORD)];
+      *sz = sizeof(DWORD);
+      *type =  REG_DWORD;
+      memcpy (buffer, (void*)&val, sizeof(DWORD));
+
+      return buffer;
+    }
+
+  return 0;
+}
+
 octave_value win32_reg_to_octave(char *buffer, int sz, int type)
 {
   octave_value retval;
@@ -186,8 +211,6 @@ win32_ScanRegistryKeys (const char *key,
   return retval;
 }
 
-
-
 int
 win32_ReadRegistry (const char *key,
                     const char *subkey,
@@ -222,4 +245,34 @@ win32_ReadRegistry (const char *key,
   RegCloseKey (hsubkey);
   return retval;
 }
+
+int
+win32_WriteRegistry (const char *key,
+                    const char *subkey,
+                    const char *value,
+                    char * buffer,
+                    int  buffer_sz,
+		    int  type)
+{
+  HKEY hprimkey, hsubkey;
+
+  hprimkey = string_to_rootkey(key);
+
+  if (hprimkey == 0)
+    {
+      return -1; // We can't handle this key
+    }
+
+  int retval;
+
+  retval = RegOpenKeyEx (hprimkey, subkey, 0, KEY_SET_VALUE, &hsubkey);
+  if (retval == NO_ERROR)
+    {
+      retval = RegSetValueEx (hsubkey, value, 0, type, reinterpret_cast<BYTE*>(buffer), buffer_sz);
+    }
+
+  RegCloseKey (hsubkey);
+  return retval;
+}
+
 #endif
