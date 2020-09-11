@@ -248,12 +248,12 @@ In the case of failure, 'rv' will be empty\n \
     }
   else
     {
-      char * buffer= new char[ buffer_sz ];
+      OCTAVE_LOCAL_BUFFER(char, buffer, buffer_sz + 1);
+      buffer[buffer_sz] = '\0';
       int retcode= win32_ReadRegistry (key,subkey,value,buffer, &buffer_sz, &type);
       retval(0)= string_vector (buffer);
       retval(1)= (double) retcode;
       retval(2)= (double) buffer_sz;
-      delete buffer;
     }
 
   free (key);
@@ -340,7 +340,7 @@ success, while other codes indicate failure\n \
       int retcode = win32_WriteRegistry (key, subkey, value, buffer, buffer_sz, type);
       retval (0)= (double) retcode;
 
-      free(buffer);
+      delete [] buffer;
     }
 
   free (key);

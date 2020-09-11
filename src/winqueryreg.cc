@@ -208,6 +208,7 @@ endfor\n \
       {
         //char * buffer= new char[ buffer_sz + 1 ];
         OCTAVE_LOCAL_BUFFER(char, buffer, buffer_sz + 1);
+        buffer[buffer_sz] = '\0';
         int retcode= win32_ReadRegistry (rootkey,subkey,nargin == 3 ? value : NULL,buffer, &buffer_sz, &type);
 
         retval (0) = win32_reg_to_octave(buffer, buffer_sz, type);

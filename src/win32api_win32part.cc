@@ -115,7 +115,7 @@ octave_value win32_reg_to_octave(char *buffer, int sz, int type)
     }
   else if (type == REG_SZ || type == REG_EXPAND_SZ)
     {
-      retval = string_vector (std::string(buffer, sz));
+      retval = string_vector (std::string(buffer));
     }
   else
     {
