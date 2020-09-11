@@ -40,50 +40,68 @@ if test -z "$OCTAVE_CONFIG"; then
   OCTAVE_CONFIG=$MKOCTFILE
 fi
 AC_MSG_CHECKING([octave for $1])
-of_ac_tmp_m_path=`$OCTAVE_CONFIG -p FCNFILEDIR`
-of_ac_tmp_oct_path=`$OCTAVE_CONFIG -p OCTFILEDIR`
-# a .m file ?
-of_ac_tmp=`find "$of_ac_tmp_m_path" -type f -name $1.m | $GREP -v private | head -1`
-# a .oct file
-if test -z "$of_ac_tmp"; then
- of_ac_tmp=`find "$of_ac_tmp_oct_path" -type f -name $1.oct | head -1`
+AS_VAR_PUSHDEF([ac_var], m4_toupper(octave_have_$1))
+AS_VAR_SET(of_ac_tmp_m_path,`$OCTAVE_CONFIG -p FCNFILEDIR`)
+AS_VAR_SET(of_ac_tmp_oct_path,`$OCTAVE_CONFIG -p OCTFILEDIR`)
+if test m4_index($1, [.]) != -1; then
+  # a name like a namespace
+  of_ac_tmp="m4_translit($1,[.],[/])"
+  _AS_ECHO_LOG([try to find $of_ac_tmp.m])
+  #of_ac_tmp=`find "$of_ac_tmp_m_path" -type f -path "*/$of_ac_tmp.m" | head -1`
+  AS_VAR_SET(of_ac_tmp,`find "$of_ac_tmp_m_path" -type f -path "*/$of_ac_tmp.m" | head -1`)
+else
+  # a .m file ?
+  _AS_ECHO_LOG([try to find $1.m])
+  AS_VAR_SET(of_ac_tmp,`find "$of_ac_tmp_m_path" -type f -name $1.m | $GREP -v private | head -1`)
+  # a .oct file
+  if test -z "$of_ac_tmp"; then
+   _AS_ECHO_LOG([try to find $1.oct])
+   AS_VAR_SET(of_ac_tmp,`find "$of_ac_tmp_oct_path" -type f -name $1.oct | head -1`)
+  fi
+  # a file referenced from PKG_ADD
+  if test -z "$of_ac_tmp"; then
+   _AS_ECHO_LOG([try to find $1 in PKG_ADD])
+   AS_VAR_SET(of_ac_tmp, `find "$of_ac_tmp_oct_path" -type f -name PKG_ADD -exec grep -il ".*\"$1\".*" {} \; -print | head -1`)
+  fi
+  # a builtin ?
+  if test -z "$of_ac_tmp"; then
+    _AS_ECHO_LOG([try to find $1 as builtin])
+    AC_LANG_PUSH([C++])
+    AC_REQUIRE_CPP()
+    save_of_ac_tmp_CXX="$CXX"
+    save_of_ac_tmp_LIBS="$LIBS"
+    save_of_ac_tmp_LDFLAGS="$LDFLAGS"
+    save_of_ac_tmp_CXXFLAGS="$CXXFLAGS"
+    CXX=`$MKOCTFILE -p CXX`
+    CXXFLAGS="`$MKOCTFILE -p INCFLAGS` $CXXFLAGS"
+    LDFLAGS="-L`$MKOCTFILE -p OCTLIBDIR` $LDFLAGS"
+    LIBS="`$MKOCTFILE -p OCTAVE_LIBS` $LIBS"
+    AC_LINK_IFELSE(
+      [AC_LANG_PROGRAM(
+        [[#include <octave/oct.h>]
+         [#include <octave/builtin-defun-decls.h>]],
+        [F$1()])],
+      [of_ac_tmp=builtin],
+      []
+    )
+    CXX=$save_of_ac_tmp_CXX
+    LIBS=$save_of_ac_tmp_LIBS
+    CXXFLAGS=$save_of_ac_tmp_CXXFLAGS
+    LDFLAGS=$save_of_ac_tmp_LDFLAGS
+    AC_LANG_POP([C++])
+  fi
 fi
-# a file referenced from PKG_ADD
-if test -z "$of_ac_tmp"; then
- _ac_tmp=`find "$of_ac_tmp_oct_path" -type f -name PKG_ADD -exec grep -il ".*\"$1\".*" {} \; -print | head -1`
-fi
-# a builtin ?
-if test -z "$of_ac_tmp"; then
-AC_LANG_PUSH([C++])
-AC_REQUIRE_CPP()
-save_of_ac_tmp_CXX="$CXX"
-save_of_ac_tmp_LIBS="$LIBS"
-save_of_ac_tmp_LDFLAGS="$LDFLAGS"
-save_of_ac_tmp_CXXFLAGS="$CXXFLAGS"
-CXX=`$MKOCTFILE -p CXX`
-CXXFLAGS="`$MKOCTFILE -p INCFLAGS` $CXXFLAGS"
-LDFLAGS="-L`$MKOCTFILE -p OCTLIBDIR` $LDFLAGS"
-LIBS="`$MKOCTFILE -p OCTAVE_LIBS` $LIBS"
-AC_LINK_IFELSE(
-  [AC_LANG_PROGRAM([[#include <octave/oct.h>]
-                    [#include <octave/builtin-defun-decls.h>]],
-                   [F$1()])],
-  [of_ac_tmp=builtin],
-  []
-)
-CXX=$save_of_ac_tmp_CXX
-LIBS=$save_of_ac_tmp_LIBS
-CXXFLAGS=$save_of_ac_tmp_CXXFLAGS
-LDFLAGS=$save_of_ac_tmp_LDFLAGS
-AC_LANG_POP([C++])
-fi
+
 if test -n "$of_ac_tmp"; then
+ _AS_ECHO_LOG([found $1 as $of_ac_tmp])
  AC_MSG_RESULT([yes])
- AC_SUBST(m4_toupper(OCTAVE_HAVE_$1),[1])
- #AC_DEFINE(m4_toupper(OCTAVE_HAVE_$1),[],[Defined if $2 exists])
+ AC_SUBST(ac_var,[1])
+ #AC_DEFINE(ac_var,[],[Defined if $1 exists])
  $2
 else
+ _AS_ECHO_LOG([could not find $1])
  AC_MSG_RESULT([no])
  $3
 fi
+AS_VAR_POPDEF([ac_var])
 ]) 
