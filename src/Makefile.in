@@ -13,6 +13,7 @@ ifeq ("@PKGWINQUERYREGFUNC@","winqueryreg")
 endif
 
 PROGS += winopen.oct
+PROGS += clipboard.oct
 
 ARCHTESTS = archtests
 ARCHDIR   := "$(shell $(OCTAVE_CONFIG) -p CANONICAL_HOST_TYPE)-$(shell $(OCTAVE_CONFIG) -p API_VERSION)"
@@ -33,6 +34,9 @@ winqueryreg.oct: winqueryreg.o win32api_win32part.o
 	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
 
 winopen.oct: winopen.o
+	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
+
+clipboard.oct: clipboard.o
 	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
 
 __COM__.oct: __COM__.o

@@ -8,6 +8,7 @@ Windows Utilities
  win32_RegEnumKey
  win32api
  winopen
+ clipboard
  @PKGWINQUERYREGFUNC@
 COM Interface
  actxserver
