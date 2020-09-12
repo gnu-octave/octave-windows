@@ -46,6 +46,12 @@ win32_WriteRegistry(const char *key,
 		    int  type
                   );
 
+int
+win32_DeleteRegistry(const char *key,
+                    const char *subkey,
+                    const char *value
+                  );
+
 bool win32_IsValidRootKey(const char *key);
 
 int
@@ -525,6 +531,76 @@ In the case of failure, 'rv' will be empty\n \
   return retval;
 }
 
+// PKG_ADD: autoload ("win32_DeleteRegistry", "win32api.oct");
+DEFUN_DLD (win32_DeleteRegistry, args, ,
+  "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {@var{code} =} win32_DeleteRegistry (@var{key}, @var{subkey}, @var{valuename})\n \
+\n \
+Delete a value from the Windows registry.\n \
+\n \
+Example:\n \
+@example\n \
+key='test\\\\temp';\n \
+# create key\n \
+win32_WriteRegistry('HKLM',key,'test_value', 0)\n \
+# delete it\n \
+win32_DeleteRegistry('HKLM',key,'test_value')\n \
+@end example\n \
+\n \
+key must be one of the following strings:\n \
+@table @asis\n \
+@item HKCR\n \
+HKEY_CLASSES_ROOT\n \
+@item HKCU\n \
+HKEY_CURRENT_USER\n \
+@item HKLM\n \
+HKEY_LOCAL_MACHINE\n \
+@item HKU\n \
+HKEY_USERS\n \
+@end table\n \
+\n \
+@var{subkey} is the subkey to the registry value.\n \
+\n \
+@var{valuename} is the name of the value to delete from the registry.\n \
+\n \
+@var{code} is the success code. Values correspond to the\n \
+codes in the winerror.h header file. The code of 0 is\n \
+success, while other codes indicate failure\n \
+@end deftypefn")
+{
+  octave_value_list retval;
+#ifndef USING_WINDOWS
+  error ("win32api: Your system doesn't support the COM interface");
+#else
+  int nargin = args.length();
+  if ( nargin != 3 ||
+       !args (0).is_string () ||
+       !args (1).is_string () ||
+       !args (2).is_string ())
+    {
+      print_usage ();
+      return retval;
+    }
+
+  if (! win32_IsValidRootKey(args (0).string_value ().c_str ()))
+    {
+      error ("win32_DeleteRegistry: invalid reg key");
+      return retval;
+    }
+
+  char * key   = strdup (args (0).string_value ().c_str ());
+  char * subkey= strdup (args (1).string_value ().c_str ());
+  char * value = strdup (args (2).string_value ().c_str ());
+
+  int retcode = win32_DeleteRegistry (key, subkey, value);
+  retval (0)= (double) retcode;
+
+  free (key);
+  free (subkey);
+  free (value);
+#endif
+  return retval;
+}
 
 #if 0
 %!testif HAVE_WINDOWS_H
@@ -569,4 +645,15 @@ In the case of failure, 'rv' will be empty\n \
 %! err = win32_WriteRegistry('HKCU','Environment\\\\Notvalid','test_value', "string");
 %! assert(err != 0);
 %! fail ("win32_WriteRegistry('HKCU','Environment','test_value', {})", "unsupported type to registry conversion");
+
+%!testif HAVE_WINDOWS_H
+%! err = win32_WriteRegistry('HKCU','Environment','test_value', 0);
+%! assert(err, 0);
+%! val = win32_ReadRegistry('HKCU','Environment', 'test_value');
+%! assert(val, int32(0));
+%! err = win32_DeleteRegistry('HKCU','Environment','test_value');
+%! assert(err, 0);
+%! err = win32_DeleteRegistry('HKCU','Environment','test_value');
+%! assert(err != 0);
+%! fail ("win32_ReadRegistry('HKCU','Environment', test_value')");
 #endif

@@ -153,9 +153,9 @@ txt = clipboard('paste');\n \
 #if 0
 %!testif HAVE_WINDOWS_H
 %! fail ("clipboard(1)", "expected first argument to be a string");
-%! fail ("clipboard("invalid")", "unknown command");
-%! fail ("clipboard("copy")", "expected data input");
-%! fail ("clipboard("paste", "hello")", "unexpected data input");
+%! fail ("clipboard('invalid')", "unknown command");
+%! fail ("clipboard('copy')", "expected data input");
+%! fail ("clipboard('paste', "hello")", "unexpected data input");
 
 %!testif HAVE_WINDOWS_H
 %! clipboard("copy", "hello");

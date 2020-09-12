@@ -1,7 +1,13 @@
 Summary of important user-visible changes for Windows TBD
 ------------------------------------------------------------
 
-* added new function 'windows_feature', win32_RegEnumValue, win32_RegEnumKey
+* added new functions:
+  - clipboard
+  - windows_feature
+  - win32_RegEnumValue
+  - win32_RegEnumKey
+  - win32_WriteRegistry
+  - win32_DeleteRegistry
 
 * bugfix: compile issue on octave <= 4.0.X
 

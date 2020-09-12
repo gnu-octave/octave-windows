@@ -2,6 +2,7 @@ windows >> Windows
 Windows Utilities
  grab
  win32_MessageBox
+ win32_DeleteRegistry
  win32_ReadRegistry
  win32_WriteRegistry
  win32_RegEnumValue

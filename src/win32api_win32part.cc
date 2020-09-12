@@ -275,4 +275,33 @@ win32_WriteRegistry (const char *key,
   return retval;
 }
 
+int
+win32_DeleteRegistry (
+  const char *key,
+  const char *subkey,
+  const char *value
+)
+{
+  HKEY hprimkey, hsubkey;
+
+  hprimkey = string_to_rootkey(key);
+
+  if (hprimkey == 0)
+    {
+      return -1; // We can't handle this key
+    }
+
+  int retval;
+
+  retval = RegOpenKeyEx (hprimkey, subkey, 0, KEY_SET_VALUE, &hsubkey);
+  if (retval == NO_ERROR)
+    {
+      retval = RegDeleteValue (hsubkey, value);
+    }
+
+  RegCloseKey (hsubkey);
+  return retval;
+}
+
+
 #endif
