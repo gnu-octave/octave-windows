@@ -649,11 +649,11 @@ success, while other codes indicate failure\n \
 %!testif HAVE_WINDOWS_H
 %! err = win32_WriteRegistry('HKCU','Environment','test_value', 0);
 %! assert(err, 0);
-%! val = win32_ReadRegistry('HKCU','Environment', 'test_value');
+%! val = winqueryreg('HKCU', 'Environment', 'test_value');
 %! assert(val, int32(0));
 %! err = win32_DeleteRegistry('HKCU','Environment','test_value');
 %! assert(err, 0);
 %! err = win32_DeleteRegistry('HKCU','Environment','test_value');
 %! assert(err != 0);
-%! fail ("win32_ReadRegistry('HKCU','Environment', test_value')");
+%! fail ("winqueryreg('HKCU','Environment', test_value')");
 #endif
