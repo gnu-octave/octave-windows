@@ -29,6 +29,54 @@
 #include <windows.h>
 #endif
 
+static std::string
+mat2str (const octave_value &ov)
+{
+  if (ov.ndims() > 2)
+    {
+      error ("Can not convert more than 2 dimatioons");
+      return "";
+    }
+
+  std::stringstream str;
+  
+  bool append_el = true;
+  if(ov.is_uint8_type())
+    str << "uint8(";
+  else if(ov.is_uint16_type())
+    str << "uint16(";
+  else if(ov.is_uint32_type())
+    str << "uint32(";
+  else if(ov.is_int8_type())
+    str << "int8(";
+  else if(ov.is_int16_type())
+    str << "int16(";
+  else if(ov.is_int32_type())
+    str << "int32(";
+  else
+    append_el = false;
+  
+  str << "[";
+
+  Matrix mat=ov.matrix_value() ; //to matrix of doubles
+  octave_idx_type nr = mat.size(0);
+  octave_idx_type nc = mat.size(1);
+
+  for (octave_idx_type r = 0; r < nr ;r++)
+    {
+      for (octave_idx_type c = 0; c < nc ;c++)
+        {
+            if(c != 0) str << " ";
+            str << mat(r, c);
+        }
+      str << ";";
+    }
+  str << "]";
+  if(append_el)
+    str << ")";
+  return str.str();
+}
+
 DEFUN_DLD (clipboard, args, ,
   "-*- texinfo -*-\n \
 @deftypefn {Loadable Function} clipboard (@var{'copy'}, @var{data})\n \
@@ -89,8 +137,12 @@ txt = clipboard('paste');\n \
          }
        else
          {
-           std::string data = args(1).string_value ();
-	   // TODO: for matrix, we convert each element
+           std::string data = "";
+	   
+	   if(args(1).is_string())
+	     data = args(1).string_value ();
+	   else
+	     data = mat2str(args(1));
 
            HGLOBAL hglb = GlobalAlloc(GMEM_MOVEABLE, data.length()+1);
 
@@ -155,10 +207,20 @@ txt = clipboard('paste');\n \
 %! fail ("clipboard(1)", "expected first argument to be a string");
 %! fail ("clipboard('invalid')", "unknown command");
 %! fail ("clipboard('copy')", "expected data input");
-%! fail ("clipboard('paste', "hello")", "unexpected data input");
+%! fail ("clipboard('paste', 'hello')", "unexpected data input");
 
 %!testif HAVE_WINDOWS_H
 %! clipboard("copy", "hello");
 %! txt = clipboard("paste");
 %! assert(txt, "hello");
+
+%!testif HAVE_WINDOWS_H
+%! a = [1 2 3; 4 5 6];
+%! clipboard("copy", a);
+%! txt = clipboard("paste");
+%! assert(eval(txt), a);
+%!
+%! clipboard("copy", uint16(a));
+%! txt = clipboard("paste");
+%! assert(eval(txt), uint16(a));
 #endif
