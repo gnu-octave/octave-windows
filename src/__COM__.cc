@@ -26,6 +26,7 @@
 #include <octave/Cell.h>
 #include <octave/parse.h>
 #include <octave/oct-map.h>
+#include <octave/lo-sysdep.h>
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -44,6 +45,9 @@
 static std::wstring
 string_to_wstring (const std::string& s)
 {
+#if 1
+  return octave::sys::u8_to_wstring (s);
+#else
   const char* cs = s.c_str ();
   int len = s.length ();
 
@@ -54,11 +58,15 @@ string_to_wstring (const std::string& s)
   std::use_facet<std::ctype<wchar_t> >(std::locale ()).widen (
     cs, cs+len, &tmp[0]);
   return std::wstring (&tmp[0], len);
+#endif
 }
 
 static std::string
 wstring_to_string (const std::wstring& ws)
 {
+#if 1
+  return octave::sys::u8_from_wstring (ws);
+#else
   const wchar_t* wcs = ws.c_str ();
   int len = ws.length ();
 
@@ -69,6 +77,7 @@ wstring_to_string (const std::wstring& ws)
   std::use_facet<std::ctype<wchar_t> >(std::locale ()).narrow (
       wcs, wcs+len, ' ', &tmp[0]);
   return std::string (&tmp[0], len);
+#endif
 }
 
 static std::string
