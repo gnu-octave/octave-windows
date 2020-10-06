@@ -1138,9 +1138,10 @@ DEFUN_DLD(__windows_pkg_lock__, args, ,  "internal function")
 %! fail ("actxserver(0)", "invalid ActiveX server name");
 
 %!test
-%! assert(windows_feature("COM_SafeArraySingleDim"), 0)
-%! windows_feature("COM_SafeArraySingleDim", 1)
-%! assert(windows_feature("COM_SafeArraySingleDim"), 1)
+%! assert(windows_feature("COM_SafeArraySingleDim"), 0);
+%! windows_feature("COM_SafeArraySingleDim", 1);
+%! assert(windows_feature("COM_SafeArraySingleDim"), 1);
+%! windows_feature("COM_SafeArraySingleDim", 0);
 
 %!test
 %! fail ("windows_feature()", "Expected a name and optional value");
