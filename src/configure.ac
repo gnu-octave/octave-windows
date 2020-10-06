@@ -163,6 +163,17 @@ OF_OCTAVE_LIST_ALT_SYMS([
 
 ],[oct-alt-includes.h])
 
+OF_OCTAVE_CHECK_SYM(
+  [for octave::sys::u8_to_wstring],
+  [
+    std::wstring s = octave::sys::u8_to_wstring("test");
+  ],
+  [HAVE_OCTAVE_U8_TO_WSTRING],
+  [
+    #include <octave/lo-sysdep.h>
+  ]
+)
+
 CXX=$save_altsyms_CXX
 CXXFLAGS=$save_altsyms_CXXFLAGS
 LDFLAGS=$save_altsyms_LDFLAGS

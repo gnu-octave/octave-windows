@@ -45,7 +45,7 @@
 static std::wstring
 string_to_wstring (const std::string& s)
 {
-#if 1
+#if HAVE_OCTAVE_U8_TO_WSTRING
   return octave::sys::u8_to_wstring (s);
 #else
   const char* cs = s.c_str ();
@@ -64,7 +64,7 @@ string_to_wstring (const std::string& s)
 static std::string
 wstring_to_string (const std::wstring& ws)
 {
-#if 1
+#if HAVE_OCTAVE_U8_TO_WSTRING
   return octave::sys::u8_from_wstring (ws);
 #else
   const wchar_t* wcs = ws.c_str ();

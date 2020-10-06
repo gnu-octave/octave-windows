@@ -13,6 +13,8 @@ Summary of important user-visible changes for Windows TBD
 
 * bugfix: winqueryreg error on use of "name" parameter
 
+* use utf-8 encoding for octave 5.2+
+
 
 Summary of important user-visible changes for Windows 1.5.0
 ------------------------------------------------------------
