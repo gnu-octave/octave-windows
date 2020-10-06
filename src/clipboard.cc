@@ -59,8 +59,8 @@ mat2str (const octave_value &ov)
   str << "[";
 
   Matrix mat=ov.matrix_value() ; //to matrix of doubles
-  octave_idx_type nr = mat.size(0);
-  octave_idx_type nc = mat.size(1);
+  octave_idx_type nr = mat.rows();
+  octave_idx_type nc = mat.cols();
 
   for (octave_idx_type r = 0; r < nr ;r++)
     {
