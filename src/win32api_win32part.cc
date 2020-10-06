@@ -22,6 +22,7 @@
 
 #include <octave/oct.h>
 #include <octave/Cell.h>
+#include <octave/lo-sysdep.h>
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -29,6 +30,44 @@
 
 #ifdef USING_WINDOWS
 #include <windows.h>
+
+static std::wstring
+string_to_wstring (const std::string& s)
+{
+#if HAVE_OCTAVE_U8_TO_WSTRING
+  return octave::sys::u8_to_wstring (s);
+#else
+  const char* cs = s.c_str ();
+  int len = s.length ();
+
+  if (len == 0)
+    return std::wstring (L"");
+
+  std::vector<wchar_t> tmp (len);
+  std::use_facet<std::ctype<wchar_t> >(std::locale ()).widen (
+    cs, cs+len, &tmp[0]);
+  return std::wstring (&tmp[0], len);
+#endif
+}
+
+static std::string
+wstring_to_string (const std::wstring& ws)
+{
+#if HAVE_OCTAVE_U8_TO_WSTRING
+  return octave::sys::u8_from_wstring (ws);
+#else
+  const wchar_t* wcs = ws.c_str ();
+  int len = ws.length ();
+
+  if (len == 0)
+    return std::string ("");
+
+  std::vector<char> tmp (len);
+  std::use_facet<std::ctype<wchar_t> >(std::locale ()).narrow (
+      wcs, wcs+len, ' ', &tmp[0]);
+  return std::string (&tmp[0], len);
+#endif
+}
 
 HKEY string_to_rootkey(const char *key)
 {
@@ -77,7 +116,9 @@ win32_MessageBox (const char * text,
                   const char * title,
                   int boxtype)
 {
-  return MessageBox (NULL, text, title, boxtype | MB_SETFOREGROUND );
+  std::wstring wtext = string_to_wstring (text ? text : "");
+  std::wstring wtitle = string_to_wstring (title ? title : "");
+  return MessageBoxW (NULL, wtext.c_str (), wtitle.c_str (), boxtype | MB_SETFOREGROUND );
 }
 
 char *octave_to_win32_reg(const octave_value &v, int *sz, int *type)
@@ -85,9 +126,12 @@ char *octave_to_win32_reg(const octave_value &v, int *sz, int *type)
   if (v.is_string ())
     {
       std::string str = v.string_value();
-      *sz = str.length();
+      std::wstring wstr = string_to_wstring (str);
+      *sz = (str.length() * sizeof(wchar_t));
       *type = REG_SZ;
-      return strdup(str.c_str());
+      char * buffer = new char[*sz+1];
+      memcpy (buffer, (void*)wstr.c_str (), *sz);
+      return buffer;
     }
 
   else if (v.length() == 1 && v.OV_ISNUMERIC())
@@ -115,7 +159,7 @@ octave_value win32_reg_to_octave(char *buffer, int sz, int type)
     }
   else if (type == REG_SZ || type == REG_EXPAND_SZ)
     {
-      retval = string_vector (std::string(buffer));
+      retval = string_vector (wstring_to_string(reinterpret_cast<wchar_t*>(buffer)));
     }
   else
     {
@@ -141,20 +185,20 @@ win32_ScanRegistry (const char *key,
     }
 
   int retval;
-
-  retval= RegOpenKeyEx (hprimkey, subkey, 0, KEY_READ, &hsubkey);
+  std::wstring wsubkey = string_to_wstring (subkey);
+  retval= RegOpenKeyExW (hprimkey, wsubkey.c_str (), 0, KEY_READ, &hsubkey);
   if (retval == NO_ERROR)
     {
       int count = 0;
       #define MAX_KEYNAME_SIZE 256
       DWORD keynamesize = MAX_KEYNAME_SIZE;
-      char keyname[MAX_KEYNAME_SIZE+1];
+      wchar_t keyname[MAX_KEYNAME_SIZE+1];
 
-      while ( (retval = RegEnumValue (hsubkey, count, keyname, 
+      while ( (retval = RegEnumValueW (hsubkey, count, keyname, 
                                       &keynamesize, NULL, NULL, NULL, NULL
             )) == ERROR_SUCCESS)
         {
-          fields.push_back(keyname);
+          fields.push_back(wstring_to_string(keyname));
           keynamesize = MAX_KEYNAME_SIZE;
           count ++;
         }
@@ -185,19 +229,20 @@ win32_ScanRegistryKeys (const char *key,
 
   int retval;
 
-  retval= RegOpenKeyEx (hprimkey, subkey, 0, KEY_READ, &hsubkey);
+  std::wstring wsubkey = string_to_wstring (subkey);
+  retval= RegOpenKeyExW (hprimkey, wsubkey.c_str (), 0, KEY_READ, &hsubkey);
   if (retval == NO_ERROR)
     {
       int count = 0;
       #define MAX_KEYNAME_SIZE 256
       DWORD keynamesize = MAX_KEYNAME_SIZE;
-      char keyname[MAX_KEYNAME_SIZE+1];
+      wchar_t keyname[MAX_KEYNAME_SIZE+1];
 
-      while ( (retval = RegEnumKeyEx (hsubkey, count, keyname, 
+      while ( (retval = RegEnumKeyExW (hsubkey, count, keyname, 
                                       &keynamesize, NULL, NULL, NULL, NULL
             )) == ERROR_SUCCESS)
         {
-          fields.push_back(keyname);
+          fields.push_back(wstring_to_string(keyname));
           keynamesize = MAX_KEYNAME_SIZE;
           count ++;
         }
@@ -230,12 +275,14 @@ win32_ReadRegistry (const char *key,
 
   int retval;
 
-  retval= RegOpenKeyEx (hprimkey, subkey, 0, KEY_READ, &hsubkey);
+  std::wstring wsubkey = string_to_wstring (subkey);
+  std::wstring wvalue = string_to_wstring (value);
+  retval= RegOpenKeyExW (hprimkey, wsubkey.c_str (), 0, KEY_READ, &hsubkey);
   if (retval == NO_ERROR)
     {
       DWORD dwBuffSz= *buffer_sz;
       DWORD reg_type;
-      retval= RegQueryValueEx (hsubkey, value, NULL, &reg_type, 
+      retval= RegQueryValueExW (hsubkey, wvalue.c_str (), NULL, &reg_type, 
                                (BYTE *) buffer, & dwBuffSz);
       *buffer_sz = dwBuffSz;
       if (type)
@@ -265,10 +312,12 @@ win32_WriteRegistry (const char *key,
 
   int retval;
 
-  retval = RegOpenKeyEx (hprimkey, subkey, 0, KEY_SET_VALUE, &hsubkey);
+  std::wstring wsubkey = string_to_wstring (subkey);
+  std::wstring wvalue = string_to_wstring (value);
+  retval = RegOpenKeyExW (hprimkey, wsubkey.c_str(), 0, KEY_SET_VALUE, &hsubkey);
   if (retval == NO_ERROR)
     {
-      retval = RegSetValueEx (hsubkey, value, 0, type, reinterpret_cast<BYTE*>(buffer), buffer_sz);
+      retval = RegSetValueExW (hsubkey, wvalue.c_str(), 0, type, reinterpret_cast<BYTE*>(buffer), buffer_sz);
     }
 
   RegCloseKey (hsubkey);
@@ -293,15 +342,27 @@ win32_DeleteRegistry (
 
   int retval;
 
-  retval = RegOpenKeyEx (hprimkey, subkey, 0, KEY_SET_VALUE, &hsubkey);
+  std::wstring wsubkey = string_to_wstring (subkey);
+  std::wstring wvalue = string_to_wstring (value);
+  retval = RegOpenKeyExW (hprimkey, wsubkey.c_str (), 0, KEY_SET_VALUE, &hsubkey);
   if (retval == NO_ERROR)
     {
-      retval = RegDeleteValue (hsubkey, value);
+      retval = RegDeleteValueW (hsubkey, wvalue.c_str ());
     }
 
   RegCloseKey (hsubkey);
   return retval;
 }
 
+
+int win32_ShellExecute (const char *fname)
+{
+  std::wstring wfname = string_to_wstring(fname);
+  HINSTANCE hinst = ShellExecuteW (
+    NULL, NULL, wfname.c_str (),
+    NULL, NULL, SW_SHOWDEFAULT
+  );
+  return hinst == 0 ? 1 : 0;
+}
 
 #endif

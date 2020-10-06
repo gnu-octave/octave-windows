@@ -30,6 +30,8 @@
 #include <shellapi.h>
 #endif
 
+extern int win32_ShellExecute (const char *fname);
+
 DEFUN_DLD (winopen, args, ,
   "-*- texinfo -*-\n \
 @deftypefn {Loadable Function} winopen (@var{name})\n \
@@ -68,10 +70,7 @@ winopen (pwd);\n \
       return retval;
     }
 
-  ShellExecute (
-    NULL, "open", args(0).string_value().c_str(),
-    NULL, NULL, SW_SHOWDEFAULT
-  );
+  win32_ShellExecute (args(0).string_value().c_str());
 #endif
   return retval;
 }

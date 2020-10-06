@@ -34,7 +34,7 @@ mat2str (const octave_value &ov)
 {
   if (ov.ndims() > 2)
     {
-      error ("Can not convert more than 2 dimatioons");
+      error ("Can not convert more than 2 dimensions");
       return "";
     }
 

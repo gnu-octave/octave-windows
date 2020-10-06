@@ -33,7 +33,7 @@ win32api.oct: win32api.o win32api_win32part.o
 winqueryreg.oct: winqueryreg.o win32api_win32part.o
 	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
 
-winopen.oct: winopen.o
+winopen.oct: winopen.o win32api_win32part.o
 	$(MKOCTFILE) -o $@ $^ $(OLELIBS)
 
 clipboard.oct: clipboard.o
