@@ -83,19 +83,19 @@ wstring_to_string (const std::wstring& ws)
 static std::string
 hresult_to_string (HRESULT hr)
 {
-  char errstring[100];
+  wchar_t errstring[100+1];
   std::string str;
 
-  if (FormatMessageA (
+  if (FormatMessageW (
     FORMAT_MESSAGE_FROM_SYSTEM,
     0, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), errstring,
-    sizeof(errstring)-1, 0) < 0)
+    100, 0) == 0)
     {
       str = "Unknown";
     }
   else
     {
-      str = errstring;
+      str = wstring_to_string(errstring);
     }
   return str;
 }
