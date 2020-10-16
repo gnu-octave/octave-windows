@@ -179,24 +179,23 @@ all: autoconf_target $(CC_SOURCES)
 # Start an Octave session with the package directories on the path for
 # interactice test of development sources.
 run: all
-	$(OCTAVE) --silent --persist --path "inst/" --path "src/" --path "examples/" \
+	$(OCTAVE) --silent --persist --path "$(TOPDIR)/inst/" --path "$(TOPDIR)/src/" --path "$(TOPDIR)/examples/" \
 	  --eval 'if(!isempty("$(DEPENDS)")); pkg load $(DEPENDS); endif;' \
 	  --eval '$(PKG_ADD)'
 
 # Test example blocks in the documentation.  Needs doctest package
 #  http://octave.sourceforge.net/doctest/index.html
 doctest: all
-	$(OCTAVE) --path "inst/" --path "src/" \
+	$(OCTAVE) --path "$(TOPDIR)/inst" --path "$(TOPDIR)/src" \
 	  --eval '${PKG_ADD}' \
 	  --eval 'pkg load doctest;' \
-	  --eval "targets = '$(shell (ls inst; ls src | grep .oct) | cut -f2 -d@ | cut -f1 -d.)';" \
-	  --eval "targets = strsplit (targets, ' ');" \
+	  --eval "targets = {'$(TOPDIR)/inst', '$(TOPDIR)/src'};" \
 	  --eval "doctest (targets);"
 
 # Note "doctest" as prerequesite.  When testing the package, also check
 # the documentation.
 check: all
-	$(OCTAVE) --silent --path "inst/" --path "src/" --path "examples/" \
+	$(OCTAVE) --silent --path "$(TOPDIR)/inst/" --path "$(TOPDIR)/src/" \
 	  --eval 'if(!isempty("$(DEPENDS)")); pkg load $(DEPENDS); endif;' \
 	  --eval '${PKG_ADD}' \
 	  --eval "__run_test_suite__ ({'$(TOPDIR)/inst'}, {})"
