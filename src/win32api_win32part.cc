@@ -30,6 +30,7 @@
 
 #ifdef USING_WINDOWS
 #include <windows.h>
+#include <shellapi.h>
 
 static std::wstring
 string_to_wstring (const std::string& s)
