@@ -203,18 +203,28 @@ txt = clipboard('paste');\n \
 }
 
 #if 0
-%!testif HAVE_WINDOWS_H
+%!xtest
+%! # using xtest as windows may not allow us to get the clipboard
+%! if (! __have_feature__ ("WINDOWS_H"))
+%!   return;
+%! endif
 %! fail ("clipboard(1)", "expected first argument to be a string");
 %! fail ("clipboard('invalid')", "unknown command");
 %! fail ("clipboard('copy')", "expected data input");
 %! fail ("clipboard('paste', 'hello')", "unexpected data input");
 
-%!testif HAVE_WINDOWS_H
+%!xtest
+%! if (! __have_feature__ ("WINDOWS_H"))
+%!   return;
+%! endif
 %! clipboard("copy", "hello");
 %! txt = clipboard("paste");
 %! assert(txt, "hello");
 
-%!testif HAVE_WINDOWS_H
+%!xtest
+%! if (! __have_feature__ ("WINDOWS_H"))
+%!   return;
+%! endif
 %! a = [1 2 3; 4 5 6];
 %! clipboard("copy", a);
 %! txt = clipboard("paste");
