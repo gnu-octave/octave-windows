@@ -2,6 +2,7 @@
  * Interface to win32 APIs
  * 
  * Copyright (C) 2002-2020 Andy Adler <adler@ncf.ca>
+ * Copyright (C) 2020 John DOnoghue <john.donoghue@ieee.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
