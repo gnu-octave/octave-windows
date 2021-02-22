@@ -778,7 +778,7 @@ make_safearray_from_dims(const dim_vector& dv, VARTYPE vt, int maxDim)
 }
 
 static void
-octave_to_com(const octave_value& ov, VARIANT *var)
+octave_to_com(const octave_value& ov, VARIANT *var, bool allow_empty)
 {
   VariantInit (var);
 
@@ -803,7 +803,14 @@ octave_to_com(const octave_value& ov, VARIANT *var)
   }
   else if (ov.is_real_matrix () && ov.OV_ISEMPTY ())
   {
-    var->vt = VT_EMPTY;
+    if (allow_empty)
+      var->vt = VT_EMPTY;
+    else
+      {
+	// assume a optional parameter
+        var->vt = VT_ERROR;
+        var->scode = DISP_E_PARAMNOTFOUND;
+      }
   }
   else if (ov.is_real_matrix ())
   {
@@ -828,7 +835,7 @@ octave_to_com(const octave_value& ov, VARIANT *var)
 
     SafeArrayAccessData (arr, (void**)&data);
     for (int k=0; k<M.numel (); k++)
-      octave_to_com (M (k), &data[k]);
+      octave_to_com (M (k), &data[k], true);
     SafeArrayUnaccessData (arr);
 
     var->vt = VT_ARRAY|VT_VARIANT;
@@ -874,7 +881,7 @@ do_invoke (const char *fname, WORD flag, const octave_value_list& args)
   dispParams.cArgs = args.length ()-2;
   vargs = (VARIANT*)LocalAlloc (LMEM_FIXED|LMEM_ZEROINIT, sizeof(VARIANT)*dispParams.cArgs);
   for (int k=2, v=dispParams.cArgs-1; v>=0; k++, v--)
-    octave_to_com (args (k), &vargs[v]);
+    octave_to_com (args (k), &vargs[v], false);
   dispParams.rgvarg = vargs;
   if (flag & DISPATCH_PROPERTYPUT)
     {
