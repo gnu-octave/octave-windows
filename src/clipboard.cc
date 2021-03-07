@@ -82,7 +82,7 @@ DEFUN_DLD (clipboard, args, ,
 @deftypefn {Loadable Function} clipboard (@var{'copy'}, @var{data})\n \
 @deftypefnx {Loadable Function} @var{txt} = clipboard (@var{'paste'})\n \
 \n \
-Insert or get data from the clipbaord.\n \
+Insert or get data from the clipboard.\n \
 \n \
 @var{'copy'} or @var{'paste'} is the required operation to perform.\n \
 where 'copy' will copy data to the clipboard, and paste will paste data from\n \
