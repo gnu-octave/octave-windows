@@ -1,7 +1,9 @@
-Summary of important user-visible changes for Windows 1.6.0+
+Summary of important user-visible changes for Windows 1.6.1
 ------------------------------------------------------------
 
 * Allow passing optional paramters to methods (Bug #60098)
+
+* Minor doc updates
 
 Summary of important user-visible changes for Windows 1.6.0
 ------------------------------------------------------------
