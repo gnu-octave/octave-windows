@@ -67,6 +67,8 @@ OLELIBS=
 if test $have_windows = yes; then
   AC_DEFINE([USING_WINDOWS], [1], [are we a windows system])
   OLELIBS="-ladvapi32 -lole32 -loleaut32 -luuid"
+  # prevent some warnings by defining this ...
+  AC_DEFINE([_NO_SYS_GUID_OPERATOR_EQ_], [1], [Dont define guid == ops])
 fi
 AC_SUBST(OLELIBS)
 
