@@ -514,6 +514,7 @@ destroy (app); \n \
           std::wstring progID = string_to_wstring (args (0).string_value ());
           CLSID clsID;
           IDispatch *disp;
+          IUnknown *unknown;
 
           if (CLSIDFromProgID (progID.c_str (), &clsID) != S_OK)
             {
@@ -521,12 +522,21 @@ destroy (app); \n \
               return retval;
             }
           if (CoCreateInstance (clsID, NULL, CLSCTX_INPROC_SERVER|CLSCTX_LOCAL_SERVER,
-                                IID_IDispatch, (void**)&disp) != S_OK)
+                                IID_IUnknown, (void**)&unknown) != S_OK)
             {
               error ("actxserver: unable to create server instance for `%s'",
                       args (0).string_value ().c_str ());
               return retval;
             }
+          if (unknown->QueryInterface(IID_IDispatch, (void **)&disp) != S_OK)
+            {
+              unknown->Release ();
+              error ("actxserver: unable to get dispatch interface for `%s'",
+                      args (0).string_value ().c_str ());
+              return retval;
+            }
+          // free the unknown ref, we still have a ref from the queryinterface
+          unknown->Release ();
 
           retval = octave_value (new octave_com_object (disp, false));
         }
