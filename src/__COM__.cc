@@ -100,7 +100,7 @@ hresult_to_string (HRESULT hr)
   return str;
 }
 
-class octave_com_object : public octave_base_value
+class octave_com_object : public OCTAVE_BASE_CLASS
 {
 public:
   // Constructors
