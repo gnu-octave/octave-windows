@@ -1,7 +1,7 @@
 ## Copyright 2015-2016 Mike Miller
 ## Copyright 2015-2016 Carnë Draug
 ## Copyright 2015-2016 Oliver Heimlich
-## Copyright 2016-2020 John Donoghue
+## Copyright 2016-2022 John Donoghue
 ##
 ## Copying and distribution of this file, with or without modification,
 ## are permitted in any medium without royalty provided the copyright
@@ -27,14 +27,28 @@ $(TR) '[:upper:]' '[:lower:]')
 VERSION := $(shell $(GREP) "^Version: " DESCRIPTION | $(CUT) -f2 -d" ")
 DEPENDS := 
 
+## Detect which VCS is used
+vcs := $(if $(wildcard .hg),hg,$(if $(wildcard .git),git,unknown))
+ifeq ($(vcs),hg)
+release_dir_dep := .hg/dirstate
 HG           := hg
 HG_CMD        = $(HG) --config alias.$(1)=$(1) --config defaults.$(1)= $(1)
 HG_ID        := $(shell $(call HG_CMD,identify) --id | sed -e 's/+//' )
-HG_TIMESTAMP := $(firstword $(shell $(call HG_CMD,log) --rev $(HG_ID) --template '{date|hgdate}'))
+REPO_TIMESTAMP := $(firstword $(shell $(call HG_CMD,log) --rev $(HG_ID) --template '{date|hgdate}'))
+endif
+ifeq ($(vcs),git)
+release_dir_dep := .git/index
+GIT          := git
+REPO_TIMESTAMP := $(firstword $(shell $(GIT) log -n1 --date=unix --format="%ad"))
+endif
+ifeq ($(vcs),unknown)
+REPO_TIMESTAMP := 0
+release_dir_dep := Makefile
+endif
 
-TAR_REPRODUCIBLE_OPTIONS := --sort=name --mtime="@$(HG_TIMESTAMP)" --owner=0 --group=0 --numeric-owner
+# tar options for creating reproductable tarballs
+TAR_REPRODUCIBLE_OPTIONS := --sort=name --mtime="@$(REPO_TIMESTAMP)" --owner=0 --group=0 --numeric-owner
 TAR_OPTIONS  := --format=ustar $(TAR_REPRODUCIBLE_OPTIONS)
-
 
 ## This are the files that will be created for the releases.
 TARGET_DIR      := release
@@ -52,7 +66,11 @@ M_SOURCES   := $(wildcard inst/*.m)
 CC_SOURCES  := $(wildcard src/*.cc)
 PKG_ADD     := $(shell $(GREP) -sPho '(?<=(//|\#\#) PKG_ADD: ).*' \
                          $(CC_SOURCES) $(M_SOURCES))
-AUTOCONF_TARGETS := src/configure src/Makefile
+
+AUTOCONF_TARGETS :=
+ifeq ($(shell test -e src/configure.ac && echo -n yes),yes)
+ AUTOCONF_TARGETS += src/configure src/Makefile
+endif
 
 ## Targets that are not filenames.
 ## https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
@@ -98,20 +116,36 @@ html: $(HTML_TARBALL)
 #    * note that if a commands needs to be ran in a specific directory,
 #      the command to "cd" needs to be on the same line.  Each line restores
 #      the original working directory.
-$(RELEASE_DIR): .hg/dirstate
+$(RELEASE_DIR): $(release_dir_dep)
 	@echo "Creating package version $(VERSION) release ..."
 	$(RM) -r "$@"
-	hg archive --exclude ".hg*" --type files "$@"
+ifeq (${vcs},hg)
+	$(HG) archive --exclude ".hg*" --type files "$@"
+endif
+ifeq (${vcs},git)
+	$(GIT) archive --format=tar --prefix="$@/" HEAD | $(TAR) -x
+	$(RM) "$@/.gitignore"
+endif
+ifeq ($(shell test -d examples && echo -n yes),yes)
+	# examples to install
 	cp "$@/examples/"*.m "$@/inst/"
+endif
+	# make docs if any
 	$(MAKE) -C "$@" docs
+	# delete and devel stuff
 	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/" && $(RM) -f doc/mkfuncdocs.py
-#	cd "$@/src" && aclocal -Im4 && autoconf && $(RM) -r "src/autom4te.cache"
+ifeq ($(shell test -e src/autogen.sh && echo -n yes),yes)
 	cd "$@/src" && $(SHELL) ./autogen.sh && $(RM) -r "autom4te.cache"
+endif
 	cd "$@" && $(RM) Makefile
 	chmod -R a+rX,u+w,go-w "$@"
 
 .PHONY: docs
-docs: doc/$(PACKAGE).pdf
+DOC_TARGETS :=
+ifeq ($(shell test -e doc/$(PACKAGE).texi && echo -n yes),yes)
+DOC_TARGETS += doc/$(PACKAGE).pdf
+endif
+docs: $(DOC_TARGETS)
 
 .PHONY: clean-docs
 clean-docs:
@@ -120,7 +154,7 @@ clean-docs:
 	$(RM) -f doc/functions.texi
 
 doc/$(PACKAGE).pdf: doc/$(PACKAGE).texi doc/functions.texi
-	cd doc && SOURCE_DATE_EPOCH=$(HG_TIMESTAMP) $(TEXI2PDF) $(PACKAGE).texi
+	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(TEXI2PDF) $(PACKAGE).texi
 	# remove temp files
 	cd doc && $(RM) -f $(PACKAGE).aux $(PACKAGE).cp $(PACKAGE).cps $(PACKAGE).fn  $(PACKAGE).fns $(PACKAGE).log $(PACKAGE).toc
 
@@ -129,8 +163,10 @@ doc/functions.texi:
 
 # install is a prerequesite to the html directory (note that the html
 # tarball will use the implicit rule for ".tar.gz" files).
-html_options = --eval 'options = get_html_options ("octave-forge");' \
-               --eval 'options.package_doc = "$(PACKAGE).texi";'
+html_options := --eval 'options = get_html_options ("octave-forge");'
+ifeq ($(shell test -e doc/$(PACKAGE).texi && echo -n yes),yes)
+html_options += --eval 'options.package_doc = "$(PACKAGE).texi";'
+endif
 $(HTML_DIR): install
 	@echo "Generating HTML documentation. This may take a while ..."
 	$(RM) -r "$@"
@@ -174,7 +210,9 @@ autoconf_target: $(AUTOCONF_TARGETS)
 # Build any requires oct files.  Some packages may not need this at all.
 # Other packages may require a configure file to be created and run first.
 all: autoconf_target $(CC_SOURCES)
+ifeq ($(shell test -e src && echo -n yes),yes)
 	$(MAKE) -C src/
+endif
 
 # Start an Octave session with the package directories on the path for
 # interactice test of development sources.
