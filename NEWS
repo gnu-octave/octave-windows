@@ -1,3 +1,11 @@
+Summary of important user-visible changes for Windows 1.6.2
+------------------------------------------------------------
+
+* use QueryInterface to get IDispatch pointer (Bug #62019)
+
+* detect when octave_base_dld_value is available
+
+
 Summary of important user-visible changes for Windows 1.6.1
 ------------------------------------------------------------
 

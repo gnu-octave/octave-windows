@@ -3,7 +3,7 @@ dnl and the various configure.add files in the source tree.  Edit
 dnl configure.base and reprocess rather than modifying ./configure.
 
 ### Copyright (C) 2015-2019 Olaf Till <i7tiol@t-online.de>
-### Copyright (C) 2020 John Donoghue <john.donoghue@ieee.org>
+### Copyright (C) 2020-2022 John Donoghue <john.donoghue@ieee.org>
 ###
 ### This program is free software; you can redistribute it and/or
 ### modify it under the terms of the GNU General Public License as
@@ -22,7 +22,7 @@ dnl configure.base and reprocess rather than modifying ./configure.
 dnl autoconf 2.13 certainly doesn't work! What is the minimum requirement?
 AC_PREREQ(2.2)
 
-AC_INIT([windows],[1.6.1])
+AC_INIT([windows],[1.6.2])
 AC_CONFIG_HEADERS([config.h])
 
 # Avoid warnings for redefining AH-generated preprocessor symbols of
