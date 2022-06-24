@@ -190,10 +190,13 @@ install: $(RELEASE_TARBALL)
 
 clean: clean-docs
 	$(RM) -r $(RELEASE_DIR) $(RELEASE_TARBALL) $(HTML_TARBALL) $(HTML_DIR)
+ifneq (,$(wildcard src/Makefile))
 	$(MAKE) -C src clean
+endif
 
 distclean: clean
 	-$(RM) -r inst/test
+	$(if $(value $(AUTOCONF_TARGETS)),,-$(RM) -r $(AUTOCONF_TARGETS))
 	-$(RM) INDEX
 
 #
