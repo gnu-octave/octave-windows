@@ -58,6 +58,16 @@ archtests: $(TST_SOURCES)
 	@(      echo "## Generated from $<"; \
 	        $(GREP) '^%!' "$<") > "$@"
 
-clean: ; -rm -f *.o core octave-core *.oct *~
-	test -e ../inst/$(ARCHDIR) && rm -f $(TST_SOURCES) || true
+.PHONY: clean
+.PHONY: distclean
+
+clean: ; -$(RM) -f *.o core octave-core *.oct *~
+	test -e ../inst/$(ARCHDIR) && $(RM) -f $(TST_SOURCES) || true
 	test -e ../inst/$(ARCHDIR) && rmdir ../inst/$(ARCHDIR) || true
+
+distclean: clean
+	$(RM) -rf autom4te.cache
+	$(RM) -f config.status config.log config.h
+	$(RM) -f oct-alt-includes.h
+	$(RM) -f ../INDEX
+	$(RM) -f Makefile
