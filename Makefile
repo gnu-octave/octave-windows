@@ -19,6 +19,23 @@ TAR       ?= tar
 CUT       ?= cut
 TR        ?= tr
 TEXI2PDF  ?= texi2pdf -q
+MAKEINFO  ?= makeinfo
+
+# work out a possible help generator
+ifeq ($(strip $(QHELPGENERATOR)),)
+  ifneq ($(shell qhelpgenerator-qt5 -v 2>/dev/null),)
+    QHELPGENERATOR = qhelpgenerator-qt5
+  else ifneq ($(shell qcollectiongenerator-qt5 -v 2>/dev/null),)
+    QHELPGENERATOR = qcollectiongenerator-qt5
+  #else ifneq ($(shell qhelpgenerator -qt5 -v 2>/dev/null),)
+  # v4 doesnt work
+  #  QHELPGENERATOR = qhelpgenerator -qt5
+  else ifneq ($(shell qcollectiongenerator -qt5 -v 2>/dev/null),)
+    QHELPGENERATOR = qcollectiongenerator -qt5
+  else
+    QHELPGENERATOR = true
+  endif
+endif
 
 ### Note the use of ':=' (immediate set) and not just '=' (lazy set).
 ### http://stackoverflow.com/a/448939/1609556
@@ -133,7 +150,7 @@ endif
 	# make docs if any
 	$(MAKE) -C "$@" docs
 	# delete and devel stuff
-	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/" && $(RM) -f doc/mkfuncdocs.py
+	cd "$@" && rm -rf "devel/" && rm -rf "deprecated/" && $(RM) -f doc/mkfuncdocs.py doc/mkqhcp.py
 ifeq ($(shell test -e src/autogen.sh && echo -n yes),yes)
 	cd "$@/src" && $(SHELL) ./autogen.sh && $(RM) -r "autom4te.cache"
 endif
@@ -143,7 +160,7 @@ endif
 .PHONY: docs
 DOC_TARGETS :=
 ifeq ($(shell test -e doc/$(PACKAGE).texi && echo -n yes),yes)
-DOC_TARGETS += doc/$(PACKAGE).pdf
+DOC_TARGETS += doc/$(PACKAGE).pdf doc/$(PACKAGE).info doc/$(PACKAGE).qhc doc/$(PACKAGE).html
 endif
 docs: $(DOC_TARGETS)
 
@@ -151,12 +168,26 @@ docs: $(DOC_TARGETS)
 clean-docs:
 	$(RM) -f doc/$(PACKAGE).info
 	$(RM) -f doc/$(PACKAGE).pdf
+	$(RM) -f doc/$(PACKAGE).html
+	$(RM) -f doc/$(PACKAGE).qhc
+	$(RM) -f doc/$(PACKAGE).qch
 	$(RM) -f doc/functions.texi
 
 doc/$(PACKAGE).pdf: doc/$(PACKAGE).texi doc/functions.texi
 	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(TEXI2PDF) $(PACKAGE).texi
 	# remove temp files
 	cd doc && $(RM) -f $(PACKAGE).aux $(PACKAGE).cp $(PACKAGE).cps $(PACKAGE).fn  $(PACKAGE).fns $(PACKAGE).log $(PACKAGE).toc
+
+doc/$(PACKAGE).info: doc/$(PACKAGE).texi doc/functions.texi
+	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(MAKEINFO) $(PACKAGE).texi
+
+doc/$(PACKAGE).html: doc/$(PACKAGE).texi doc/functions.texi
+	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(MAKEINFO) --html --css-ref=$(PACKAGE).css  --no-split $(PACKAGE).texi
+
+doc/$(PACKAGE).qhc: doc/$(PACKAGE).html
+	# try also create qch file if can
+	cd doc && ./mkqhcp.py $(PACKAGE) && $(QHELPGENERATOR) $(PACKAGE).qhcp -o $(PACKAGE).qhc
+	cd doc && $(RM) -f $(PACKAGE).qhcp $(PACKAGE).qhp
 
 doc/functions.texi:
 	cd doc && ./mkfuncdocs.py --allowscan --ignore="@PKGWINQUERYREGFUNC@" --src-dir=../inst/ --src-dir=../src/ ../INDEX.in | $(SED) 's/@seealso/@xseealso/g' > functions.texi
@@ -166,6 +197,7 @@ doc/functions.texi:
 html_options := --eval 'options = get_html_options ("octave-forge");'
 ifeq ($(shell test -e doc/$(PACKAGE).texi && echo -n yes),yes)
 html_options += --eval 'options.package_doc = "$(PACKAGE).texi";'
+html_options += --eval 'options.package_doc_options = [options.package_doc_options " --css-include=$(PACKAGE).css"];'
 endif
 $(HTML_DIR): install
 	@echo "Generating HTML documentation. This may take a while ..."
