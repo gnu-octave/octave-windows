@@ -138,56 +138,59 @@ txt = clipboard('paste');\n \
        else
          {
            std::string data = "";
-	   
-	   if(args(1).is_string())
-	     data = args(1).string_value ();
-	   else
-	     data = mat2str(args(1));
+   
+           if (args(1).is_string())
+             data = args(1).string_value ();
+           else
+             data = mat2str(args(1));
 
            HGLOBAL hglb = GlobalAlloc(GMEM_MOVEABLE, data.length()+1);
 
-	   if (hglb != NULL)
-	     {
+           if (hglb != NULL)
+             {
                CHAR * ptr = (CHAR*)GlobalLock(hglb);
                if (ptr)
                  {
                    memcpy(ptr, data.c_str(), data.length());
                    ptr[data.length()] = 0;
                    GlobalUnlock(hglb);
+                   EmptyClipboard();
                    SetClipboardData(CF_TEXT, hglb);
-		 }
-               CloseClipboard();
+                 }
              }
+
+           CloseClipboard();
          }
     }
   else if (op == "paste")
     {
-       if (nargin != 1)
-         {
-           error ("clipboard: unexpected data input");
-         }
-       else if (!IsClipboardFormatAvailable(CF_TEXT))
-         {
-           retval(0) = octave_value(std::string(""));
-         }
-       else if ( ! OpenClipboard(NULL))
-         {
-           error ("clipboard: could not open clipboard.");
-         }
-       else
-         {
-           retval(0) = octave_value(std::string(""));
+      if (nargin != 1)
+        {
+          error ("clipboard: unexpected data input");
+        }
+      else if (!IsClipboardFormatAvailable(CF_TEXT))
+        {
+          retval(0) = octave_value(std::string(""));
+        }
+      else if ( ! OpenClipboard(NULL))
+        {
+          error ("clipboard: could not open clipboard.");
+        }
+      else
+        {
+          retval(0) = octave_value(std::string(""));
 
-           HGLOBAL hglb = GetClipboardData(CF_TEXT);
+          HGLOBAL hglb = GetClipboardData(CF_TEXT);
 
-           if (hglb !=  NULL)
-             {
-               CHAR *ptr = (CHAR*)GlobalLock(hglb);
-               retval(0) = octave_value(std::string(ptr));
-               GlobalUnlock(hglb);
-             }
-	 }
-       CloseClipboard();
+          if (hglb !=  NULL)
+            {
+              CHAR *ptr = (CHAR*)GlobalLock(hglb);
+              retval(0) = octave_value(std::string(ptr));
+              GlobalUnlock(hglb);
+            }
+
+          CloseClipboard();
+        }
     }
   else if (op == "pastespecial")
     {
