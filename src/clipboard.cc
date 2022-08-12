@@ -236,4 +236,16 @@ txt = clipboard('paste');\n \
 %! clipboard("copy", uint16(a));
 %! txt = clipboard("paste");
 %! assert(eval(txt), uint16(a));
+
+%!xtest
+%! if (! __have_feature__ ("WINDOWS_H"))
+%!   return;
+%! endif
+%! # external clipboard access
+%! system("echo externalcopy|clip");
+%! txt = clipboard("paste");
+%! assert(txt(1:12), "externalcopy");
+%!
+%! # TODO: how prove copy to external
+
 #endif
