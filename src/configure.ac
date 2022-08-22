@@ -191,7 +191,9 @@ LDFLAGS=$save_altsyms_LDFLAGS
 LIBS=$save_altsyms_LIBS
 AC_LANG_POP([C++])
 
-AC_OUTPUT(Makefile ../INDEX)
+AC_CONFIG_FILES([Makefile ../INDEX])
+AC_OUTPUT
+
 AC_MSG_RESULT([
 $PACKAGE_NAME is configured with
    mkoctfile:	$MKOCTFILE
