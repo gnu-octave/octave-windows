@@ -128,10 +128,14 @@ char *octave_to_win32_reg(const octave_value &v, int *sz, int *type)
     {
       std::string str = v.string_value();
       std::wstring wstr = string_to_wstring (str);
-      *sz = (str.length() * sizeof(wchar_t));
+      // need to include null if string
+      *sz = ((str.length()+1) * sizeof(wchar_t));
       *type = REG_SZ;
-      char * buffer = new char[*sz+1];
-      memcpy (buffer, (void*)wstr.c_str (), *sz);
+      char * buffer = new char[*sz];
+      memcpy (buffer, (void*)wstr.c_str (), *sz-2);
+      // set termination
+      buffer[*sz-2] = 0;
+      buffer[*sz-1] = 0;
       return buffer;
     }
 
@@ -160,7 +164,12 @@ octave_value win32_reg_to_octave(char *buffer, int sz, int type)
     }
   else if (type == REG_SZ || type == REG_EXPAND_SZ)
     {
-      retval = string_vector (wstring_to_string(reinterpret_cast<wchar_t*>(buffer)));
+      // check null terminated
+      wchar_t *dataw = reinterpret_cast<wchar_t *> (buffer);
+      DWORD lengthw = sz / sizeof (wchar_t);
+      std::wstring reg_string
+          = std::wstring (dataw, lengthw - (dataw[lengthw-1]==0));
+      retval = string_vector (wstring_to_string(reg_string));
     }
   else
     {
@@ -276,6 +285,10 @@ win32_ReadRegistry (const char *key,
 
   int retval;
 
+  *type = REG_SZ;
+  if(buffer)
+    *buffer = 0;
+
   std::wstring wsubkey = string_to_wstring (subkey);
   std::wstring wvalue = string_to_wstring (value);
   retval= RegOpenKeyExW (hprimkey, wsubkey.c_str (), 0, KEY_READ, &hsubkey);
@@ -283,14 +296,17 @@ win32_ReadRegistry (const char *key,
     {
       DWORD dwBuffSz= *buffer_sz;
       DWORD reg_type;
-      retval= RegQueryValueExW (hsubkey, wvalue.c_str (), NULL, &reg_type, 
+      retval = RegQueryValueExW (hsubkey, wvalue.c_str (), NULL, &reg_type, 
                                (BYTE *) buffer, & dwBuffSz);
       *buffer_sz = dwBuffSz;
       if (type)
         *type = (int)reg_type;
+
+      RegCloseKey (hsubkey);
+
+      return retval;
     }
 
-  RegCloseKey (hsubkey);
   return retval;
 }
 
@@ -319,9 +335,10 @@ win32_WriteRegistry (const char *key,
   if (retval == NO_ERROR)
     {
       retval = RegSetValueExW (hsubkey, wvalue.c_str(), 0, type, reinterpret_cast<BYTE*>(buffer), buffer_sz);
+  
+      RegCloseKey (hsubkey);
     }
 
-  RegCloseKey (hsubkey);
   return retval;
 }
 
@@ -349,9 +366,10 @@ win32_DeleteRegistry (
   if (retval == NO_ERROR)
     {
       retval = RegDeleteValueW (hsubkey, wvalue.c_str ());
+
+      RegCloseKey (hsubkey);
     }
 
-  RegCloseKey (hsubkey);
   return retval;
 }
 

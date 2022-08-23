@@ -70,6 +70,11 @@ win32_ScanRegistryKeys (const char *key,
 char *
 octave_to_win32_reg(const octave_value &v, int *sz, int *type);
 
+octave_value
+win32_reg_to_octave(char *buffer,
+                    int sz,
+                    int type);
+
 #include <octave/Cell.h>
 
 #ifdef HAVE_CONFIG_H
@@ -249,7 +254,7 @@ In the case of failure, 'rv' will be empty\n \
   int retcode= win32_ReadRegistry (key, subkey, value, NULL, &buffer_sz, &type);
   if (retcode != 0)
     {
-      retval (0)= new Matrix (0,0);
+      retval (0)= Matrix (0,0);
       retval (1)= (double) retcode;
       error ("win32_ReadRegistry: error reading registry value");
     }
@@ -257,8 +262,17 @@ In the case of failure, 'rv' will be empty\n \
     {
       OCTAVE_LOCAL_BUFFER(char, buffer, buffer_sz + 1);
       buffer[buffer_sz] = '\0';
-      int retcode= win32_ReadRegistry (key,subkey,value,buffer, &buffer_sz, &type);
-      retval(0)= string_vector (buffer);
+      int retcode = win32_ReadRegistry (key,subkey,value,buffer, &buffer_sz, &type);
+      if (retcode != 0 || buffer_sz == 0)
+        {
+          retval (0) = std::string("");
+        }
+      else
+        {
+          retval (0) = win32_reg_to_octave(buffer, buffer_sz, type);
+	  if (!retval(0).is_string())
+            retval(0) = string_vector (std::string(buffer, buffer_sz));
+        }
       retval(1)= (double) retcode;
       retval(2)= (double) buffer_sz;
     }
@@ -322,7 +336,7 @@ success, while other codes indicate failure\n \
 
   if (! win32_IsValidRootKey(args (0).string_value ().c_str ()))
     {
-      error ("win32_ReadRegistry: invalid reg key");
+      error ("win32_WriteRegistry: invalid reg key");
       return retval;
     }
 
@@ -340,7 +354,7 @@ success, while other codes indicate failure\n \
 
   if (!buffer)
     {
-      error ("win32_ReadRegistry: unsupported type to registry conversion");
+      error ("win32_WriteRegistry: unsupported type to registry conversion");
     }
   else
     {
@@ -421,7 +435,7 @@ In the case of failure, 'rv' will be empty\n \
   int retcode = win32_ScanRegistry (key, subkey, fields);
   if (retcode != 0)
     {
-      retval (0) = new Matrix (0,0);
+      retval (0) = Matrix (0,0);
       error ("win32_RegEnumValue: error reading registry values");
     }
   else
@@ -508,7 +522,7 @@ In the case of failure, 'rv' will be empty\n \
   int retcode = win32_ScanRegistryKeys (key, subkey, fields);
   if (retcode != 0)
     {
-      retval (0) = new Matrix (0,0);
+      retval (0) = Matrix (0,0);
       error ("win32_RegEnumKey: error reading registry values");
     }
   else
