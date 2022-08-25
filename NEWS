@@ -1,9 +1,13 @@
-Summary of important user-visible changes for Windows 1.6.2+
+Summary of important user-visible changes for Windows 1.6.3
 ------------------------------------------------------------
 
 * use call EmptyClipboard in performing clipboard copy (Bug #62877)
 
 * Add qt5 documentation
+
+* add additional checks on win32 registry success values
+
+* null terminate strings written with writeRegistry
 
 Summary of important user-visible changes for Windows 1.6.2
 ------------------------------------------------------------
