@@ -266,7 +266,7 @@ octave_com_object::subsref (const std::string& type, const std::list<octave_valu
       {
         // normal method case
         octave_value_list ovl;
-        count++;
+        OV_COUNT++;
         ovl(0) = octave_value (this);
         ovl(1) = (idx.front ()) (0);
         std::list<octave_value_list>::const_iterator it = idx.begin ();
@@ -278,7 +278,7 @@ octave_com_object::subsref (const std::string& type, const std::list<octave_valu
       {
         // normal property case
         octave_value_list ovl;
-        count++;
+        OV_COUNT++;
         ovl(0) = octave_value (this);
         ovl(1) = (idx.front ())(0);
         retval = OCTAVE__FEVAL (std::string ("com_get"), ovl, 1);
@@ -307,12 +307,12 @@ octave_com_object::subsasgn (const std::string& type, const std::list<octave_val
       {
         // property assignment
         octave_value_list ovl;
-        count++;
+        OV_COUNT++;
         ovl (0) = octave_value (this);
         ovl (1) = (idx.front ()) (0);
         ovl (2) = rhs;
         OCTAVE__FEVAL ("com_set", ovl, 0);
-        count++;
+        OV_COUNT++;
         retval = octave_value (this);
       }
     else if (type.length () > 2 && type[1] == '(')
@@ -329,7 +329,7 @@ octave_com_object::subsasgn (const std::string& type, const std::list<octave_val
             next_idx.erase (next_idx.begin ());
             next_idx.erase (next_idx.begin ());
             u (0).subsasgn (type.substr (2), next_idx, rhs);
-            count++;
+            OV_COUNT++;
             retval = octave_value (this);
           }
       }
@@ -342,7 +342,7 @@ octave_com_object::subsasgn (const std::string& type, const std::list<octave_val
             std::list<octave_value_list> next_idx (idx);
             next_idx.erase (next_idx.begin ());
             u (0).subsasgn(type.substr (1), next_idx, rhs);
-            count++;
+            OV_COUNT++;
             retval = octave_value (this);
           }
       }
