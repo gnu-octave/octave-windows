@@ -49,8 +49,8 @@ if test -z "$OCTAVE_CONFIG"; then
 fi
 case X$of_MSYSTEM in
   XMINGW*)
-    MKOCTFILE="m4_patsubst($MKOCTFILE, '\\\\\ ','?')"
-    OCTAVE_CONFIG="m4_patsubst($OCTAVE_CONFIG,'\\\\\ ','?')"
+    MKOCTFILE="patsubst($MKOCTFILE, '\\\\\ ','?')"
+    OCTAVE_CONFIG="patsubst($OCTAVE_CONFIG,'\\\\\ ','?')"
     ;;
   *)
     ;;
