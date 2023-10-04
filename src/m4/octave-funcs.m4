@@ -30,6 +30,14 @@
 
 AC_DEFUN([OCTAVE_HAS_FUNCTION], [
 AC_REQUIRE([AC_PROG_GREP])
+AC_REQUIRE([AC_PROG_SED])
+
+if test "X${IGNORE_MINGW_PATH_MODIFICATION}" == "X"; then
+  of_MSYSTEM="${MSYSTEM}"
+else
+  of_MSYSTEM="none"
+fi
+
 if test -z "$MKOCTFILE"; then
   AC_CHECK_PROG(MKOCTFILE,mkoctfile,mkoctfile)
 fi
@@ -37,8 +45,17 @@ if test -z "$OCTAVE_CONFIG"; then
   AC_CHECK_PROG(OCTAVE_CONFIG,octave-config,octave-config)
 fi
 if test -z "$OCTAVE_CONFIG"; then
-  OCTAVE_CONFIG=$MKOCTFILE
+  AS_VAR_SET(OCTAVE_CONFIG,$MKOCTFILE)
 fi
+case X$of_MSYSTEM in
+  XMINGW*)
+    MKOCTFILE="m4_patsubst($MKOCTFILE, '\\\\\ ','?')"
+    OCTAVE_CONFIG="m4_patsubst($OCTAVE_CONFIG,'\\\\\ ','?')"
+    ;;
+  *)
+    ;;
+esac
+
 AC_MSG_CHECKING([octave for $1])
 AS_VAR_PUSHDEF([ac_var], m4_toupper(octave_have_$1))
 AS_VAR_SET(of_ac_tmp_m_path,`$OCTAVE_CONFIG -p FCNFILEDIR`)
@@ -73,13 +90,34 @@ else
     save_of_ac_tmp_LDFLAGS="$LDFLAGS"
     save_of_ac_tmp_CXXFLAGS="$CXXFLAGS"
     CXX=`$MKOCTFILE -p CXX`
-    CXXFLAGS="`$MKOCTFILE -p INCFLAGS` $CXXFLAGS"
-    LDFLAGS="-L`$MKOCTFILE -p OCTLIBDIR` $LDFLAGS"
+
+    of_OCTINCLUDEDIR="`$MKOCTFILE -p OCTINCLUDEDIR`/.."
+    of_OCTLIBDIR=`$MKOCTFILE -p OCTLIBDIR`
+    case X$of_MSYSTEM in
+      XMINGW64*)
+        of_OCTAVE_HOME=`${MKOCTFILE} -p OCTAVE_HOME | $SED 's,\\\\,/,g'`
+        # change \ to / and replace octave home part with mingw part
+        of_OCTINCLUDEDIR=`echo $of_OCTINCLUDEDIR | $SED -e 's,\\\\,/,g' -e "s,${of_OCTAVE_HOME},/mingw64,g"`
+        of_OCTLIBDIR=`echo $of_OCTLIBDIR | $SED -e 's,\\\\,/,g' -e "s,${of_OCTAVE_HOME},/mingw64,g"`
+        ;;
+      XMINGW32*)
+        of_OCTAVE_HOME=`${MKOCTFILE} -p OCTAVE_HOME | $SED 's,\\\\,/,g'`
+        # change \ to / and replace octave home part with mingw part
+        of_OCTINCLUDEDIR=`echo $of_OCTINCLUDEDIR | $SED -e 's,\\\\,/,g' -e "s,${of_OCTAVE_HOME},/mingw32,g"`
+        of_OCTLIBDIR=`echo of_$OCTLIBDIR | $SED -e 's,\\\\,/,g -e "s,${of_OCTAVE_HOME},/mingw32,g"'`
+        ;;
+      *)
+        ;;
+    esac
+
+    CXXFLAGS="-I$of_OCTINCLUDEDIR $CXXFLAGS"
+    LDFLAGS="-L$of_OCTLIBDIR $LDFLAGS"
     LIBS="`$MKOCTFILE -p OCTAVE_LIBS` $LIBS"
     AC_LINK_IFELSE(
       [AC_LANG_PROGRAM(
         [[#include <octave/oct.h>]
-         [#include <octave/builtin-defun-decls.h>]],
+         [#include <octave/builtin-defun-decls.h>]
+         [using namespace octave;]],
         [F$1()])],
       [of_ac_tmp=builtin],
       []
