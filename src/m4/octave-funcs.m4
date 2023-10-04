@@ -116,12 +116,26 @@ else
     AC_LINK_IFELSE(
       [AC_LANG_PROGRAM(
         [[#include <octave/oct.h>]
-         [#include <octave/builtin-defun-decls.h>]
-         [using namespace octave;]],
+         [#include <octave/builtin-defun-decls.h>]],
         [F$1()])],
       [of_ac_tmp=builtin],
       []
     )
+
+    dnl builtins may be in octave namespace
+    if test -z "$of_ac_tmp"; then
+      _AS_ECHO_LOG([try to find $1 as builtin in octave namespace])
+    
+      AC_LINK_IFELSE(
+        [AC_LANG_PROGRAM(
+          [[#include <octave/oct.h>]
+           [#include <octave/builtin-defun-decls.h>]],
+          [octave::F$1()])],
+        [of_ac_tmp=builtin_octave],
+        []
+      )
+    fi
+
     CXX=$save_of_ac_tmp_CXX
     LIBS=$save_of_ac_tmp_LIBS
     CXXFLAGS=$save_of_ac_tmp_CXXFLAGS
