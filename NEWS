@@ -1,3 +1,10 @@
+Summary of important user-visible changes for Windows 1.6.4
+------------------------------------------------------------
+
+* Minor changes for octave 8+ compatibility
+
+* Minor doc updates
+
 Summary of important user-visible changes for Windows 1.6.3
 ------------------------------------------------------------
 
@@ -19,7 +26,7 @@ Summary of important user-visible changes for Windows 1.6.2
 Summary of important user-visible changes for Windows 1.6.1
 ------------------------------------------------------------
 
-* Allow passing optional paramters to methods (Bug #60098)
+* Allow passing optional parameters to methods (Bug #60098)
 
 * Minor doc updates
 
