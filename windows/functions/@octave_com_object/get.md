@@ -1,0 +1,46 @@
+---
+layout: "default"
+permalink: "/functions/@octave_com_object/22_octavecomobjectget/"
+pkg_name: "windows"
+pkg_version: "1.6.5"
+pkg_description: "Provides COM interface and additional functionality on Windows"
+title: "Windows Toolkit - @octave_com_object/get"
+category: "COM Interface"
+func_name: "@octave_com_object/get"
+navigation:
+- id: "overview"
+  name: "Overview"
+  url: "/index"
+- id: "Functions"
+  name: "Function Reference"
+  url: "/functions"
+- id: "17_WindowsUtilities"
+  name: "&nbsp;&nbsp;Windows Utilities"
+  url: "/functions/#17_WindowsUtilities"
+- id: "13_COMInterface"
+  name: "&nbsp;&nbsp;COM Interface"
+  url: "/functions/#13_COMInterface"
+- id: "8_Features"
+  name: "&nbsp;&nbsp;Features"
+  url: "/functions/#8_Features"
+- id: "8_Examples"
+  name: "&nbsp;&nbsp;Examples"
+  url: "/functions/#8_Examples"
+- id: "news"
+  name: "News"
+  url: "/news"
+- id: "manual"
+  name: "Manual"
+  url: "/manual"
+---
+<dl class="first-deftypefn">
+<dt class="deftypefn" id="index-get"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code><a class="copiable-link" href="#index-get"></a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-get-1"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propertynames</var>)</code><a class="copiable-link" href="#index-get-1"></a></span></dt>
+<dd><p>A get override for octave_com_object objects.
+</p>
+<p>When specifying just <var class="var">obj</var>, the function will return a list of property names in <var class="var">S</var>.
+ When also providing <var class="var">propertynames</var>, the function return the values of the properties.
+</p>
+
+<p><strong class="strong">See also:</strong> com_get, get.
+ </p></dd></dl>

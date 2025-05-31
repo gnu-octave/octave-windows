@@ -1,0 +1,155 @@
+---
+layout: "default"
+permalink: "/news/"
+title: "Windows Toolkit - News"
+pkg_name: "windows"
+version: "1.6.5"
+description: "Provides COM interface and additional functionality on Windows"
+navigation:
+- id: "overview"
+  name: "Overview"
+  url: "/index"
+- id: "Functions"
+  name: "Function Reference"
+  url: "/functions"
+- id: "news"
+  name: "News"
+- id: "manual"
+  name: "Manual"
+  url: "/manual"
+---
+<pre>
+Summary of important user-visible changes for Windows 1.6.5
+------------------------------------------------------------
+
+* Minor doc updates
+
+Summary of important user-visible changes for Windows 1.6.4
+------------------------------------------------------------
+
+* Minor changes for octave 8+ compatibility
+
+* Minor doc updates
+
+Summary of important user-visible changes for Windows 1.6.3
+------------------------------------------------------------
+
+* use call EmptyClipboard in performing clipboard copy (Bug #62877)
+
+* Add qt5 documentation
+
+* add additional checks on win32 registry success values
+
+* null terminate strings written with writeRegistry
+
+Summary of important user-visible changes for Windows 1.6.2
+------------------------------------------------------------
+
+* use QueryInterface to get IDispatch pointer (Bug #62019)
+
+* detect when octave_base_dld_value is available
+
+Summary of important user-visible changes for Windows 1.6.1
+------------------------------------------------------------
+
+* Allow passing optional parameters to methods (Bug #60098)
+
+* Minor doc updates
+
+Summary of important user-visible changes for Windows 1.6.0
+------------------------------------------------------------
+
+* added new functions:
+  - clipboard
+  - windows_feature
+  - win32_RegEnumValue
+  - win32_RegEnumKey
+  - win32_WriteRegistry
+  - win32_DeleteRegistry
+
+* bugfix: compile issue on octave <= 4.0.X
+
+* bugfix: winqueryreg error on use of "name" parameter
+
+* use utf-8 encoding for octave 5.2+
+
+
+Summary of important user-visible changes for Windows 1.5.0
+------------------------------------------------------------
+
+ ** bugfix return empty value for a null dispatch type
+
+ ** add override methods function
+
+ ** allow no arg function access without requiring use of ().
+
+ ** added package documentation
+
+Summary of important user-visible changes for Windows 1.4.0
+------------------------------------------------------------
+ ** added winopen function
+
+ ** added COM conversion of arrays of double and char, 
+    and unsigned conversions
+
+ ** bugfix winqueryreg root prefix check and expanded to convert to
+    octave type similar to octave core function
+
+Summary of important user-visible changes for Windows 1.3.1
+------------------------------------------------------------
+  ** updated configure files for 5.0 octave function changes
+
+  ** requires octave >= 3.6
+
+  ** lock __COM__.oct when package is loaded
+
+Summary of important user-visible changes for Windows 1.3.0
+------------------------------------------------------------
+  ** updated configure files for 4.4 octave
+
+  ** octave_com_object marked as an object in base_value (Bug #51470)
+
+  ** allow install in non-windows with functions returning error
+
+  ** added new function winqueryreg
+
+Summary of important user-visible changes for Windows 1.2.4:
+------------------------------------------------------------
+ 
+ ** added iscom function
+
+ ** support for returning 1-dimensional and 2-dimensional matrix data from COM objects
+
+ ** updated to remove warning when installing in Octave 4.2
+
+Summary of important user-visible changes for Windows 1.2.3:
+------------------------------------------------------------
+
+ ** update function documentation for texinfo.
+
+Summary of important user-visible changes for Windows 1.2.2:
+------------------------------------------------------------
+
+ ** Windows package 1.2.2 is a bug fixing release.
+
+ ** allow compile in octave 4.0.0+
+
+ ** add tests for user visible .m files
+
+Summary of important user-visible changes for Windows 1.2.1:
+------------------------------------------------------------
+
+ ** Windows package 1.2.1 is a bug fixing release.
+
+ ** Fix infinite recursion in @octave_com_object/delete.m
+
+ ** Fix incorrect function signatures in @octave_com_object/delete.m
+    and @octave_com_object/release.m
+
+Summary of important user-visible changes for Windows 1.2.0:
+------------------------------------------------------------
+
+ ** Replace obsolete "dispatch" with regular octave class overload.
+
+ ** Avoid crash on exit when COM objects still exist.
+</pre>
