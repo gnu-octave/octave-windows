@@ -1,7 +1,7 @@
 /*
 
   Copyright (C) 2006-2018 Michael Goffioul <michael.goffioul@swing.be>
-  Copyright (C) 2019-2020 John Donoghue <john.donoghue@ieee.org>
+  Copyright (C) 2019-2026 John Donoghue <john.donoghue@ieee.org>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -542,6 +542,77 @@ destroy (app); \n \
         }
       else
         error ("actxserver: invalid ActiveX server name");
+    }
+  else
+    print_usage ();
+#endif
+  return retval;
+}
+
+// PKG_ADD: autoload ("actxGetRunningServer", which ("__COM__"));
+DEFUN_DLD(actxGetRunningServer, args, , 
+          "-*- texinfo -*-\n \
+@deftypefn {Loadable Function} {@var{h} =} actxGetRunningServer (@var{progid})\n \
+\n \
+Get a running COM server using the @var{progid} identifier.\n \
+\n \
+Returns @var{h}, a handle to the default interface of the COM server.\n \
+\n \
+Example:\n \
+\n \
+@example\n \
+@group\n \
+# Get the COM server running Microsoft Excel (If running)\n \
+app = actxserver ('Excel.Application');\n \
+# list the fields\n \
+# f = fieldnames(app)\n \
+@end group\n \
+@end example\n \
+@seealso{actxserver}\n \
+@end deftypefn")
+{
+  octave_value retval;
+
+#ifndef USING_WINDOWS
+  error ("actxGetRunningServer: Your system doesn't support the COM interface");
+#else
+  initialize_com ();
+
+  if (args.length () == 1)
+    {
+      if (args (0).is_string ())
+        {
+          std::wstring progID = string_to_wstring (args (0).string_value ());
+          CLSID clsID;
+          IDispatch *disp;
+          IUnknown *unknown;
+
+          if (CLSIDFromProgID (progID.c_str (), &clsID) != S_OK)
+            {
+              error ("actxGetRunningServer: unknown ActiveX server `%s'", args (0).string_value ().c_str ());
+              return retval;
+            }
+ 
+	  if (GetActiveObject(clsID, NULL, &unknown) != S_OK)
+            {
+              error ("actxGetRunningServer: unknown or not running ActiveX server `%s'", args (0).string_value ().c_str ());
+              return retval;
+            }
+
+          if (unknown->QueryInterface(IID_IDispatch, (void **)&disp) != S_OK)
+            {
+              unknown->Release ();
+              error ("actxGetRunningServer: unable to get dispatch interface for `%s'",
+                      args (0).string_value ().c_str ());
+              return retval;
+            }
+          // free the unknown ref, we still have a ref from the queryinterface
+          unknown->Release ();
+
+          retval = octave_value (new octave_com_object (disp, false));
+        }
+      else
+        error ("actxGetRunningServer: invalid ActiveX server name");
     }
   else
     print_usage ();
@@ -1162,6 +1233,13 @@ DEFUN_DLD(__windows_pkg_lock__, args, ,  "internal function")
 
 %!testif HAVE_WINDOWS_H
 %! fail ("actxserver(0)", "invalid ActiveX server name");
+
+%!testif HAVE_WINDOWS_H
+%! wshell = actxserver ("WScript.Shell");
+%! assert (!isempty (wshell));
+%! wshell2 = actxGetRunningServer ("WScript.Shell");
+%! assert (!isempty (wshell2));
+#! assert (strcmp (wshell2.CurrentDirectory, pwd));
 
 %!test
 %! assert(windows_feature("COM_SafeArraySingleDim"), 0);

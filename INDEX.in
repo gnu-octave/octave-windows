@@ -13,6 +13,7 @@ Windows Utilities
  @PKGWINQUERYREGFUNC@
 COM Interface
  actxserver
+ actxGetRunningServer
  com_atexit
  com_delete
  com_get
