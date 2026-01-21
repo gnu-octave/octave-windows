@@ -39,13 +39,15 @@ Usage:
 Documentation
 ==============
 
-See the function list for octave-windows on [octave forge](https://octave.sourceforge.io/windows/overview.html) for function documentation.
+See the [function list](https://gnu-octave.github.io/octave-windows/functions/) or function documentation, or 
+type `help <functionname>` with the windows package loaded.
 
-See the online manual for octave-windows on [octave forge](https://octave.sourceforge.io/windows/package_doc/) for complete documentation.
+See the [online manual](https://gnu-octave.github.io/octave-windows/manual/) for complete documentation.
 
 Read the Octave [Octave windows package wiki](https://wiki.octave.org/Windows_package) for install tips and examples.
 
 Known limitations and bugs
 ==========================
 
-Currenty package does not support user data types.
+Report bugs on the [issue tracker](https://github.com/gnu-octave/octave-windows/issues).
+

@@ -8,4 +8,6 @@ Description: Provides COM interface and additional functionality on Windows
 Categories: Windows
 Depends: octave (>= 3.8.0)
 License: GPLv3+
-Url: http://octave.sf.net
+Url: https://gnu-octave.github.io/octave-windows/
+Repository: https://github.com/gnu-octave/octave-windows/
+Tracker: https://github.com/gnu-octave/octave-windows/issues
