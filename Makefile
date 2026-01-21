@@ -156,7 +156,7 @@ endif
 ifeq ($(shell test -e src/autogen.sh && echo -n yes),yes)
 	cd "$@/src" && $(SHELL) ./autogen.sh && $(RM) -r "autom4te.cache"
 endif
-	cd "$@" && $(RM) Makefile
+	cd "$@" && $(RM) -f Makefile .hg*
 	chmod -R a+rX,u+w,go-w "$@"
 
 .PHONY: docs
