@@ -36,3 +36,5 @@ doc/*.info
 doc/version.texi
 doc/functions.texi
 INDEX
+
+release/
