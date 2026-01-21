@@ -17,26 +17,30 @@
 ## <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {} {@var{S} =} fieldnames (@var{comobj})
-## A fieldnames override for octave_com_object objects.
+## @deftypefn  {} {@var{S} =} isprop (@var{comobj}, @var{property})
+## A isprop override for octave_com_object objects.
 ##
-## The function will return a list of property names in @var{S}.
+## For a string property, the function will return true or false if the 
+## property exists for the com object.
 ##
-## @seealso{com_get, get}
+## If property is a string array, the function will return an array of same size
+## with true/false for each string in the array that is a property.
+##
+## @seealso{fieldnames}
 ## @end deftypefn
 
-function output = fieldnames (comobj)
+function output = isprop (comobj, property)
 
-  # TODO: add processing optional arg of "-full" 
+  props = com_get (comobj);
 
-  output = com_get (comobj);
+  output = ismember(property, props);
 
 endfunction
 
 %!testif HAVE_WINDOWS_H
 %! wshell = actxserver ("WScript.Shell");
-%! f = fieldnames(wshell);
-%! assert(!isempty(f));
+%! assert(isprop(wshell, "CurrentDirectory"), true);
+%! assert(isprop(wshell, ["CurrentDirectory"; "NoMatch"]), [true; false]);
 %! delete (wshell)
 
 

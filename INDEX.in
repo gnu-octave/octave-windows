@@ -28,6 +28,7 @@ COM Interface
  @octave_com_object/delete
  @octave_com_object/methods
  @octave_com_object/fieldnames
+ @octave_com_object/isprop
 Features
  windows_feature
 Examples
