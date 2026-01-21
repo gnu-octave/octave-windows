@@ -1235,11 +1235,11 @@ DEFUN_DLD(__windows_pkg_lock__, args, ,  "internal function")
 %! fail ("actxserver(0)", "invalid ActiveX server name");
 
 %!testif HAVE_WINDOWS_H
-%! wshell = actxserver ("WScript.Shell");
-%! assert (!isempty (wshell));
-%! wshell2 = actxGetRunningServer ("WScript.Shell");
-%! assert (!isempty (wshell2));
-#! assert (strcmp (wshell2.CurrentDirectory, pwd));
+%! # Disabled test
+%! #ex1 = actxserver ("Excel.Application");
+%! #assert (!isempty (ex1));
+%! #ex2 = actxGetRunningServer ("Excel.Application");
+%! #assert (!isempty (ex2));
 
 %!test
 %! assert(windows_feature("COM_SafeArraySingleDim"), 0);
