@@ -79,13 +79,13 @@ mat2str (const octave_value &ov)
 
 DEFUN_DLD (clipboard, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {} clipboard (@var{'copy'}, @var{data})\n \
-@deftypefnx {} @var{txt} = clipboard (@var{'paste'})\n \
+@deftypefn {} clipboard ('copy', @var{data})\n \
+@deftypefnx {} @var{txt} = clipboard ('paste')\n \
 \n \
 Insert or get data from the clipboard.\n \
 \n \
-@var{'copy'} or @var{'paste'} is the required operation to perform.\n \
-where 'copy' will copy data to the clipboard, and paste will paste data from\n \
+'copy' or 'paste' is the required operation to perform,\n \
+where 'copy' will copy data to the clipboard, and 'paste' will paste data from\n \
 the clipboard to a variable.\n \
 \n \
 @var{data} is the data to copy to the clipboard.\n \
