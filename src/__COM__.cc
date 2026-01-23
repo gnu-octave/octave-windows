@@ -26,10 +26,17 @@
 #include <octave/Cell.h>
 #include <octave/parse.h>
 #include <octave/oct-map.h>
-#include <octave/lo-sysdep.h>
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
+#endif
+
+#ifdef HAVE_OCTAVE_OCT_SYSDEP_H
+# include <octave/oct-sysdep.h>
+#else
+# ifdef HAVE_OCTAVE_LO_SYSDEP_H
+#  include <octave/lo-sysdep.h>
+# endif
 #endif
 
 #ifdef USING_WINDOWS

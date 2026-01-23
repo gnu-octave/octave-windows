@@ -149,6 +149,25 @@ CXXFLAGS="-I$OCTINCLUDEDIR $CXXFLAGS"
 LDFLAGS="-L$OCTLIBDIR $LDFLAGS"
 LIBS="-loctinterp $LIBS"
 
+# Some headers we want to check for
+AC_CHECK_HEADERS([octave/interpreter.h],
+  [],
+  [],
+  [#include <octave/oct.h>]
+)
+
+AC_CHECK_HEADERS([octave/oct-sysdep.h],
+  [],
+  [],
+  [#include <octave/oct.h>]
+)
+
+AC_CHECK_HEADERS([octave/lo-sysdep.h],
+  [],
+  [],
+  [#include <octave/oct.h>]
+)
+
 OF_OCTAVE_LIST_ALT_SYMS([
 [dnl
   [flush_octave_stdout],
@@ -222,7 +241,13 @@ OF_OCTAVE_CHECK_SYM(
   ],
   [HAVE_OCTAVE_U8_TO_WSTRING],
   [
+   #ifdef HAVE_OCTAVE_OCT_SYSDEP_H
+    #include <octave/oct-sysdep.h>
+   #else
+    #ifdef HAVE_OCTAVE_LO_SYSDEP_H
     #include <octave/lo-sysdep.h>
+    #endif
+   #endif
   ]
 )
 
