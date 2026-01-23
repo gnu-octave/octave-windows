@@ -1,3 +1,13 @@
+Summary of important user-visible changes for Windows 1.7.0
+------------------------------------------------------------
+
+* added new functions:
+  - actxGetRunningServer
+  - @octave_com_object/isprop
+  - @octave_com_object/fieldnames
+
+* Minor doc updates
+
 Summary of important user-visible changes for Windows 1.6.5
 ------------------------------------------------------------
 
