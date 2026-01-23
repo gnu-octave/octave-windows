@@ -202,7 +202,7 @@ doc/$(PACKAGE).qhc: doc/$(PACKAGE).html
 	cd doc && $(RM) -f $(PACKAGE).qhcp $(PACKAGE).qhp
 
 doc/functions.texi: $(release_dir_dep)
-	cd doc && ./mkfuncdocs.py --allowscan --ignore="@PKGWINQUERYREGFUNC@" --src-dir=../inst/ --src-dir=../src/ ../INDEX.in | $(SED) 's/@seealso/@xseealso/g' > functions.texi
+	cd doc && ./mkfuncdocs.py --allowscan --ignore="@PKGWINQUERYREGFUNC@" --src-dir=../examples/ --src-dir=../inst/ --src-dir=../src/ ../INDEX.in | $(SED) 's/@seealso/@xseealso/g' > functions.texi
 
 # install is a prerequesite to the html directory (note that the html
 # tarball will use the implicit rule for ".tar.gz" files).
