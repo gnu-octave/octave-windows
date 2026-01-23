@@ -195,7 +195,7 @@ doc/$(PACKAGE).info: doc/$(PACKAGE).texi doc/functions.texi doc/version.texi
 	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(MAKEINFO) $(PACKAGE).texi
 
 doc/$(PACKAGE).html: doc/$(PACKAGE).texi doc/functions.texi doc/version.texi
-	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(MAKEINFO) --html --css-ref=$(PACKAGE).css  $(MAKEINFO_HTML_OPTIONS) $(PACKAGE).texi -o - | $(MAKEINFO_HTML_FILTER) > $(PACKAGE).html
+	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(MAKEINFO) --html --css-ref=octave.css  $(MAKEINFO_HTML_OPTIONS) $(PACKAGE).texi -o - | $(MAKEINFO_HTML_FILTER) > $(PACKAGE).html
 
 doc/$(PACKAGE).qhc: doc/$(PACKAGE).html
 	# try also create qch file if can
@@ -210,7 +210,7 @@ doc/functions.texi: $(release_dir_dep)
 html_options := --eval 'options = get_html_options ("octave-forge");'
 ifeq ($(shell test -e doc/$(PACKAGE).texi && echo -n yes),yes)
 html_options += --eval 'options.package_doc = "$(PACKAGE).texi";'
-html_options += --eval 'options.package_doc_options = [options.package_doc_options " --css-include=$(PACKAGE).css"];'
+html_options += --eval 'options.package_doc_options = [options.package_doc_options " --css-include=octave.css"];'
 endif
 $(HTML_DIR): install
 	@echo "Generating HTML documentation. This may take a while ..."
