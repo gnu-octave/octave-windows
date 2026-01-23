@@ -420,8 +420,8 @@ get_feature(const std::string &name)
 // PKG_ADD: autoload ("windows_feature", which ("__COM__"));
 DEFUN_DLD(windows_feature, args, , 
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {} windows_feature (@var{name})\n \
-@deftypefnx {Loadable Function} {} windows_feature (@var{name}, @var{value})\n \
+@deftypefn {} {} windows_feature (@var{name})\n \
+@deftypefnx {} {} windows_feature (@var{name}, @var{value})\n \
 Set or get a feature value.\n \
 \n \
 @var{name} - name of feature to get or set.@*\n \
@@ -465,7 +465,7 @@ Set or get a feature value.\n \
 // xPKG_ADD: #atexit ("com_atexit");
 DEFUN_DLD(com_atexit, args, , 
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {} com_atexit ()\n \
+@deftypefn {} {} com_atexit ()\n \
 Close down all GNU Octave managed COM handles.\n \
 \n \
 Called during pkg unload.\n \
@@ -482,7 +482,7 @@ Called during pkg unload.\n \
 // PKG_ADD: autoload ("actxserver", which ("__COM__"));
 DEFUN_DLD(actxserver, args, , 
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {@var{h} =} actxserver (@var{progid})\n \
+@deftypefn {} {@var{h} =} actxserver (@var{progid})\n \
 \n \
 Create a COM server using the @var{progid} identifier.\n \
 \n \
@@ -552,20 +552,22 @@ destroy (app); \n \
 // PKG_ADD: autoload ("actxGetRunningServer", which ("__COM__"));
 DEFUN_DLD(actxGetRunningServer, args, , 
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {@var{h} =} actxGetRunningServer (@var{progid})\n \
+@deftypefn {} {@var{h} =} actxGetRunningServer (@var{progid})\n \
 \n \
 Get a running COM server using the @var{progid} identifier.\n \
 \n \
 Returns @var{h}, a handle to the default interface of the COM server.\n \
+\n \
+If the server is not already running the function will return an error.\n \
 \n \
 Example:\n \
 \n \
 @example\n \
 @group\n \
 # Get the COM server running Microsoft Excel (If running)\n \
-app = actxserver ('Excel.Application');\n \
+app = actxGetRunningServer ('Excel.Application');\n \
 # list the fields\n \
-# f = fieldnames(app)\n \
+f = fieldnames(app)\n \
 @end group\n \
 @end example\n \
 @seealso{actxserver}\n \
@@ -1035,7 +1037,7 @@ octave_com_object::map_keys (void) const
 // PKG_ADD: autoload ("com_get", which ("__COM__"));
 DEFUN_DLD(com_get, args, ,
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} { @var{S} = } com_get (@var{obj})\n \
+@deftypefn {} { @var{S} = } com_get (@var{obj})\n \
 Call get function on COM object @var{obj}. Returns any result in @var{S}\n \
 \n \
 @end deftypefn")
@@ -1064,7 +1066,7 @@ Call get function on COM object @var{obj}. Returns any result in @var{S}\n \
 // PKG_ADD: autoload ("com_set", which ("__COM__"));
 DEFUN_DLD(com_set, args, , 
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} { @var{S} = } com_set (@var{obj}, @var{propname}, @var{value})\n \
+@deftypefn {} { @var{S} = } com_set (@var{obj}, @var{propname}, @var{value})\n \
 Call set function on COM object @var{obj} to set property @var{propname} to value @var{value}. Returns any result in @var{S}\n \
 \n \
 @end deftypefn")
@@ -1090,8 +1092,8 @@ Call set function on COM object @var{obj} to set property @var{propname} to valu
 // PKG_ADD: autoload ("com_invoke", which ("__COM__"));
 DEFUN_DLD(com_invoke, args, ,
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} { @var{result} = } com_invoke (@var{obj})\n \
-@deftypefnx {Loadable Function} { @var{result} = } com_invoke (@var{obj}, @var{method} )\n \
+@deftypefn {} { @var{result} = } com_invoke (@var{obj})\n \
+@deftypefnx {} { @var{result} = } com_invoke (@var{obj}, @var{method} )\n \
 \n \
 Call invoke on @var{obj} to run a method, or obtain a list of all methods.\n \
 \n \
@@ -1125,7 +1127,7 @@ Call invoke on @var{obj} to run a method, or obtain a list of all methods.\n \
 // PKG_ADD: autoload ("com_delete", which ("__COM__"));
 DEFUN_DLD(com_delete, args, , 
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} { } com_delete (@var{obj})\n \
+@deftypefn {} { } com_delete (@var{obj})\n \
 Release interfaces from COM object @var{obj} and then delete the COM server\n \
 \n \
 @end deftypefn")
@@ -1151,7 +1153,7 @@ Release interfaces from COM object @var{obj} and then delete the COM server\n \
 // PKG_ADD: autoload ("com_release", which ("__COM__"));
 DEFUN_DLD(com_release, args, ,
           "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} { } com_release (@var{obj})\n \
+@deftypefn {} { } com_release (@var{obj})\n \
 Release interfaces from COM object @var{obj}\n \
 \n \
 @end deftypefn")

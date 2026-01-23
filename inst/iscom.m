@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{tf} = } iscom (@var{h})
+## @deftypefn  {} {@var{tf} = } iscom (@var{h})
 ##
 ## Determine whether @var{h} is a COM object.
 ##
@@ -25,7 +25,6 @@
 ##
 ## @seealso{actxserver}
 ## @end deftypefn
-
 
 function tf = iscom (h)
   if (nargin == 0)

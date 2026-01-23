@@ -1,7 +1,7 @@
 /*
  * clipboard
  * 
- * Copyright (C) 2020 John Donoghue <john.donoghue@ieee.org>
+ * Copyright (C) 2020-2026 John Donoghue <john.donoghue@ieee.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,8 +79,8 @@ mat2str (const octave_value &ov)
 
 DEFUN_DLD (clipboard, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} clipboard (@var{'copy'}, @var{data})\n \
-@deftypefnx {Loadable Function} @var{txt} = clipboard (@var{'paste'})\n \
+@deftypefn {} clipboard (@var{'copy'}, @var{data})\n \
+@deftypefnx {} @var{txt} = clipboard (@var{'paste'})\n \
 \n \
 Insert or get data from the clipboard.\n \
 \n \

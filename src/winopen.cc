@@ -34,7 +34,7 @@ extern int win32_ShellExecute (const char *fname);
 
 DEFUN_DLD (winopen, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} winopen (@var{name})\n \
+@deftypefn {} winopen (@var{name})\n \
 \n \
 Open the file or directory @var{name} in the windows registered\n \
 application for the file, using shell open command.\n \

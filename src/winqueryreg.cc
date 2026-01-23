@@ -57,9 +57,9 @@ win32_reg_to_octave(char *buffer,
 
 DEFUN_DLD (winqueryreg, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {@var{valnames} =} winqueryreg ('name', @var{rootkey}, @var{subkey})\n \
-@deftypefnx {Loadable Function} {@var{value} =} winqueryreg (@var{rootkey}, @var{subkey}, @var{valuename})\n \
-@deftypefnx {Loadable Function} {@var{value} =} winqueryreg (@var{rootkey}, @var{subkey})\n \
+@deftypefn {} {@var{valnames} =} winqueryreg ('name', @var{rootkey}, @var{subkey})\n \
+@deftypefnx {} {@var{value} =} winqueryreg (@var{rootkey}, @var{subkey}, @var{valuename})\n \
+@deftypefnx {} {@var{value} =} winqueryreg (@var{rootkey}, @var{subkey})\n \
 \n \
 Read a value from the Windows registry.\n \
 \n \

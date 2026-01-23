@@ -90,8 +90,8 @@ DEFUN_DLD (win32api, args, , "internal function")
 // PKG_ADD: autoload ("win32_MessageBox", "win32api.oct");
 DEFUN_DLD (win32_MessageBox, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {@var{rv} =} win32_MessageBox (@var{title}, @var{text})\n \
-@deftypefnx {Loadable Function} {@var{rv} =} win32_MessageBox (@var{title}, @var{text}, @var{MboxType})\n \
+@deftypefn {} {@var{rv} =} win32_MessageBox (@var{title}, @var{text})\n \
+@deftypefnx {} {@var{rv} =} win32_MessageBox (@var{title}, @var{text}, @var{MboxType})\n \
 \n \
 Display a message box using the win32 API.\n \
 \n \
@@ -191,7 +191,7 @@ User Clicked Continue\n \
 // PKG_ADD: autoload ("win32_ReadRegistry", "win32api.oct");
 DEFUN_DLD (win32_ReadRegistry, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {[ @var{rv}, @var{code} ] =} win32_ReadRegistry (@var{key}, @var{subkey}, @var{value})\n \
+@deftypefn {} {[ @var{rv}, @var{code} ] =} win32_ReadRegistry (@var{key}, @var{subkey}, @var{value})\n \
 \n \
 Read a value from the Windows registry.\n \
 \n \
@@ -287,7 +287,7 @@ In the case of failure, 'rv' will be empty\n \
 // PKG_ADD: autoload ("win32_WriteRegistry", "win32api.oct");
 DEFUN_DLD (win32_WriteRegistry, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {@var{code} =} win32_WriteRegistry (@var{key}, @var{subkey}, @var{valuename}, @var{value})\n \
+@deftypefn {} {@var{code} =} win32_WriteRegistry (@var{key}, @var{subkey}, @var{valuename}, @var{value})\n \
 \n \
 Write a value to the Windows registry.\n \
 \n \
@@ -375,7 +375,7 @@ success, while other codes indicate failure\n \
 // PKG_ADD: autoload ("win32_RegEnumValue", "win32api.oct");
 DEFUN_DLD (win32_RegEnumValue, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {[ @var{rv}, @var{code} ] =} win32_RegEnumValue (@var{key}, @var{subkey})\n \
+@deftypefn {} {[ @var{rv}, @var{code} ] =} win32_RegEnumValue (@var{key}, @var{subkey})\n \
 \n \
 Read value names from from the Windows registry.\n \
 \n \
@@ -462,7 +462,7 @@ In the case of failure, 'rv' will be empty\n \
 // PKG_ADD: autoload ("win32_RegEnumKey", "win32api.oct");
 DEFUN_DLD (win32_RegEnumKey, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {[ @var{rv}, @var{code} ] =} win32_RegEnumKey (@var{key}, @var{subkey})\n \
+@deftypefn {} {[ @var{rv}, @var{code} ] =} win32_RegEnumKey (@var{key}, @var{subkey})\n \
 \n \
 Read the keys of a given subkey from the Windows registry.\n \
 \n \
@@ -549,7 +549,7 @@ In the case of failure, 'rv' will be empty\n \
 // PKG_ADD: autoload ("win32_DeleteRegistry", "win32api.oct");
 DEFUN_DLD (win32_DeleteRegistry, args, ,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {@var{code} =} win32_DeleteRegistry (@var{key}, @var{subkey}, @var{valuename})\n \
+@deftypefn {} {@var{code} =} win32_DeleteRegistry (@var{key}, @var{subkey}, @var{valuename})\n \
 \n \
 Delete a value from the Windows registry.\n \
 \n \

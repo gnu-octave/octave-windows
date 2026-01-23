@@ -69,7 +69,7 @@ int grab_win32_getmousepos ( int * xpt, int * ypt );
 
 DEFUN_DLD (grab, args, nargout,
   "-*- texinfo -*-\n \
-@deftypefn {Loadable Function} {[@var{x},@var{y}] = } grab (@var{axis})\n \
+@deftypefn {} {[@var{x},@var{y}] = } grab (@var{axis})\n \
 \n \
 Grab positions of landmarks on the screen.\n \
 \n \

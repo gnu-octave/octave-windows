@@ -20,7 +20,8 @@
 ## @deftypefn  {} {@var{S} =} set (@var{obj}, @var{propname}, @var{value})
 ## A set override for octave_com_object objects.
 ##
-## Call set function on COM object @var{obj} to set property @var{propname} to value @var{value}. Returns any result in @var{S}.
+## Call set function on COM object @var{obj} to set property @var{propname} to
+## value @var{value}. Returns any result in @var{S}.
 ##
 ## @seealso{com_set}
 ## @end deftypefn
