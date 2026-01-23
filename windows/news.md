@@ -3,7 +3,7 @@ layout: "default"
 permalink: "/news/"
 title: "Windows Toolkit - News"
 pkg_name: "windows"
-version: "1.6.5"
+version: "1.7.0"
 description: "Provides COM interface and additional functionality on Windows"
 navigation:
 - id: "overview"
@@ -19,6 +19,16 @@ navigation:
   url: "/manual"
 ---
 <pre>
+Summary of important user-visible changes for Windows 1.7.0
+------------------------------------------------------------
+
+* added new functions:
+  - actxGetRunningServer
+  - @octave_com_object/isprop
+  - @octave_com_object/fieldnames
+
+* Minor doc updates
+
 Summary of important user-visible changes for Windows 1.6.5
 ------------------------------------------------------------
 

@@ -3,7 +3,7 @@ layout: "default"
 permalink: "/manual/"
 title: "Windows Toolkit - Manual"
 pkg_name: "windows"
-version: "1.6.5"
+version: "1.7.0"
 description: "Provides COM interface and additional functionality on Windows"
 navigation:
 - id: "overview"
@@ -31,18 +31,18 @@ navigation:
 <h1 class="top" id="Introduction">Introduction</h1>
 <p>The Windows toolkit provides a COM interface and additional functionality on Windows for GNU Octave
 </p>
-<div class="element-contents" id="SEC_Contents">
+<div class="region-contents" id="SEC_Contents">
 <h2 class="contents-heading">Table of Contents</h2>
 <div class="contents">
 <ul class="toc-numbered-mark">
-  <li><a id="toc-Installing-and-loading-1" href="#Installing-and-loading">1 Installing and loading</a>
+  <li><a id="toc-Installing-and-loading" href="#Installing-and-loading">1 Installing and loading</a>
   <ul class="toc-numbered-mark">
     <li><a id="toc-Windows-install" href="#Windows-install">1.1 Windows install</a></li>
     <li><a id="toc-Online-Direct-install" href="#Online-Direct-install">1.2 Online Direct install</a></li>
     <li><a id="toc-Off_002dline-install" href="#Off_002dline-install">1.3 Off-line install</a></li>
     <li><a id="toc-Loading" href="#Loading">1.4 Loading</a></li>
   </ul></li>
-  <li><a id="toc-Basic-Usage-Overview-1" href="#Basic-Usage-Overview">2 Basic Usage Overview</a>
+  <li><a id="toc-Basic-Usage-Overview" href="#Basic-Usage-Overview">2 Basic Usage Overview</a>
   <ul class="toc-numbered-mark">
     <li><a id="toc-COM-objects" href="#COM-objects">2.1 COM objects</a>
     <ul class="toc-numbered-mark">
@@ -52,9 +52,9 @@ navigation:
     </ul></li>
     <li><a id="toc-Windows-Utility-functions" href="#Windows-Utility-functions">2.2 Windows Utility functions</a></li>
   </ul></li>
-  <li><a id="toc-Function-Reference-1" href="#Function-Reference">3 Function Reference</a>
+  <li><a id="toc-Function-Reference" href="#Function-Reference">3 Function Reference</a>
   <ul class="toc-numbered-mark">
-    <li><a id="toc-Windows-Utilities-1" href="#Windows-Utilities">3.1 Windows Utilities</a>
+    <li><a id="toc-Windows-Utilities" href="#Windows-Utilities">3.1 Windows Utilities</a>
     <ul class="toc-numbered-mark">
       <li><a id="toc-clipboard" href="#clipboard">3.1.1 clipboard</a></li>
       <li><a id="toc-grab" href="#grab">3.1.2 grab</a></li>
@@ -67,34 +67,37 @@ navigation:
       <li><a id="toc-win32api" href="#win32api">3.1.9 win32api</a></li>
       <li><a id="toc-winopen" href="#winopen">3.1.10 winopen</a></li>
     </ul></li>
-    <li><a id="toc-COM-Interface-1" href="#COM-Interface">3.2 COM Interface</a>
+    <li><a id="toc-COM-Interface" href="#COM-Interface">3.2 COM Interface</a>
     <ul class="toc-numbered-mark">
       <li><a id="toc-_0040octave_005fcom_005fobject_002fdelete" href="#g_t_0040octave_005fcom_005fobject_002fdelete">3.2.1 @octave_com_object/delete</a></li>
-      <li><a id="toc-_0040octave_005fcom_005fobject_002fget" href="#g_t_0040octave_005fcom_005fobject_002fget">3.2.2 @octave_com_object/get</a></li>
-      <li><a id="toc-_0040octave_005fcom_005fobject_002finvoke" href="#g_t_0040octave_005fcom_005fobject_002finvoke">3.2.3 @octave_com_object/invoke</a></li>
-      <li><a id="toc-_0040octave_005fcom_005fobject_002fmethods" href="#g_t_0040octave_005fcom_005fobject_002fmethods">3.2.4 @octave_com_object/methods</a></li>
-      <li><a id="toc-_0040octave_005fcom_005fobject_002frelease" href="#g_t_0040octave_005fcom_005fobject_002frelease">3.2.5 @octave_com_object/release</a></li>
-      <li><a id="toc-_0040octave_005fcom_005fobject_002fset" href="#g_t_0040octave_005fcom_005fobject_002fset">3.2.6 @octave_com_object/set</a></li>
-      <li><a id="toc-actxserver" href="#actxserver">3.2.7 actxserver</a></li>
-      <li><a id="toc-com_005fatexit" href="#com_005fatexit">3.2.8 com_atexit</a></li>
-      <li><a id="toc-com_005fdelete" href="#com_005fdelete">3.2.9 com_delete</a></li>
-      <li><a id="toc-com_005fget" href="#com_005fget">3.2.10 com_get</a></li>
-      <li><a id="toc-com_005finvoke" href="#com_005finvoke">3.2.11 com_invoke</a></li>
-      <li><a id="toc-com_005frelease" href="#com_005frelease">3.2.12 com_release</a></li>
-      <li><a id="toc-com_005fset" href="#com_005fset">3.2.13 com_set</a></li>
-      <li><a id="toc-iscom" href="#iscom">3.2.14 iscom</a></li>
+      <li><a id="toc-_0040octave_005fcom_005fobject_002ffieldnames" href="#g_t_0040octave_005fcom_005fobject_002ffieldnames">3.2.2 @octave_com_object/fieldnames</a></li>
+      <li><a id="toc-_0040octave_005fcom_005fobject_002fget" href="#g_t_0040octave_005fcom_005fobject_002fget">3.2.3 @octave_com_object/get</a></li>
+      <li><a id="toc-_0040octave_005fcom_005fobject_002finvoke" href="#g_t_0040octave_005fcom_005fobject_002finvoke">3.2.4 @octave_com_object/invoke</a></li>
+      <li><a id="toc-_0040octave_005fcom_005fobject_002fisprop" href="#g_t_0040octave_005fcom_005fobject_002fisprop">3.2.5 @octave_com_object/isprop</a></li>
+      <li><a id="toc-_0040octave_005fcom_005fobject_002fmethods" href="#g_t_0040octave_005fcom_005fobject_002fmethods">3.2.6 @octave_com_object/methods</a></li>
+      <li><a id="toc-_0040octave_005fcom_005fobject_002frelease" href="#g_t_0040octave_005fcom_005fobject_002frelease">3.2.7 @octave_com_object/release</a></li>
+      <li><a id="toc-_0040octave_005fcom_005fobject_002fset" href="#g_t_0040octave_005fcom_005fobject_002fset">3.2.8 @octave_com_object/set</a></li>
+      <li><a id="toc-actxGetRunningServer" href="#actxGetRunningServer">3.2.9 actxGetRunningServer</a></li>
+      <li><a id="toc-actxserver" href="#actxserver">3.2.10 actxserver</a></li>
+      <li><a id="toc-com_005fatexit" href="#com_005fatexit">3.2.11 com_atexit</a></li>
+      <li><a id="toc-com_005fdelete" href="#com_005fdelete">3.2.12 com_delete</a></li>
+      <li><a id="toc-com_005fget" href="#com_005fget">3.2.13 com_get</a></li>
+      <li><a id="toc-com_005finvoke" href="#com_005finvoke">3.2.14 com_invoke</a></li>
+      <li><a id="toc-com_005frelease" href="#com_005frelease">3.2.15 com_release</a></li>
+      <li><a id="toc-com_005fset" href="#com_005fset">3.2.16 com_set</a></li>
+      <li><a id="toc-iscom" href="#iscom">3.2.17 iscom</a></li>
     </ul></li>
-    <li><a id="toc-Features-1" href="#Features">3.3 Features</a>
+    <li><a id="toc-Features" href="#Features">3.3 Features</a>
     <ul class="toc-numbered-mark">
       <li><a id="toc-windows_005ffeature" href="#windows_005ffeature">3.3.1 windows_feature</a></li>
     </ul></li>
-    <li><a id="toc-Examples-1" href="#Examples">3.4 Examples</a>
+    <li><a id="toc-Examples" href="#Examples">3.4 Examples</a>
     <ul class="toc-numbered-mark">
       <li><a id="toc-mat2xls" href="#mat2xls">3.4.1 mat2xls</a></li>
     </ul></li>
   </ul></li>
   <li><a id="toc-GNU-General-Public-License" href="#Copying">Appendix A GNU General Public License</a></li>
-  <li><a id="toc-Index-1" href="#Index" rel="index">Index</a></li>
+  <li><a id="toc-Index" href="#Index" rel="index">Index</a></li>
 </ul>
 </div>
 </div>
@@ -139,7 +142,7 @@ octave-forge using the following command within <abbr class="acronym">GNU</abbr>
 <abbr class="acronym">GNU</abbr> Octave, the package can be installed using the following command within <abbr class="acronym">GNU</abbr> Octave:
 </p>
 <div class="example">
-<pre class="example-preformatted">pkg install windows-1.6.5.tar.gz
+<pre class="example-preformatted">pkg install windows-1.7.0.tar.gz
 </pre></div>
 </div>
 <div class="section-level-extent" id="Loading">
@@ -241,14 +244,14 @@ wshell.Exec(&quot;notepad.exe&quot;);
 <div class="subsection-level-extent" id="clipboard">
 <h4 class="subsection">3.1.1 clipboard</h4>
 <a class="index-entry-id" id="index-clipboard"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-_0028_0027copy_0027_002c"><span class="category-def">Loadable Function: </span><code class="def-type">clipboard</code> <strong class="def-name">(<var class="var">'copy'</var>,</strong> <code class="def-code-arguments"><var class="var">data</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-_003d"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">txt</var></code> <strong class="def-name">=</strong> <code class="def-code-arguments">clipboard (<var class="var">'paste'</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-_0028_0027copy_0027_002c"><span><code class="def-type">clipboard</code> <strong class="def-name">('copy',</strong> <code class="def-code-arguments"><var class="var">data</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-_003d"><span><code class="def-type"><var class="var">txt</var></code> <strong class="def-name">=</strong> <code class="def-code-arguments">clipboard ('paste')</code></span></dt>
 <dd>
 <p>Insert or get data from the clipboard.
 </p>
-<p><var class="var">&rsquo;copy&rsquo;</var> or <var class="var">&rsquo;paste&rsquo;</var> is the required operation to perform.
-where &rsquo;copy&rsquo; will copy data to the clipboard, and paste will paste data from
+<p>&rsquo;copy&rsquo; or &rsquo;paste&rsquo; is the required operation to perform,
+where &rsquo;copy&rsquo; will copy data to the clipboard, and &rsquo;paste&rsquo; will paste data from
 the clipboard to a variable.
 </p>
 <p><var class="var">data</var> is the data to copy to the clipboard.
@@ -270,8 +273,8 @@ the clipboard to a variable.
 <div class="subsection-level-extent" id="grab">
 <h4 class="subsection">3.1.2 grab</h4>
 <a class="index-entry-id" id="index-grab"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-grab-1"><span class="category-def">Loadable Function: </span><code class="def-type">[<var class="var">x</var>,<var class="var">y</var>] =</code> <strong class="def-name">grab</strong> <code class="def-code-arguments">(<var class="var">axis</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-grab-1"><span><code class="def-type">[<var class="var">x</var>,<var class="var">y</var>] =</code> <strong class="def-name">grab</strong> <code class="def-code-arguments">(<var class="var">axis</var>)</code></span></dt>
 <dd>
 <p>Grab positions of landmarks on the screen.
 </p>
@@ -303,8 +306,8 @@ and clicking &lt;SPACE&gt;. &rsquo;q&rsquo; or &lt;ESC&gt; quits
 <div class="subsection-level-extent" id="win32_005fDeleteRegistry">
 <h4 class="subsection">3.1.3 win32_DeleteRegistry</h4>
 <a class="index-entry-id" id="index-win32_005fDeleteRegistry"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fDeleteRegistry-1"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">code</var> =</code> <strong class="def-name">win32_DeleteRegistry</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>, <var class="var">valuename</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fDeleteRegistry-1"><span><code class="def-type"><var class="var">code</var> =</code> <strong class="def-name">win32_DeleteRegistry</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>, <var class="var">valuename</var>)</code></span></dt>
 <dd>
 <p>Delete a value from the Windows registry.
 </p>
@@ -343,9 +346,9 @@ success, while other codes indicate failure
 <div class="subsection-level-extent" id="win32_005fMessageBox">
 <h4 class="subsection">3.1.4 win32_MessageBox</h4>
 <a class="index-entry-id" id="index-win32_005fMessageBox"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fMessageBox-1"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-win32_005fMessageBox-2"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>, <var class="var">MboxType</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fMessageBox-1"><span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-win32_005fMessageBox-2"><span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>, <var class="var">MboxType</var>)</code></span></dt>
 <dd>
 <p>Display a message box using the win32 API.
 </p>
@@ -403,8 +406,8 @@ i</p></dd>
 <div class="subsection-level-extent" id="win32_005fReadRegistry">
 <h4 class="subsection">3.1.5 win32_ReadRegistry</h4>
 <a class="index-entry-id" id="index-win32_005fReadRegistry"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fReadRegistry-1"><span class="category-def">Loadable Function: </span><code class="def-type">[ <var class="var">rv</var>, <var class="var">code</var> ] =</code> <strong class="def-name">win32_ReadRegistry</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>, <var class="var">value</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fReadRegistry-1"><span><code class="def-type">[ <var class="var">rv</var>, <var class="var">code</var> ] =</code> <strong class="def-name">win32_ReadRegistry</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>, <var class="var">value</var>)</code></span></dt>
 <dd>
 <p>Read a value from the Windows registry.
 </p>
@@ -442,8 +445,8 @@ In the case of failure, &rsquo;rv&rsquo; will be empty
 <div class="subsection-level-extent" id="win32_005fRegEnumKey">
 <h4 class="subsection">3.1.6 win32_RegEnumKey</h4>
 <a class="index-entry-id" id="index-win32_005fRegEnumKey"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fRegEnumKey-1"><span class="category-def">Loadable Function: </span><code class="def-type">[ <var class="var">rv</var>, <var class="var">code</var> ] =</code> <strong class="def-name">win32_RegEnumKey</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fRegEnumKey-1"><span><code class="def-type">[ <var class="var">rv</var>, <var class="var">code</var> ] =</code> <strong class="def-name">win32_RegEnumKey</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>)</code></span></dt>
 <dd>
 <p>Read the keys of a given subkey from the Windows registry.
 </p>
@@ -481,8 +484,8 @@ In the case of failure, &rsquo;rv&rsquo; will be empty
 <div class="subsection-level-extent" id="win32_005fRegEnumValue">
 <h4 class="subsection">3.1.7 win32_RegEnumValue</h4>
 <a class="index-entry-id" id="index-win32_005fRegEnumValue"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fRegEnumValue-1"><span class="category-def">Loadable Function: </span><code class="def-type">[ <var class="var">rv</var>, <var class="var">code</var> ] =</code> <strong class="def-name">win32_RegEnumValue</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fRegEnumValue-1"><span><code class="def-type">[ <var class="var">rv</var>, <var class="var">code</var> ] =</code> <strong class="def-name">win32_RegEnumValue</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>)</code></span></dt>
 <dd>
 <p>Read value names from from the Windows registry.
 </p>
@@ -520,8 +523,8 @@ In the case of failure, &rsquo;rv&rsquo; will be empty
 <div class="subsection-level-extent" id="win32_005fWriteRegistry">
 <h4 class="subsection">3.1.8 win32_WriteRegistry</h4>
 <a class="index-entry-id" id="index-win32_005fWriteRegistry"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fWriteRegistry-1"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">code</var> =</code> <strong class="def-name">win32_WriteRegistry</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>, <var class="var">valuename</var>, <var class="var">value</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fWriteRegistry-1"><span><code class="def-type"><var class="var">code</var> =</code> <strong class="def-name">win32_WriteRegistry</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>, <var class="var">valuename</var>, <var class="var">value</var>)</code></span></dt>
 <dd>
 <p>Write a value to the Windows registry.
 </p>
@@ -559,9 +562,9 @@ success, while other codes indicate failure
 <div class="subsection-level-extent" id="win32api">
 <h4 class="subsection">3.1.9 win32api</h4>
 <a class="index-entry-id" id="index-win32api"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fMessageBox-3"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-win32_005fMessageBox-4"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>, <var class="var">MboxType</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fMessageBox-3"><span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-win32_005fMessageBox-4"><span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>, <var class="var">MboxType</var>)</code></span></dt>
 <dd>
 <p>Display a message box using the win32 API.
 </p>
@@ -619,8 +622,8 @@ i</p></dd>
 <div class="subsection-level-extent" id="winopen">
 <h4 class="subsection">3.1.10 winopen</h4>
 <a class="index-entry-id" id="index-winopen"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-_0028name_0029"><span class="category-def">Loadable Function: </span><code class="def-type">winopen</code> <strong class="def-name">(<var class="var">name</var>)</strong></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-_0028name_0029"><span><code class="def-type">winopen</code> <strong class="def-name">(<var class="var">name</var>)</strong></span></dt>
 <dd>
 <p>Open the file or directory <var class="var">name</var> in the windows registered
 application for the file, using shell open command.
@@ -645,8 +648,8 @@ application for the file, using shell open command.
 <div class="subsection-level-extent" id="g_t_0040octave_005fcom_005fobject_002fdelete">
 <h4 class="subsection">3.2.1 @octave_com_object/delete</h4>
 <a class="index-entry-id" id="index-delete"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-delete-1"><span class="category-def">: </span><strong class="def-name">delete</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-delete-1"><span><strong class="def-name">delete</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
 <dd><p>A delete override for octave_com_object objects.
 </p>
 <p>Release interfaces from COM object <var class="var">obj</var> and then delete the COM server.
@@ -654,12 +657,24 @@ application for the file, using shell open command.
 <p><strong class="strong">See also:</strong> com_delete delete.
 </p></dd></dl>
 </div>
+<div class="subsection-level-extent" id="g_t_0040octave_005fcom_005fobject_002ffieldnames">
+<h4 class="subsection">3.2.2 @octave_com_object/fieldnames</h4>
+<a class="index-entry-id" id="index-fieldnames"></a>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-fieldnames-1"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">fieldnames</strong> <code class="def-code-arguments">(<var class="var">comobj</var>)</code></span></dt>
+<dd><p>A fieldnames override for octave_com_object objects.
+</p>
+<p>The function will return a list of property names in <var class="var">S</var>.
+</p>
+<p><strong class="strong">See also:</strong> com_get, get.
+</p></dd></dl>
+</div>
 <div class="subsection-level-extent" id="g_t_0040octave_005fcom_005fobject_002fget">
-<h4 class="subsection">3.2.2 @octave_com_object/get</h4>
+<h4 class="subsection">3.2.3 @octave_com_object/get</h4>
 <a class="index-entry-id" id="index-get"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-get-1"><span class="category-def">: </span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-get-2"><span class="category-def">: </span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propertynames</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-get-1"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-get-2"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propertynames</var>)</code></span></dt>
 <dd><p>A get override for octave_com_object objects.
 </p>
 <p>When specifying just <var class="var">obj</var>, the function will return a list of property names in <var class="var">S</var>.
@@ -669,12 +684,12 @@ application for the file, using shell open command.
 </p></dd></dl>
 </div>
 <div class="subsection-level-extent" id="g_t_0040octave_005fcom_005fobject_002finvoke">
-<h4 class="subsection">3.2.3 @octave_com_object/invoke</h4>
+<h4 class="subsection">3.2.4 @octave_com_object/invoke</h4>
 <a class="index-entry-id" id="index-invoke"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-invoke-1"><span class="category-def">: </span><strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-invoke-2"><span class="category-def">: </span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">methodname</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-invoke-3"><span class="category-def">: </span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">methodname</var>, <var class="var">arg1</var>, &hellip;, <var class="var">argN</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-invoke-1"><span><strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-invoke-2"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">methodname</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-invoke-3"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">methodname</var>, <var class="var">arg1</var>, &hellip;, <var class="var">argN</var>)</code></span></dt>
 <dd><p>Invoke a method on a COM object.
 </p>
 <p>When called with just the single <var class="var">obj</var>, invoke displays the methods available to the object.
@@ -684,12 +699,28 @@ application for the file, using shell open command.
 <p><strong class="strong">See also:</strong> com_invoke, methods.
 </p></dd></dl>
 </div>
+<div class="subsection-level-extent" id="g_t_0040octave_005fcom_005fobject_002fisprop">
+<h4 class="subsection">3.2.5 @octave_com_object/isprop</h4>
+<a class="index-entry-id" id="index-isprop"></a>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-isprop-1"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">isprop</strong> <code class="def-code-arguments">(<var class="var">comobj</var>, <var class="var">property</var>)</code></span></dt>
+<dd><p>A isprop override for octave_com_object objects.
+</p>
+<p>For a string property, the function will return true or false if the
+ property exists for the com object.
+</p>
+<p>If property is a string array, the function will return an array of same size
+ with true/false for each string in the array that is a property.
+</p>
+<p><strong class="strong">See also:</strong> fieldnames.
+</p></dd></dl>
+</div>
 <div class="subsection-level-extent" id="g_t_0040octave_005fcom_005fobject_002fmethods">
-<h4 class="subsection">3.2.4 @octave_com_object/methods</h4>
+<h4 class="subsection">3.2.6 @octave_com_object/methods</h4>
 <a class="index-entry-id" id="index-methods"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-methods-1"><span class="category-def">: </span><strong class="def-name">methods</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-methods-2"><span class="category-def">: </span><code class="def-type"><var class="var">mtds</var> =</code> <strong class="def-name">methods</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-methods-1"><span><strong class="def-name">methods</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-methods-2"><span><code class="def-type"><var class="var">mtds</var> =</code> <strong class="def-name">methods</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
 <dd><p>List the names of the public methods for the object octave_com_object
 <var class="var">obj</var>.
 </p>
@@ -701,32 +732,56 @@ application for the file, using shell open command.
 </p></dd></dl>
 </div>
 <div class="subsection-level-extent" id="g_t_0040octave_005fcom_005fobject_002frelease">
-<h4 class="subsection">3.2.5 @octave_com_object/release</h4>
+<h4 class="subsection">3.2.7 @octave_com_object/release</h4>
 <a class="index-entry-id" id="index-release"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-release-1"><span class="category-def">: </span><strong class="def-name">release</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-release-1"><span><strong class="def-name">release</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
 <dd><p>Release the COM object <var class="var">obj</var> and all of its resources.
 </p>
 <p><strong class="strong">See also:</strong> com_release, delete.
 </p></dd></dl>
 </div>
 <div class="subsection-level-extent" id="g_t_0040octave_005fcom_005fobject_002fset">
-<h4 class="subsection">3.2.6 @octave_com_object/set</h4>
+<h4 class="subsection">3.2.8 @octave_com_object/set</h4>
 <a class="index-entry-id" id="index-set"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-set-1"><span class="category-def">: </span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">set</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propname</var>, <var class="var">value</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-set-1"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">set</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propname</var>, <var class="var">value</var>)</code></span></dt>
 <dd><p>A set override for octave_com_object objects.
 </p>
-<p>Call set function on COM object <var class="var">obj</var> to set property <var class="var">propname</var> to value <var class="var">value</var>. Returns any result in <var class="var">S</var>.
+<p>Call set function on COM object <var class="var">obj</var> to set property <var class="var">propname</var> to
+ value <var class="var">value</var>. Returns any result in <var class="var">S</var>.
 </p>
 <p><strong class="strong">See also:</strong> com_set.
 </p></dd></dl>
 </div>
+<div class="subsection-level-extent" id="actxGetRunningServer">
+<h4 class="subsection">3.2.9 actxGetRunningServer</h4>
+<a class="index-entry-id" id="index-actxGetRunningServer"></a>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-actxGetRunningServer-1"><span><code class="def-type"><var class="var">h</var> =</code> <strong class="def-name">actxGetRunningServer</strong> <code class="def-code-arguments">(<var class="var">progid</var>)</code></span></dt>
+<dd>
+<p>Get a running COM server using the <var class="var">progid</var> identifier.
+</p>
+<p>Returns <var class="var">h</var>, a handle to the default interface of the COM server.
+</p>
+<p>If the server is not already running the function will return an error.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted"># Get the COM server running Microsoft Excel (If running)
+app = actxGetRunningServer ('Excel.Application');
+# list the fields
+f = fieldnames(app)
+</pre></div></div>
+<p><strong class="strong">See also:</strong> actxserver.
+</p></dd></dl>
+</div>
 <div class="subsection-level-extent" id="actxserver">
-<h4 class="subsection">3.2.7 actxserver</h4>
+<h4 class="subsection">3.2.10 actxserver</h4>
 <a class="index-entry-id" id="index-actxserver"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-actxserver-1"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">h</var> =</code> <strong class="def-name">actxserver</strong> <code class="def-code-arguments">(<var class="var">progid</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-actxserver-1"><span><code class="def-type"><var class="var">h</var> =</code> <strong class="def-name">actxserver</strong> <code class="def-code-arguments">(<var class="var">progid</var>)</code></span></dt>
 <dd>
 <p>Create a COM server using the <var class="var">progid</var> identifier.
 </p>
@@ -743,39 +798,39 @@ destroy (app);
 </dd></dl>
 </div>
 <div class="subsection-level-extent" id="com_005fatexit">
-<h4 class="subsection">3.2.8 com_atexit</h4>
+<h4 class="subsection">3.2.11 com_atexit</h4>
 <a class="index-entry-id" id="index-com_005fatexit"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-com_005fatexit-1"><span class="category-def">Loadable Function: </span><strong class="def-name">com_atexit</strong> <code class="def-code-arguments">()</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-com_005fatexit-1"><span><strong class="def-name">com_atexit</strong> <code class="def-code-arguments">()</code></span></dt>
 <dd><p>Close down all GNU Octave managed COM handles.
 </p>
 <p>Called during pkg unload.
 </p></dd></dl>
 </div>
 <div class="subsection-level-extent" id="com_005fdelete">
-<h4 class="subsection">3.2.9 com_delete</h4>
+<h4 class="subsection">3.2.12 com_delete</h4>
 <a class="index-entry-id" id="index-com_005fdelete"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-com_005fdelete-1"><span class="category-def">Loadable Function: </span><strong class="def-name">com_delete</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-com_005fdelete-1"><span><strong class="def-name">com_delete</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
 <dd><p>Release interfaces from COM object <var class="var">obj</var> and then delete the COM server
 </p>
 </dd></dl>
 </div>
 <div class="subsection-level-extent" id="com_005fget">
-<h4 class="subsection">3.2.10 com_get</h4>
+<h4 class="subsection">3.2.13 com_get</h4>
 <a class="index-entry-id" id="index-com_005fget"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-com_005fget-1"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">com_get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-com_005fget-1"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">com_get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
 <dd><p>Call get function on COM object <var class="var">obj</var>. Returns any result in <var class="var">S</var>
 </p>
 </dd></dl>
 </div>
 <div class="subsection-level-extent" id="com_005finvoke">
-<h4 class="subsection">3.2.11 com_invoke</h4>
+<h4 class="subsection">3.2.14 com_invoke</h4>
 <a class="index-entry-id" id="index-com_005finvoke"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-com_005finvoke-1"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">result</var> =</code> <strong class="def-name">com_invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-com_005finvoke-2"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">result</var> =</code> <strong class="def-name">com_invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">method</var> )</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-com_005finvoke-1"><span><code class="def-type"><var class="var">result</var> =</code> <strong class="def-name">com_invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-com_005finvoke-2"><span><code class="def-type"><var class="var">result</var> =</code> <strong class="def-name">com_invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">method</var> )</code></span></dt>
 <dd>
 <p>Call invoke on <var class="var">obj</var> to run a method, or obtain a list of all methods.
 </p>
@@ -786,28 +841,28 @@ destroy (app);
 </dd></dl>
 </div>
 <div class="subsection-level-extent" id="com_005frelease">
-<h4 class="subsection">3.2.12 com_release</h4>
+<h4 class="subsection">3.2.15 com_release</h4>
 <a class="index-entry-id" id="index-com_005frelease"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-com_005frelease-1"><span class="category-def">Loadable Function: </span><strong class="def-name">com_release</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-com_005frelease-1"><span><strong class="def-name">com_release</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
 <dd><p>Release interfaces from COM object <var class="var">obj</var>
 </p>
 </dd></dl>
 </div>
 <div class="subsection-level-extent" id="com_005fset">
-<h4 class="subsection">3.2.13 com_set</h4>
+<h4 class="subsection">3.2.16 com_set</h4>
 <a class="index-entry-id" id="index-com_005fset"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-com_005fset-1"><span class="category-def">Loadable Function: </span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">com_set</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propname</var>, <var class="var">value</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-com_005fset-1"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">com_set</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propname</var>, <var class="var">value</var>)</code></span></dt>
 <dd><p>Call set function on COM object <var class="var">obj</var> to set property <var class="var">propname</var> to value <var class="var">value</var>. Returns any result in <var class="var">S</var>
 </p>
 </dd></dl>
 </div>
 <div class="subsection-level-extent" id="iscom">
-<h4 class="subsection">3.2.14 iscom</h4>
+<h4 class="subsection">3.2.17 iscom</h4>
 <a class="index-entry-id" id="index-iscom"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-iscom-1"><span class="category-def">Function File: </span><code class="def-type"><var class="var">tf</var> =</code> <strong class="def-name">iscom</strong> <code class="def-code-arguments">(<var class="var">h</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-iscom-1"><span><code class="def-type"><var class="var">tf</var> =</code> <strong class="def-name">iscom</strong> <code class="def-code-arguments">(<var class="var">h</var>)</code></span></dt>
 <dd>
 <p>Determine whether <var class="var">h</var> is a COM object.
 </p>
@@ -824,9 +879,9 @@ destroy (app);
 <div class="subsection-level-extent" id="windows_005ffeature">
 <h4 class="subsection">3.3.1 windows_feature</h4>
 <a class="index-entry-id" id="index-windows_005ffeature"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-windows_005ffeature-1"><span class="category-def">Loadable Function: </span><strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>)</code></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-windows_005ffeature-2"><span class="category-def">Loadable Function: </span><strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>, <var class="var">value</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-windows_005ffeature-1"><span><strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-windows_005ffeature-2"><span><strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>, <var class="var">value</var>)</code></span></dt>
 <dd><p>Set or get a feature value.
 </p>
 <p><var class="var">name</var> - name of feature to get or set.<br>
@@ -841,8 +896,8 @@ destroy (app);
 <div class="subsection-level-extent" id="mat2xls">
 <h4 class="subsection">3.4.1 mat2xls</h4>
 <a class="index-entry-id" id="index-mat2xls"></a>
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-mat2xls-1"><span class="category-def">Function File: </span><strong class="def-name">mat2xls</strong> <code class="def-code-arguments">(<var class="var">obj</var>,<var class="var">filename</var>)</code></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-mat2xls-1"><span><strong class="def-name">mat2xls</strong> <code class="def-code-arguments">(<var class="var">obj</var>,<var class="var">filename</var>)</code></span></dt>
 <dd><p>Save <var class="var">obj</var> as an Excel sheet into the file <var class="var">filename</var>. The
  object <var class="var">obj</var> must be either a cell matrix or a real matrix, that
  is a 2-dimensional object. All elements of the matrix are converted
@@ -1559,10 +1614,11 @@ first, please read <a class="url" href="http://www.gnu.org/philosophy/why-not-lg
 <a class="summary-letter-printindex" href="#Index_cp_letter-W"><b>W</b></a>
  &nbsp; 
 </td></tr></table>
-<table class="cp-entries-printindex" border="0">
+<table class="cp-entries-printindex">
 <tr><td></td><th class="entries-header-printindex">Index Entry</th><th class="sections-header-printindex">Section</th></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Index_cp_letter-A">A</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-actxGetRunningServer">actxGetRunningServer</a></td><td class="printindex-index-section"><a href="#COM-Interface">COM Interface</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-actxserver">actxserver</a></td><td class="printindex-index-section"><a href="#COM-Interface">COM Interface</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Index_cp_letter-B">B</th></tr>
@@ -1587,6 +1643,7 @@ first, please read <a class="url" href="http://www.gnu.org/philosophy/why-not-lg
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Index_cp_letter-F">F</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-Features">Features</a></td><td class="printindex-index-section"><a href="#Features">Features</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-fieldnames">fieldnames</a></td><td class="printindex-index-section"><a href="#COM-Interface">COM Interface</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-Function-Reference">Function Reference</a></td><td class="printindex-index-section"><a href="#Function-Reference">Function Reference</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Index_cp_letter-G">G</th></tr>
@@ -1597,6 +1654,7 @@ first, please read <a class="url" href="http://www.gnu.org/philosophy/why-not-lg
 <tr><td></td><td class="printindex-index-entry"><a href="#index-Installing-and-loading">Installing and loading</a></td><td class="printindex-index-section"><a href="#Installing-and-loading">Installing and loading</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-invoke">invoke</a></td><td class="printindex-index-section"><a href="#COM-Interface">COM Interface</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-iscom">iscom</a></td><td class="printindex-index-section"><a href="#COM-Interface">COM Interface</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-isprop">isprop</a></td><td class="printindex-index-section"><a href="#COM-Interface">COM Interface</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Index_cp_letter-L">L</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-Loading">Loading</a></td><td class="printindex-index-section"><a href="#Installing-and-loading">Installing and loading</a></td></tr>

@@ -2,10 +2,10 @@
 layout: "default"
 permalink: "/functions/@octave_com_object/25_octavecomobjectinvoke/"
 pkg_name: "windows"
-pkg_version: "1.6.5"
+pkg_version: "1.7.0"
 pkg_description: "Provides COM interface and additional functionality on Windows"
 title: "Windows Toolkit - @octave_com_object/invoke"
-category: "COM Interface"
+category: "Examples"
 func_name: "@octave_com_object/invoke"
 navigation:
 - id: "overview"
@@ -17,15 +17,19 @@ navigation:
 - id: "17_WindowsUtilities"
   name: "&nbsp;&nbsp;Windows Utilities"
   url: "/functions/#17_WindowsUtilities"
+  subitems:
 - id: "13_COMInterface"
   name: "&nbsp;&nbsp;COM Interface"
   url: "/functions/#13_COMInterface"
+  subitems:
 - id: "8_Features"
   name: "&nbsp;&nbsp;Features"
   url: "/functions/#8_Features"
+  subitems:
 - id: "8_Examples"
   name: "&nbsp;&nbsp;Examples"
   url: "/functions/#8_Examples"
+  subitems:
 - id: "news"
   name: "News"
   url: "/news"
@@ -33,10 +37,10 @@ navigation:
   name: "Manual"
   url: "/manual"
 ---
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-invoke"><span class="category-def">: </span><span><strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code><a class="copiable-link" href="#index-invoke"></a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-invoke-1"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">methodname</var>)</code><a class="copiable-link" href="#index-invoke-1"></a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-invoke-2"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">methodname</var>, <var class="var">arg1</var>, &hellip;, <var class="var">argN</var>)</code><a class="copiable-link" href="#index-invoke-2"></a></span></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-invoke"><span class="category-def">: </span><span><strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code><a class="copiable-link" href="#index-invoke"></a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-invoke-1"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">methodname</var>)</code><a class="copiable-link" href="#index-invoke-1"></a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-invoke-2"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">invoke</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">methodname</var>, <var class="var">arg1</var>, &hellip;, <var class="var">argN</var>)</code><a class="copiable-link" href="#index-invoke-2"></a></span></dt>
 <dd><p>Invoke a method on a COM object.
 </p>
 <p>When called with just the single <var class="var">obj</var>, invoke displays the methods available to the object.

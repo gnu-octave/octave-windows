@@ -2,10 +2,10 @@
 layout: "default"
 permalink: "/functions/18_win32ReadRegistry/"
 pkg_name: "windows"
-pkg_version: "1.6.5"
+pkg_version: "1.7.0"
 pkg_description: "Provides COM interface and additional functionality on Windows"
 title: "Windows Toolkit - win32_ReadRegistry"
-category: "Windows Utilities"
+category: "Examples"
 func_name: "win32_ReadRegistry"
 navigation:
 - id: "overview"
@@ -17,15 +17,19 @@ navigation:
 - id: "17_WindowsUtilities"
   name: "&nbsp;&nbsp;Windows Utilities"
   url: "/functions/#17_WindowsUtilities"
+  subitems:
 - id: "13_COMInterface"
   name: "&nbsp;&nbsp;COM Interface"
   url: "/functions/#13_COMInterface"
+  subitems:
 - id: "8_Features"
   name: "&nbsp;&nbsp;Features"
   url: "/functions/#8_Features"
+  subitems:
 - id: "8_Examples"
   name: "&nbsp;&nbsp;Examples"
   url: "/functions/#8_Examples"
+  subitems:
 - id: "news"
   name: "News"
   url: "/news"
@@ -33,8 +37,8 @@ navigation:
   name: "Manual"
   url: "/manual"
 ---
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fReadRegistry"><span class="category-def">Loadable Function: </span><span><code class="def-type">[ <var class="var">rv</var>, <var class="var">code</var> ] =</code> <strong class="def-name">win32_ReadRegistry</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>, <var class="var">value</var>)</code><a class="copiable-link" href="#index-win32_005fReadRegistry"></a></span></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fReadRegistry"><span class="category-def">: </span><span><code class="def-type">[ <var class="var">rv</var>, <var class="var">code</var> ] =</code> <strong class="def-name">win32_ReadRegistry</strong> <code class="def-code-arguments">(<var class="var">key</var>, <var class="var">subkey</var>, <var class="var">value</var>)</code><a class="copiable-link" href="#index-win32_005fReadRegistry"></a></span></dt>
 <dd> 
 <p>Read a value from the Windows registry.
 </p> 

@@ -1,12 +1,12 @@
 ---
 layout: "default"
-permalink: "/functions/10_actxserver/"
+permalink: "/functions/20_actxGetRunningServer/"
 pkg_name: "windows"
 pkg_version: "1.7.0"
 pkg_description: "Provides COM interface and additional functionality on Windows"
-title: "Windows Toolkit - actxserver"
+title: "Windows Toolkit - actxGetRunningServer"
 category: "Examples"
-func_name: "actxserver"
+func_name: "actxGetRunningServer"
 navigation:
 - id: "overview"
   name: "Overview"
@@ -38,18 +38,22 @@ navigation:
   url: "/manual"
 ---
 <dl class="first-deftypefn def-block">
-<dt class="deftypefn def-line" id="index-actxserver"><span class="category-def">: </span><span><code class="def-type"><var class="var">h</var> =</code> <strong class="def-name">actxserver</strong> <code class="def-code-arguments">(<var class="var">progid</var>)</code><a class="copiable-link" href="#index-actxserver"></a></span></dt>
+<dt class="deftypefn def-line" id="index-actxGetRunningServer"><span class="category-def">: </span><span><code class="def-type"><var class="var">h</var> =</code> <strong class="def-name">actxGetRunningServer</strong> <code class="def-code-arguments">(<var class="var">progid</var>)</code><a class="copiable-link" href="#index-actxGetRunningServer"></a></span></dt>
 <dd> 
-<p>Create a COM server using the <var class="var">progid</var> identifier.
+<p>Get a running COM server using the <var class="var">progid</var> identifier.
 </p> 
 <p>Returns <var class="var">h</var>, a handle to the default interface of the COM server.
+</p> 
+<p>If the server is not already running the function will return an error.
 </p> 
 <p>Example:
 </p> 
 <div class="example">
-<pre class="example-preformatted"> </pre><div class="group"><pre class="example-preformatted"> # create a COM server running Microsoft Excel
- app = actxserver ('Excel.Application');
- # free the object
- destroy (app); 
+<pre class="example-preformatted"> </pre><div class="group"><pre class="example-preformatted"> # Get the COM server running Microsoft Excel (If running)
+ app = actxGetRunningServer ('Excel.Application');
+ # list the fields
+ f = fieldnames(app)
  </pre></div><pre class="example-preformatted"> </pre></div>
-</dd></dl>
+
+<p><strong class="strong">See also:</strong> actxserver.
+ </p></dd></dl>

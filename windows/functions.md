@@ -3,7 +3,7 @@ layout: "function_list"
 permalink: "/functions/"
 title: "Windows Toolkit - Functions"
 pkg_name: "windows"
-version: "1.6.5"
+version: "1.7.0"
 description: "Provides COM interface and additional functionality on Windows"
 categories:
 - id: "17_WindowsUtilities"
@@ -49,6 +49,7 @@ categories:
     name: "clipboard"
     description: "Insert or get data from the clipboard."
     url: "/functions/9_clipboard/"
+  groups:
 - id: "13_COMInterface"
   description: "COM Interface"
   functions:
@@ -56,6 +57,10 @@ categories:
     name: "actxserver"
     description: "Create a COM server using the PROGID identifier."
     url: "/functions/10_actxserver/"
+  - id: "20_actxGetRunningServer"
+    name: "actxGetRunningServer"
+    description: "Get a running COM server using the PROGID identifier."
+    url: "/functions/20_actxGetRunningServer/"
   - id: "10_comatexit"
     name: "com_atexit"
     description: "Close down all GNU Octave managed COM handles."
@@ -108,6 +113,15 @@ categories:
     name: "@octave_com_object/methods"
     description: "List the names of the public methods for the object octave_com_object OBJ."
     url: "/functions/@octave_com_object/26_octavecomobjectmethods/"
+  - id: "29_octavecomobjectfieldnames"
+    name: "@octave_com_object/fieldnames"
+    description: "A fieldnames override for octave_com_object objects."
+    url: "/functions/@octave_com_object/29_octavecomobjectfieldnames/"
+  - id: "25_octavecomobjectisprop"
+    name: "@octave_com_object/isprop"
+    description: "A isprop override for octave_com_object objects."
+    url: "/functions/@octave_com_object/25_octavecomobjectisprop/"
+  groups:
 - id: "8_Features"
   description: "Features"
   functions:
@@ -115,6 +129,7 @@ categories:
     name: "windows_feature"
     description: "Set or get a feature value."
     url: "/functions/15_windowsfeature/"
+  groups:
 - id: "8_Examples"
   description: "Examples"
   functions:
@@ -122,6 +137,7 @@ categories:
     name: "mat2xls"
     description: "Save OBJ as an Excel sheet into the file FILENAME."
     url: "/functions/7_mat2xls/"
+  groups:
 navigation:
 - id: "overview"
   name: "Overview"
@@ -131,15 +147,19 @@ navigation:
 - id: "17_WindowsUtilities"
   name: "&nbsp;&nbsp;Windows Utilities"
   url: "/functions/#17_WindowsUtilities"
+  subitems:
 - id: "13_COMInterface"
   name: "&nbsp;&nbsp;COM Interface"
   url: "/functions/#13_COMInterface"
+  subitems:
 - id: "8_Features"
   name: "&nbsp;&nbsp;Features"
   url: "/functions/#8_Features"
+  subitems:
 - id: "8_Examples"
   name: "&nbsp;&nbsp;Examples"
   url: "/functions/#8_Examples"
+  subitems:
 - id: "news"
   name: "News"
   url: "/news"

@@ -2,7 +2,7 @@
 layout: "default"
 permalink: "/functions/7_mat2xls/"
 pkg_name: "windows"
-pkg_version: "1.6.5"
+pkg_version: "1.7.0"
 pkg_description: "Provides COM interface and additional functionality on Windows"
 title: "Windows Toolkit - mat2xls"
 category: "Examples"
@@ -17,15 +17,19 @@ navigation:
 - id: "17_WindowsUtilities"
   name: "&nbsp;&nbsp;Windows Utilities"
   url: "/functions/#17_WindowsUtilities"
+  subitems:
 - id: "13_COMInterface"
   name: "&nbsp;&nbsp;COM Interface"
   url: "/functions/#13_COMInterface"
+  subitems:
 - id: "8_Features"
   name: "&nbsp;&nbsp;Features"
   url: "/functions/#8_Features"
+  subitems:
 - id: "8_Examples"
   name: "&nbsp;&nbsp;Examples"
   url: "/functions/#8_Examples"
+  subitems:
 - id: "news"
   name: "News"
   url: "/news"
@@ -33,8 +37,8 @@ navigation:
   name: "Manual"
   url: "/manual"
 ---
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-mat2xls"><span class="category-def">Function File: </span><span><strong class="def-name">mat2xls</strong> <code class="def-code-arguments">(<var class="var">obj</var>,<var class="var">filename</var>)</code><a class="copiable-link" href="#index-mat2xls"></a></span></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-mat2xls"><span class="category-def">: </span><span><strong class="def-name">mat2xls</strong> <code class="def-code-arguments">(<var class="var">obj</var>,<var class="var">filename</var>)</code><a class="copiable-link" href="#index-mat2xls"></a></span></dt>
 <dd><p>Save <var class="var">obj</var> as an Excel sheet into the file <var class="var">filename</var>. The
  object <var class="var">obj</var> must be either a cell matrix or a real matrix, that
  is a 2-dimensional object. All elements of the matrix are converted

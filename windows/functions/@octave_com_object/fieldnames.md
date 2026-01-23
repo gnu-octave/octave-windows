@@ -1,12 +1,12 @@
 ---
 layout: "default"
-permalink: "/functions/7_winopen/"
+permalink: "/functions/@octave_com_object/29_octavecomobjectfieldnames/"
 pkg_name: "windows"
 pkg_version: "1.7.0"
 pkg_description: "Provides COM interface and additional functionality on Windows"
-title: "Windows Toolkit - winopen"
+title: "Windows Toolkit - @octave_com_object/fieldnames"
 category: "Examples"
-func_name: "winopen"
+func_name: "@octave_com_object/fieldnames"
 navigation:
 - id: "overview"
   name: "Overview"
@@ -38,22 +38,11 @@ navigation:
   url: "/manual"
 ---
 <dl class="first-deftypefn def-block">
-<dt class="deftypefn def-line" id="index-_0028name_0029"><span class="category-def">: </span><span><code class="def-type">winopen</code> <strong class="def-name">(<var class="var">name</var>)</strong><a class="copiable-link" href="#index-_0028name_0029"></a></span></dt>
-<dd> 
-<p>Open the file or directory <var class="var">name</var> in the windows registered
- application for the file, using shell open command.
-</p> 
-<p>Examples:
-</p> 
-<p>Open file document.docx in the docx viewer:
- </p><div class="example">
-<pre class="example-preformatted"> winopen (&quot;document.docx&quot;);
- </pre></div>
- 
-<p>Open the current directory in explorer:
- </p><div class="example">
-<pre class="example-preformatted"> winopen (pwd);
- </pre></div>
- 
- 
-</dd></dl>
+<dt class="deftypefn def-line" id="index-fieldnames"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">fieldnames</strong> <code class="def-code-arguments">(<var class="var">comobj</var>)</code><a class="copiable-link" href="#index-fieldnames"></a></span></dt>
+<dd><p>A fieldnames override for octave_com_object objects.
+</p>
+<p>The function will return a list of property names in <var class="var">S</var>.
+</p>
+
+<p><strong class="strong">See also:</strong> com_get, get.
+ </p></dd></dl>

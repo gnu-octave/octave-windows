@@ -2,10 +2,10 @@
 layout: "default"
 permalink: "/functions/16_win32MessageBox/"
 pkg_name: "windows"
-pkg_version: "1.6.5"
+pkg_version: "1.7.0"
 pkg_description: "Provides COM interface and additional functionality on Windows"
 title: "Windows Toolkit - win32_MessageBox"
-category: "Windows Utilities"
+category: "Examples"
 func_name: "win32_MessageBox"
 navigation:
 - id: "overview"
@@ -17,15 +17,19 @@ navigation:
 - id: "17_WindowsUtilities"
   name: "&nbsp;&nbsp;Windows Utilities"
   url: "/functions/#17_WindowsUtilities"
+  subitems:
 - id: "13_COMInterface"
   name: "&nbsp;&nbsp;COM Interface"
   url: "/functions/#13_COMInterface"
+  subitems:
 - id: "8_Features"
   name: "&nbsp;&nbsp;Features"
   url: "/functions/#8_Features"
+  subitems:
 - id: "8_Examples"
   name: "&nbsp;&nbsp;Examples"
   url: "/functions/#8_Examples"
+  subitems:
 - id: "news"
   name: "News"
   url: "/news"
@@ -33,9 +37,9 @@ navigation:
   name: "Manual"
   url: "/manual"
 ---
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-win32_005fMessageBox"><span class="category-def">Loadable Function: </span><span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>)</code><a class="copiable-link" href="#index-win32_005fMessageBox"></a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-win32_005fMessageBox-1"><span class="category-def">Loadable Function: </span><span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>, <var class="var">MboxType</var>)</code><a class="copiable-link" href="#index-win32_005fMessageBox-1"></a></span></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-win32_005fMessageBox"><span class="category-def">: </span><span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>)</code><a class="copiable-link" href="#index-win32_005fMessageBox"></a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-win32_005fMessageBox-1"><span class="category-def">: </span><span><code class="def-type"><var class="var">rv</var> =</code> <strong class="def-name">win32_MessageBox</strong> <code class="def-code-arguments">(<var class="var">title</var>, <var class="var">text</var>, <var class="var">MboxType</var>)</code><a class="copiable-link" href="#index-win32_005fMessageBox-1"></a></span></dt>
 <dd> 
 <p>Display a message box using the win32 API.
 </p> 

@@ -2,10 +2,10 @@
 layout: "default"
 permalink: "/functions/@octave_com_object/22_octavecomobjectget/"
 pkg_name: "windows"
-pkg_version: "1.6.5"
+pkg_version: "1.7.0"
 pkg_description: "Provides COM interface and additional functionality on Windows"
 title: "Windows Toolkit - @octave_com_object/get"
-category: "COM Interface"
+category: "Examples"
 func_name: "@octave_com_object/get"
 navigation:
 - id: "overview"
@@ -17,15 +17,19 @@ navigation:
 - id: "17_WindowsUtilities"
   name: "&nbsp;&nbsp;Windows Utilities"
   url: "/functions/#17_WindowsUtilities"
+  subitems:
 - id: "13_COMInterface"
   name: "&nbsp;&nbsp;COM Interface"
   url: "/functions/#13_COMInterface"
+  subitems:
 - id: "8_Features"
   name: "&nbsp;&nbsp;Features"
   url: "/functions/#8_Features"
+  subitems:
 - id: "8_Examples"
   name: "&nbsp;&nbsp;Examples"
   url: "/functions/#8_Examples"
+  subitems:
 - id: "news"
   name: "News"
   url: "/news"
@@ -33,9 +37,9 @@ navigation:
   name: "Manual"
   url: "/manual"
 ---
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-get"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code><a class="copiable-link" href="#index-get"></a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-get-1"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propertynames</var>)</code><a class="copiable-link" href="#index-get-1"></a></span></dt>
+<dl class="first-deftypefn def-block">
+<dt class="deftypefn def-line" id="index-get"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code><a class="copiable-link" href="#index-get"></a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-get-1"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">get</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">propertynames</var>)</code><a class="copiable-link" href="#index-get-1"></a></span></dt>
 <dd><p>A get override for octave_com_object objects.
 </p>
 <p>When specifying just <var class="var">obj</var>, the function will return a list of property names in <var class="var">S</var>.
