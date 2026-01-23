@@ -185,7 +185,7 @@ dd > p:first-child { margin-top: 0.5em; }
 body { max-width: 42em; margin-left: 0.5em; margin-right: 0.5em; }
 
 /* On small screens don't indent the code examples to prevent overflow */
-div.example { margin-left: auto; max-width: 38.8em; }
+div.example { margin-left: 1em; max-width: 38.8em; }
 
 /*
 Use left margin such that text is easier to read,
