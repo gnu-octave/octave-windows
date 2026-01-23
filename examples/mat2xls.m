@@ -14,7 +14,7 @@
 ## along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} mat2xls (@var{obj},@var{filename})
+## @deftypefn {} {} mat2xls (@var{obj},@var{filename})
 ## Save @var{obj} as an Excel sheet into the file @var{filename}. The
 ## object @var{obj} must be either a cell matrix or a real matrix, that
 ## is a 2-dimensional object. All elements of the matrix are converted
