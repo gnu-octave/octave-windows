@@ -22,6 +22,7 @@ TEXI2PDF  ?= texi2pdf -q
 MAKEINFO  ?= makeinfo
 #MAKEINFO_HTML_OPTIONS := --no-headers --set-customization-variable 'COPIABLE_LINKS 0' --set-customization-variable 'COPIABLE_ANCHORS 0' --no-split 
 MAKEINFO_HTML_OPTIONS := --no-headers --no-split 
+MAKEINFO_HTML_FILTER :=  $(SED) 's|<span class="category[^"]*">: </span>||g' | $(SED) 's|<a[^>]*class=.copiable[^>]*> &para;</a>||g' | $(SED) 's|<span>\([^<]*\)</span>|\1|g'
 
 # work out a possible help generator
 ifeq ($(strip $(QHELPGENERATOR)),)
@@ -194,7 +195,7 @@ doc/$(PACKAGE).info: doc/$(PACKAGE).texi doc/functions.texi doc/version.texi
 	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(MAKEINFO) $(PACKAGE).texi
 
 doc/$(PACKAGE).html: doc/$(PACKAGE).texi doc/functions.texi doc/version.texi
-	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(MAKEINFO) --html --css-ref=$(PACKAGE).css  $(MAKEINFO_HTML_OPTIONS) $(PACKAGE).texi -o - | $(SED) 's|<span class="category[^"]*">: </span>||g' | $(SED) 's|<a[^>]*class=.copiable[^>]*> &para;</a>||g' > $(PACKAGE).html
+	cd doc && SOURCE_DATE_EPOCH=$(REPO_TIMESTAMP) $(MAKEINFO) --html --css-ref=$(PACKAGE).css  $(MAKEINFO_HTML_OPTIONS) $(PACKAGE).texi -o - | $(MAKEINFO_HTML_FILTER) > $(PACKAGE).html
 
 doc/$(PACKAGE).qhc: doc/$(PACKAGE).html
 	# try also create qch file if can
