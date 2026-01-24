@@ -1045,7 +1045,10 @@ octave_com_object::map_keys (void) const
 DEFUN_DLD(com_get, args, ,
           "-*- texinfo -*-\n \
 @deftypefn {} { @var{S} = } com_get (@var{obj})\n \
+@deftypefnx {} { @var{S} = } com_get (@var{obj}, @var{property})\n \
 Call get function on COM object @var{obj}. Returns any result in @var{S}\n \
+\n \
+If no property is provided, all properties will be returned in @var{S}.\n \
 \n \
 @end deftypefn")
 {
