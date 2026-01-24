@@ -427,7 +427,7 @@ get_feature(const std::string &name)
 // PKG_ADD: autoload ("windows_feature", which ("__COM__"));
 DEFUN_DLD(windows_feature, args, , 
           "-*- texinfo -*-\n \
-@deftypefn {} {} windows_feature (@var{name})\n \
+@deftypefn {} {@var{value} =} windows_feature (@var{name})\n \
 @deftypefnx {} {} windows_feature (@var{name}, @var{value})\n \
 Set or get a feature value.\n \
 \n \
