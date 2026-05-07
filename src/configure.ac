@@ -41,43 +41,8 @@ dnl AC_CONFIG_AUX_DIR(admin)
 AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 
-dnl if mkoctfile doesn't work, then we need the following:
-dnl AC_PROG_CXX
-
-dnl Need C compiler regardless so define it in a way that
-dnl makes autoconf happy and we can override whatever we
-dnl need with mkoctfile -p.
-dnl XXX FIXME XXX should use mkoctfile to get CC and CFLAGS
-AC_PROG_CC
-
 AC_PROG_GREP
 AC_PROG_SED
-
-dnl Check if we are windows or not - COM only works in windows 
-# Check for Windows
-AC_MSG_CHECKING([for windows])
-have_windows=no
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-   #include <windows.h>
-   #ifndef __WIN32__
-     #error "Not windows!"
-   #endif
-  ]], [])],
- [AC_MSG_RESULT([yes])
-  have_windows=yes],
- [AC_MSG_RESULT([no])])
-
-OLELIBS=
-if test $have_windows = yes; then
-  AC_DEFINE([USING_WINDOWS], [1], [are we a windows system])
-  OLELIBS="-ladvapi32 -lole32 -loleaut32 -luuid"
-  # prevent some warnings by defining this ...
-  AC_DEFINE([_NO_SYS_GUID_OPERATOR_EQ_], [1], [Dont define guid == ops])
-fi
-AC_SUBST(OLELIBS)
-
-
-dnl XXX FIXME XXX need tests for -p -c -s in mkoctfile.
 
 dnl *******************************************************************
 dnl Sort out mkoctfile version number and install paths
@@ -105,6 +70,47 @@ case $host_os in
     ;;
 esac
 fi
+
+# The same value of CXX as Octave was compiled with is supposed to be used.
+CXX=`${MKOCTFILE} -p CXX`
+
+# The check for flags to enable C++11 is broken with a C++20 compiler (because
+# the type of u8"" literals changed) in autoconf before version 2.73.
+# Octave requires C++11 since version 4.2, so it is enabled by the CXX as
+# returned by mkoctfile. Skip broken check which would demote to C++11.
+ac_cv_prog_cxx_cxx11=""
+
+dnl if mkoctfile doesn't work, then we need the following:
+AC_PROG_CXX
+
+dnl Need C compiler regardless so define it in a way that
+dnl makes autoconf happy and we can override whatever we
+dnl need with mkoctfile -p.
+dnl XXX FIXME XXX should use mkoctfile to get CC and CFLAGS
+AC_PROG_CC
+
+dnl Check if we are windows or not - COM only works in windows 
+# Check for Windows
+AC_MSG_CHECKING([for windows])
+have_windows=no
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+   #include <windows.h>
+   #ifndef __WIN32__
+     #error "Not windows!"
+   #endif
+  ]], [])],
+ [AC_MSG_RESULT([yes])
+  have_windows=yes],
+ [AC_MSG_RESULT([no])])
+
+OLELIBS=
+if test $have_windows = yes; then
+  AC_DEFINE([USING_WINDOWS], [1], [are we a windows system])
+  OLELIBS="-ladvapi32 -lole32 -loleaut32 -luuid"
+  # prevent some warnings by defining this ...
+  AC_DEFINE([_NO_SYS_GUID_OPERATOR_EQ_], [1], [Dont define guid == ops])
+fi
+AC_SUBST(OLELIBS)
 
 dnl **********************************************************
 
