@@ -38,3 +38,6 @@ function __unload_windows__ ()
     # do nothing
   end_try_catch
 endfunction
+
+%!test
+%! # no test needed
