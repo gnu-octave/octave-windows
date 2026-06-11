@@ -3,7 +3,7 @@ layout: "default"
 permalink: "/manual/"
 title: "Windows Toolkit - Manual"
 pkg_name: "windows"
-version: "1.7.0"
+version: "1.7.1"
 description: "Provides COM interface and additional functionality on Windows"
 navigation:
 - id: "overview"
@@ -142,7 +142,7 @@ octave-forge using the following command within <abbr class="acronym">GNU</abbr>
 <abbr class="acronym">GNU</abbr> Octave, the package can be installed using the following command within <abbr class="acronym">GNU</abbr> Octave:
 </p>
 <div class="example">
-<pre class="example-preformatted">pkg install windows-1.7.0.tar.gz
+<pre class="example-preformatted">pkg install windows-1.7.1.tar.gz
 </pre></div>
 </div>
 <div class="section-level-extent" id="Loading">
@@ -821,7 +821,10 @@ destroy (app);
 <a class="index-entry-id" id="index-com_005fget"></a>
 <dl class="first-deftypefn def-block">
 <dt class="deftypefn def-line" id="index-com_005fget-1"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">com_get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-com_005fget-2"><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">com_get</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">property</var>)</code></span></dt>
 <dd><p>Call get function on COM object <var class="var">obj</var>. Returns any result in <var class="var">S</var>
+</p>
+<p>If no property is provided, all properties will be returned in <var class="var">S</var>.
 </p>
 </dd></dl>
 </div>
@@ -880,7 +883,7 @@ destroy (app);
 <h4 class="subsection">3.3.1 windows_feature</h4>
 <a class="index-entry-id" id="index-windows_005ffeature"></a>
 <dl class="first-deftypefn def-block">
-<dt class="deftypefn def-line" id="index-windows_005ffeature-1"><span><strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>)</code></span></dt>
+<dt class="deftypefn def-line" id="index-windows_005ffeature-1"><span><code class="def-type"><var class="var">value</var> =</code> <strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>)</code></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn def-line" id="index-windows_005ffeature-2"><span><strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>, <var class="var">value</var>)</code></span></dt>
 <dd><p>Set or get a feature value.
 </p>

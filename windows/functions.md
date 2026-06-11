@@ -3,7 +3,7 @@ layout: "function_list"
 permalink: "/functions/"
 title: "Windows Toolkit - Functions"
 pkg_name: "windows"
-version: "1.7.0"
+version: "1.7.1"
 description: "Provides COM interface and additional functionality on Windows"
 categories:
 - id: "17_WindowsUtilities"

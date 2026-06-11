@@ -2,7 +2,7 @@
 layout: "default"
 permalink: "/functions/15_windowsfeature/"
 pkg_name: "windows"
-pkg_version: "1.7.0"
+pkg_version: "1.7.1"
 pkg_description: "Provides COM interface and additional functionality on Windows"
 title: "Windows Toolkit - windows_feature"
 category: "Examples"
@@ -38,7 +38,7 @@ navigation:
   url: "/manual"
 ---
 <dl class="first-deftypefn def-block">
-<dt class="deftypefn def-line" id="index-windows_005ffeature"><span class="category-def">: </span><span><strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>)</code><a class="copiable-link" href="#index-windows_005ffeature"></a></span></dt>
+<dt class="deftypefn def-line" id="index-windows_005ffeature"><span class="category-def">: </span><span><code class="def-type"><var class="var">value</var> =</code> <strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>)</code><a class="copiable-link" href="#index-windows_005ffeature"></a></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn def-line" id="index-windows_005ffeature-1"><span class="category-def">: </span><span><strong class="def-name">windows_feature</strong> <code class="def-code-arguments">(<var class="var">name</var>, <var class="var">value</var>)</code><a class="copiable-link" href="#index-windows_005ffeature-1"></a></span></dt>
 <dd><p>Set or get a feature value.
 </p> 

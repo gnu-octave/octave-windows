@@ -2,7 +2,7 @@
 layout: "default"
 permalink: "/functions/9_clipboard/"
 pkg_name: "windows"
-pkg_version: "1.7.0"
+pkg_version: "1.7.1"
 pkg_description: "Provides COM interface and additional functionality on Windows"
 title: "Windows Toolkit - clipboard"
 category: "Examples"

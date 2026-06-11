@@ -2,7 +2,7 @@
 layout: "default"
 permalink: "/functions/7_comget/"
 pkg_name: "windows"
-pkg_version: "1.7.0"
+pkg_version: "1.7.1"
 pkg_description: "Provides COM interface and additional functionality on Windows"
 title: "Windows Toolkit - com_get"
 category: "Examples"
@@ -39,6 +39,9 @@ navigation:
 ---
 <dl class="first-deftypefn def-block">
 <dt class="deftypefn def-line" id="index-com_005fget"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">com_get</strong> <code class="def-code-arguments">(<var class="var">obj</var>)</code><a class="copiable-link" href="#index-com_005fget"></a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn def-line" id="index-com_005fget-1"><span class="category-def">: </span><span><code class="def-type"><var class="var">S</var> =</code> <strong class="def-name">com_get</strong> <code class="def-code-arguments">(<var class="var">obj</var>, <var class="var">property</var>)</code><a class="copiable-link" href="#index-com_005fget-1"></a></span></dt>
 <dd><p>Call get function on COM object <var class="var">obj</var>. Returns any result in <var class="var">S</var>
+</p> 
+<p>If no property is provided, all properties will be returned in <var class="var">S</var>.
 </p> 
 </dd></dl>

@@ -3,7 +3,7 @@ layout: "default"
 permalink: "/news/"
 title: "Windows Toolkit - News"
 pkg_name: "windows"
-version: "1.7.0"
+version: "1.7.1"
 description: "Provides COM interface and additional functionality on Windows"
 navigation:
 - id: "overview"
@@ -19,6 +19,15 @@ navigation:
   url: "/manual"
 ---
 <pre>
+Summary of important user-visible changes for Windows 1.7.1
+------------------------------------------------------------
+
+* Minor doc updates
+
+* Updates to support qt6
+
+* Updates for Octave 12+ compatibility
+
 Summary of important user-visible changes for Windows 1.7.0
 ------------------------------------------------------------
 
